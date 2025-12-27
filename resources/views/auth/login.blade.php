@@ -5,14 +5,15 @@
         <div class="card-body">
             <div class="app-brand justify-content-center mb-4">
                 <a href="{{ url('/') }}" class="app-brand-link">
-                    <span class="app-brand-text demo text-body fw-bolder text-uppercase">{{ config('app.name') }}</span>
+                    <span class="app-brand-text demo text-body fw-bolder text-uppercase">Login</span>
                 </a>
             </div>
-            <h4 class="mb-3">Login Page</h4>
+            <h4 class="mb-2">Welcome Back Admin!</h4>
+            <p class="mb-4">Please sign in to access your account and manage your content.</p>
             <form id="formAuthentication" class="mb-3" action="{{ route('login') }}" method="POST">
                 @csrf
                 <div class="mb-3">
-                    <label for="email" class="form-label">Sign in with your email</label>
+                    <label for="email" class="form-label">Email</label>
                     <input type="text" class="form-control @error('email') is-invalid @enderror" name="email"
                         value="{{ old('email') }}" id="email" placeholder="Enter your email" autofocus />
                     @error('email')
@@ -32,11 +33,11 @@
                             aria-describedby="password" />
                         <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                     </div>
-                    @if (Route::has('password.request'))
+                    <!-- @if (Route::has('password.request'))
                         <a href="{{ route('password.request') }} " class="mt-1 d-inline-block">
                             <small>Forgot Password?</small>
                         </a>
-                    @endif
+                    @endif -->
                 </div>
                 <div class="g-recaptcha mb-3" id="feedback-recaptcha"
                     data-sitekey="{{ config('services.recaptcha.site_key') }}">

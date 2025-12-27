@@ -1,17 +1,20 @@
 <nav>
 
     <a href="{{ url('/') }}"><img src="{{ asset('uploaded-images/home-setting-images/' . $home_setting->image) }}"
-            class="alllogo" height="100px" width="100px" /></a>
+            class="alllogo" /></a>
     <div class="nav-links" id="navLinks">
         <i class="fa fa-times" onclick="hideMenu()"></i>
 
         <ul class="menu-item justify-content-center align-items-center">
             <li><a href="{{ url('/') }}">Home</a></li>
             <li><a href="{{ route('projects.all') }}">Projects</a></li>
-            <li><a href="#skills">Skills</a></li>
+            <!-- <li><a href="#skills">Skills</a></li> -->
             <li><a href="{{ route('articles.all') }}">Articles</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <!-- <li><a href="#contact">Contact</a></li> -->
         </ul>
+        <div class="theme-toggle" onclick="toggleTheme()">
+            <i class="fa-solid fa-sun" id="theme-icon"></i>
+        </div>
     </div>
     <i class="fa fa-bars" onclick="showMenu()"></i>
 </nav>
@@ -39,17 +42,36 @@
 {{---------------- javascript  for responsive navbar ---------------}}
 <script>
     var navLinks = document.getElementById("navLinks");
+    var themeIcon = document.getElementById('theme-icon');
+    
+    // Check local storage for theme
+    const currentTheme = localStorage.getItem('theme');
+    if (currentTheme === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+        themeIcon.classList.remove('fa-sun');
+        themeIcon.classList.add('fa-moon');
+    }
+
+    function toggleTheme() {
+        const theme = document.documentElement.getAttribute('data-theme');
+        if (theme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+            localStorage.setItem('theme', 'light');
+            themeIcon.classList.remove('fa-sun');
+            themeIcon.classList.add('fa-moon');
+        }
+    }
 
     function showMenu() {
         navLinks.style.right = "0";
-        navLinks.style.padding = "0 100px 0 0";
-        navLinks.style.transition = "all 0.5s";
-        navLinks.style.display = "flex";
-        navLinks.style.flexDirection = "column";
     }
 
     function hideMenu() {
-        console.log("Hiding menu...");
-        navLinks.style.display = "none";
+        navLinks.style.right = "-280px";
     }
 </script>

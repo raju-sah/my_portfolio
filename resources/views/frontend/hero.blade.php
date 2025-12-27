@@ -36,7 +36,7 @@
                 <p class="text-center mt-3 fw-lighter" style="color: #747884">I am usually occupied, but open to new
                     opportunities, hit me on Linkedin for chat. </p>
 
-                <div class="counter-container d-flex align-items-center">
+                <div class="counter-container d-flex align-items-center" style="font-size: 7px">
                     <i class="fa-regular fa-eye mb-5 me-4" style="color: #a6adbb">
                         <span class="fw-bolder" id="views"></span>
                         <span class="fw-bold ms-2">Views</span>
@@ -63,22 +63,34 @@
                 const activeUsers = {{ $usersAndViews['activeUsers'] ?? 0 }};
                 const screenPageViews = {{ $usersAndViews['screenPageViews'] ?? 0 }};
 
-                const increment = 1; // You can adjust this to make the counter go faster or slower
                 const duration = 2000; // 2 seconds to reach the target value
 
+                // Easing function for smooth animation (easeOutExpo)
+                const easeOutExpo = (t) => {
+                    return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+                };
+
                 const updateCounter = (element, target) => {
-                    let count = 0;
-                    const intervalTime = duration / (target / increment);
-
-                    const timer = setInterval(() => {
-                        count += increment;
-                        element.textContent = count + '+';
-
-                        if (count >= target) {
-                            clearInterval(timer);
+                    const startTime = performance.now();
+                    
+                    const animate = (currentTime) => {
+                        const elapsed = currentTime - startTime;
+                        const progress = Math.min(elapsed / duration, 1);
+                        
+                        // Apply easing function
+                        const easedProgress = easeOutExpo(progress);
+                        const currentCount = Math.floor(easedProgress * target);
+                        
+                        element.textContent = currentCount + '+';
+                        
+                        if (progress < 1) {
+                            requestAnimationFrame(animate);
+                        } else {
                             element.textContent = target + '+';
                         }
-                    }, intervalTime);
+                    };
+                    
+                    requestAnimationFrame(animate);
                 };
 
                 updateCounter(counterElement, activeUsers);
@@ -94,9 +106,20 @@
                 var typingEffect = new Typed(".multiText", {
                     strings: backforthtexts,
                     loop: true,
-                    typeSpeed: 100,
-                    backSpeed: 80,
-                    backDelay: 1500
+                    typeSpeed: 200,
+                    backSpeed: 100,
+                    backDelay: 1000,
+                    startDelay: 500,
+                    smartBackspace: true, // Only backspace what doesn't match the previous string
+                    shuffle: false,
+                    fadeOut: false,
+                    fadeOutClass: 'typed-fade-out',
+                    fadeOutDelay: 500,
+                    cursorChar: '|',
+                    autoInsertCss: true,
+                    showCursor: true,
+                    cursorChar: '_',
+                    autoInsertCss: true
                 });
             });
         </script>

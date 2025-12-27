@@ -12,9 +12,9 @@
 
                 <form id="filter_form" class="mb-4" method="GET">
                     <x-form.row>
-                        <x-form.enum-select id="common_filter" col="3" :option-display="false" :options="App\Enums\CommonFilterType::cases()"
+                        <x-form.enum-select id="common_filter" col="2" :option-display="false" :options="App\Enums\CommonFilterType::cases()"
                             name="common_filter" required />
-                        <div class="col-md-4 d-flex align-items-end mb-4 mt-4">
+                        <div class="col-md-3 d-flex align-items-end mb-4 mt-4">
                             <div id="reportrange" name="reportrange" class="form-select"
                                 style="cursor: pointer; padding: 7px 13px;">
                                 <i class='bx bxs-calendar'></i>&nbsp;
@@ -30,7 +30,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-3 mt-1">
+                        <div class="col-md-2 mt-1">
                             <x-form.button class="btn btn-sm btn-info w-50 " style="height: 35px;" type="submit"><i
                                     class='bx bx-xs bx-filter-alt'></i> Filter</x-form.button>
                         </div>

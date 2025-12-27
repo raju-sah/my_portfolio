@@ -1,12 +1,12 @@
-<section class="contact-me">
+<div class="container-fluid" id="contact">
     <br>
     <br>
     <h4 class="mx-5">Contact Me</h4>
     <hr>
-    <div id="contact">
-        <div class="containerss">
+    <div>
+        <div>
             <div class="row">
-                <div class="contact-left p-5">
+                <div class="contact-left p-3">
                     <h3 class="sub-title">Get in Touch:</h3>
 
                     @foreach ($social_links as $social_link)
@@ -66,7 +66,7 @@
         </div>
     </div>
 
-</section>
+</div>
 
 <style>
     .iti__selected-flag {

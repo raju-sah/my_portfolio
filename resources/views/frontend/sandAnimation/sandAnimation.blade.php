@@ -8,173 +8,182 @@
         align-items: center;
     }
 
-    #sandContainer {
-        position: relative;
-        width: 400px;
-        height: 180px;
-        cursor: default;
-    }
-
-    .sand-particle {
-        position: absolute;
-        width: 0.2px;
-        height: 0.2px;
-        background-color: #d2691e;
-        border-radius: 50%;
+    #sandCanvas {
+        display: block;
     }
 
     @media (max-width: 600px) {
         #container-wrapper {
-            position: relative;
+            margin: 20px 0;
             top: -55px;
             right: 70px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 20px 0;
-        }
-
-        #sandContainer {
-            width: 72.5vw;
-            height: 18.5vw;
-        }
-
-        .sand-particle {
-            width: 0.09px;
-            height: 0.09px;
         }
     }
 </style>
 
 <div id="container-wrapper">
-    <div id="sandContainer" class=""></div>
+    <canvas id="sandCanvas"></canvas>
 </div>
 
 <script>
-    const container = document.getElementById('sandContainer');
-    const word = 'Raju Sah';
-    const particlesPerLetter = 650;
-    let particles = [];
-    let isScattered = false;
-
-    function createParticles() {
-        container.innerHTML = '';
-        particles = [];
-
-        const canvas = document.createElement('canvas');
+    (function() {
+        const canvas = document.getElementById('sandCanvas');
         const ctx = canvas.getContext('2d');
-        canvas.width = 430;
-        canvas.height = 200;
-        ctx.font = 'bold 70px Arial';
-        ctx.fillStyle = 'black';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(word, canvas.width / 2, canvas.height / 2);
+        let particlesArray = [];
+        const word = 'Raju Sah';
+        
+        let mouse = {
+            x: null,
+            y: null,
+            radius: 50
+        };
 
-        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        const pixels = imageData.data;
-
-        for (let i = 0; i < pixels.length; i += 4) {
-            if (pixels[i + 3] > 0) {
-                const x = (i / 4) % canvas.width;
-                const y = Math.floor((i / 4) / canvas.width);
-                particles.push({
-                    x,
-                    y,
-                    originalX: x,
-                    originalY: y
-                });
+        function setCanvasDimensions() {
+            // Set canvas size matching the original design intent
+            // Desktop: ~400x180, Mobile logic handled by JS resizing or fixed ratio
+            if (window.innerWidth < 600) {
+                 // Mobile dimensions from original CSS: 72.5vw x 18.5vw approximately
+                 canvas.width = window.innerWidth * 0.725;
+                 canvas.height = window.innerWidth * 0.185;
+            } else {
+                canvas.width = 700;
+                canvas.height = 185;
             }
         }
+        
+        setCanvasDimensions();
 
-        particles = particles
-            .sort(() => 0.5 - Math.random())
-            .slice(0, word.length * particlesPerLetter);
-
-        particles.forEach((particle) => {
-            const div = document.createElement('div');
-            div.classList.add('sand-particle');
-            div.style.left = `${particle.x}px`;
-            div.style.top = `${particle.y}px`;
-            container.appendChild(div);
-            particle.element = div;
+        window.addEventListener('mousemove', function(event) {
+            const rect = canvas.getBoundingClientRect();
+            mouse.x = event.x - rect.left;
+            mouse.y = event.y - rect.top;
         });
-    }
+        
+        // Handle touch events for mobile
+        window.addEventListener('touchmove', function(event) {
+            const rect = canvas.getBoundingClientRect();
+            mouse.x = event.touches[0].clientX - rect.left;
+            mouse.y = event.touches[0].clientY - rect.top;
+        }, {passive: true});
 
-    function scatterParticles() {
-        if (!isScattered) {
-            isScattered = true;
-            const scatteredParticles = [];
-            const scatterAmount = particlesPerLetter * 5;
+        window.addEventListener('resize', function() {
+            setCanvasDimensions();
+            init();
+        });
 
-            for (let i = 0; i < scatterAmount; i++) {
-                const randomParticle = particles[Math.floor(Math.random() * particles.length)];
-                const newParticle = {
-                    x: randomParticle.x + Math.random() * 40 - 20,
-                    y: randomParticle.y + Math.random() * 40 - 20,
-                    originalX: randomParticle.originalX,
-                    originalY: randomParticle.originalY
-                };
-                scatteredParticles.push(newParticle);
+        window.addEventListener('mouseout', function() {
+            mouse.x = null;
+            mouse.y = null;
+        });
 
-                const div = document.createElement('div');
-                div.classList.add('sand-particle');
-                div.style.left = `${newParticle.x}px`;
-                div.style.top = `${newParticle.y}px`;
-                container.appendChild(div);
-                newParticle.element = div;
+        class Particle {
+            constructor(x, y) {
+                // Start from random position for initial animation
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = 1;
+                this.baseX = x; // Final target position
+                this.baseY = y;
+                this.density = (Math.random() * 1000) + 1;
+                this.color = '#d2691e';
+                this.isForming = true; // Flag to track if still animating into position
             }
 
-            particles = particles.concat(scatteredParticles);
-        }
-    }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fill();
+            }
 
-    function resetParticles() {
-        if (isScattered) {
-            isScattered = false;
-            particles.forEach((particle, index) => {
-                if (index < word.length * particlesPerLetter) {
-                    particle.x = particle.originalX;
-                    particle.y = particle.originalY;
-                    particle.element.style.transform = 'translate(0px, 0px)';
-                } else {
-                    container.removeChild(particle.element);
+            update() {
+                // Initial formation animation
+                if (this.isForming) {
+                    let dx = this.baseX - this.x;
+                    let dy = this.baseY - this.y;
+                    this.x += dx * 0.05; // Animation speed (5% each frame)
+                    this.y += dy * 0.05;
+                    
+                    // Check if close enough to target position
+                    if (Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5) {
+                        this.x = this.baseX;
+                        this.y = this.baseY;
+                        this.isForming = false;
+                    }
+                    return; // Skip mouse interaction during formation
                 }
-            });
-            particles = particles.slice(0, word.length * particlesPerLetter);
-        }
-    }
 
-    function interactWithParticles(mouseX, mouseY) {
-        const interactionRadius = 70;
-        const pushStrength = 40;
+                // Mouse interaction (only after formation complete)
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                let forceDirectionX = dx / distance;
+                let forceDirectionY = dy / distance;
+                let maxDistance = mouse.radius;
+                let force = (maxDistance - distance) / maxDistance;
+                let directionX = forceDirectionX * force * this.density;
+                let directionY = forceDirectionY * force * this.density;
 
-        particles.forEach(particle => {
-            const dx = particle.x - mouseX;
-            const dy = particle.y - mouseY;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < interactionRadius) {
-                const angle = Math.atan2(dy, dx);
-                const force = (interactionRadius - distance) / interactionRadius;
-                const moveX = Math.cos(angle) * force * pushStrength;
-                const moveY = Math.sin(angle) * force * pushStrength;
-
-                particle.x += moveX;
-                particle.y += moveY;
-                particle.element.style.transform =
-                    `translate(${particle.x - particle.originalX}px, ${particle.y - particle.originalY}px)`;
+                if (distance < mouse.radius) {
+                    this.x -= directionX * 3; // Push strength
+                    this.y -= directionY * 3;
+                } else {
+                    if (this.x !== this.baseX) {
+                        let dx = this.x - this.baseX;
+                        this.x -= dx / 10; // Return speed (easing)
+                    }
+                    if (this.y !== this.baseY) {
+                        let dy = this.y - this.baseY;
+                        this.y -= dy / 10;
+                    }
+                }
             }
-        });
-    }
+        }
 
-    createParticles();
+        function init() {
+            particlesArray = [];
+            // Draw text to canvas to get data
+            ctx.clearRect(0,0, canvas.width, canvas.height); // clear for resize
+            
+            let fontSize = 70;
+            if(window.innerWidth < 600) fontSize = 40; // Smaller font for mobile
+            
+            ctx.font = 'bold ' + fontSize + 'px Arial';
+            ctx.fillStyle = 'white'; // Color doesn't matter for scanning, just needs to be non-transparent
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(word, canvas.width / 2, canvas.height / 2);
 
-    container.addEventListener('mouseenter', scatterParticles);
-    container.addEventListener('mouseleave', resetParticles);
-    container.addEventListener('mousemove', (e) => {
-        const rect = container.getBoundingClientRect();
-        const mouseX = e.clientX - rect.left;
-        const mouseY = e.clientY - rect.top;
-        interactWithParticles(mouseX, mouseY);
-    });
+            const textCoordinates = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            
+            // Scan pixel data
+            // step logic to reduce density if needed, or scan every pixel
+            // For performance, scanning every 2nd or 3rd pixel is often enough
+            const step = 2; 
+
+            for (let y = 0, y2 = textCoordinates.height; y < y2; y += step) {
+                for (let x = 0, x2 = textCoordinates.width; x < x2; x += step) {
+                    // Check alpha value (4th byte)
+                    if (textCoordinates.data[(y * 4 * textCoordinates.width) + (x * 4) + 3] > 128) {
+                        let positionX = x;
+                        let positionY = y;
+                        particlesArray.push(new Particle(positionX, positionY));
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].draw();
+                particlesArray[i].update();
+            }
+            requestAnimationFrame(animate);
+        }
+
+        init();
+        animate();
+    })();
 </script>

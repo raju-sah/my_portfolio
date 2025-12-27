@@ -25,10 +25,8 @@
         }
 
         .btn {
-            left: -44px !important;
             background-color: #cf3f36 !important;
             color: #a6adbb !important;
-            position: relative;
             height: 39px;
             border-radius: 8px !important;
         }
@@ -79,7 +77,7 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="col-md-1">
+                <div class="col-md-2">
                     <select id="pagination_filter" class="form-select mb-3" name="pagination_filter">
                         @foreach (\App\Enums\PaginationFilterType::cases() as $case)
                             <option value="{{ $case->value }}"
@@ -90,7 +88,7 @@
                     </select>
                 </div>
                 <div class="col-md-2 mb-3">
-                    <x-form.button class="btn w-50"><i class="fa-solid fa-filter"></i> Filter
+                    <x-form.button class="btn w-50"><i class="fa-solid fa-filter"></i>
                     </x-form.button>
                 </div>
             </div>

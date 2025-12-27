@@ -1,4 +1,4 @@
-<div class="container-fluid article">
+<div class="container-fluid">
     <br>
     <br>
     <h4 class="mx-5">Articles</h4>
