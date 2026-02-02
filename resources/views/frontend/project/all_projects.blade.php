@@ -2,70 +2,66 @@
 @section('title', 'Projects')
 @section('content')
 
-<div class="container-fluid project-lists">
-    <br>
-    <br>
-    <br>
-    <br>
-    <h2 class="">All Projects</h2>
-    <hr>
-    <div class="row py-2 mb-3 align-items-center">
-        <div class="col-sm-3">
-            <h5 class=" project-headers">Year</h5>
+<section class="relative py-20">
+    <div class="container mx-auto px-6 relative z-10">
+        <h2 class="text-4xl font-black text-heading mb-4">All Projects</h2>
+        <p class="text-body/70 mb-12">A comprehensive archive of my work over the years.</p>
+        
+        {{-- Table Header --}}
+        <div class="hidden md:grid grid-cols-12 gap-6 text-sm font-semibold text-body/50 uppercase tracking-widest pb-4 border-b border-heading/10">
+            <div class="col-span-2">Year</div>
+            <div class="col-span-7">Project</div>
+            <div class="col-span-3">Built With</div>
         </div>
-        <div class="col-sm-6">
-            <h5 class="project-headers">Projects</h5>
-        </div>
-        <div class="col-sm-3">
-            <h5 class="project-headers">Built With</h5>
-        </div>
-    </div>
 
-    @foreach ($projects as $key => $project)
-    <div class="row d-flex justify-content-center">
+        {{-- Projects List --}}
+        <div class="divide-y divide-heading/5">
+            @foreach ($projects as $key => $project)
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 py-6 group hover:bg-card/20 -mx-4 px-4 rounded-xl transition-all">
+                
+                {{-- Year --}}
+                <div class="md:col-span-2">
+                    <span class="font-mono text-body/50 text-sm">{{ optional($project)->year }}</span>
+                </div>
 
-        <div class="col-sm-3" style="color: #747884; ">{{ optional($project)->year }}</div>
+                {{-- Project Info --}}
+                <div class="md:col-span-7">
+                    <div class="flex items-center gap-4 mb-3">
+                        <a href="{{ optional($project)->web_url }}" target="_blank" class="flex items-center gap-3 group/link text-heading font-bold text-lg hover:text-accent transition-colors">
+                            <img src="{{ optional($project)->image_path }}" alt="{{ optional($project)->name }}" class="w-10 h-10 object-cover rounded-lg shadow-sm" />
+                            <span>{{ optional($project)->name }}</span>
+                            <svg class="w-4 h-4 opacity-0 group-hover/link:opacity-100 transition-all -translate-x-1 group-hover/link:translate-x-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                            </svg>
+                        </a>
+                        <a href="{{ optional($project)->github_url }}" target="_blank" class="text-body/50 hover:text-heading transition-colors">
+                            <i class="fa-brands fa-github text-xl"></i>
+                        </a>
+                    </div>
+                    <p class="text-body leading-relaxed text-sm max-w-2xl">
+                        {!! optional($project)->description !!}
+                    </p>
+                </div>
 
-        <div class="col-sm-6 mb-2">
-            <div class="d-flex">
-                <a href="{{ optional($project)->web_url }}" class=" project-title text-decoration-none d-flex me-2">
-                    <img src="{{ optional($project)->image_path }}" alt="{{ optional($project)->name }}" width="40"
-                        height="40" class="project-img me-2" style=" object-fit: cover;" />
-                    <h6>{{ optional($project)->name }}</h6>
-                    <svg style="width: 25px; height: 25px;" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                        viewBox="0 0 20 20"
-                        class="project-svg inline-block h-1 w-1 shrink-0 transition-transform group-hover/title:-translate-y-1 group-hover/title:translate-x-1 motion-reduce:transition-none">
-                        <path
-                            d="M5.22 14.78a.75.75 0 0 0 1.06 0l7.22-7.22v5.69a.75.75 0 0 0 1.5 0v-7.5a.75.75 0 0 0-.75-.75h-7.5a.75.75 0 0 0 0 1.5h5.69l-7.22 7.22a.75.75 0 0 0 0 1.06z">
-                        </path>
-                    </svg>
-                </a>
-                <a href="{{ optional($project)->github_url }}" target="_blank"><i
-                        class="fa-brands fa-square-github"></i></a>
+                {{-- Tech Stack --}}
+                <div class="md:col-span-3">
+                    <div class="flex flex-wrap gap-2">
+                        @php
+                            $techs = json_decode(optional($project)->tech_used);
+                        @endphp
+                        @if ($techs)
+                            @foreach ($techs as $key => $tech)
+                                <span class="px-2 py-1 text-[10px] uppercase font-bold tracking-wider text-accent border border-accent/20 rounded bg-accent/5">{{ $tech }}</span>
+                            @endforeach
+                        @endif
+                    </div>
+                </div>
             </div>
-            <p>
-                {!! optional($project)->description !!}
-            </p>
-
+            @endforeach
         </div>
 
-        <div class="col-sm-3">
-            <p>
-                @php
-                $techs = json_decode(optional($project)->tech_used);
-                @endphp
-                @if ($techs)
-                @foreach ($techs as $key => $tech)
-                <span class="m-1 badge"> {{ $tech }}</span>
-                @endforeach
-                @endif
-            </p>
-        </div>
-        <hr>
-        @endforeach
+        <p class="text-center text-body/50 mt-16 text-sm italic">And other projects that I'm not comfortable/allowed to share publicly :)</p>
     </div>
-
-    <p class="text-center">And other projects that I'm not comfortable/allowed to share publicly :)</p>
-</div>
+</section>
 
 @endsection

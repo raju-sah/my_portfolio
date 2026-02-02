@@ -1,29 +1,29 @@
 :root {
-    --bg-primary: #000000;
-    --bg-card: #000000;
-    --text-body: #747884;
-    --text-heading: #a6adbb;
-    --text-nav: #747884;
-    --text-white: #ffffff; /* For icons/text that are white on dark */
+    --bg-primary: #0a0a0a;
+    --bg-card: #141414;
+    --text-body: #a1a1aa;
+    --text-heading: #e4e4e7;
+    --text-nav: #a1a1aa;
+    --text-white: #ffffff;
     --accent-color: #cf3f36;
-    --accent-hover: #f44336;
-    --bg-badge: #272929;
-    --shadow-color: #772f2f3b;
-    --glass-bg: #cb9f9f73;
-    --glass-bg-hover: #f44336;
+    --accent-hover: #ef4444;
+    --bg-badge: #27272a;
+    --shadow-color: rgba(0, 0, 0, 0.2);
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-bg-hover: rgba(207, 63, 54, 0.1);
 }
 
 [data-theme="light"] {
     --bg-primary: #ffffff;
-    --bg-card: #f8f9fa;
-    --text-body: #333333;
-    --text-heading: #111111;
-    --text-nav: #333333;
-    --text-white: #000000;
-    --bg-badge: #e9ecef;
-    --shadow-color: #0000001a;
-    --glass-bg: #00000020;
-    --glass-bg-hover: #cf3f3620;
+    --bg-card: #f4f4f5;
+    --text-body: #52525b;
+    --text-heading: #18181b;
+    --text-nav: #52525b;
+    --text-white: #18181b;
+    --bg-badge: #e4e4e7;
+    --shadow-color: rgba(0, 0, 0, 0.05);
+    --glass-bg: rgba(0, 0, 0, 0.03);
+    --glass-bg-hover: rgba(207, 63, 54, 0.05);
 }
 
 .theme-toggle {
@@ -259,11 +259,12 @@ h1 {
     text-align: left;
     margin-right: 50px;
     font-weight: 500;
-    padding: 8px 16px;
-    margin-top: 20px;
-    border-radius: 6px;
-    border: 2px solid var(--accent-color);
-    transition: all 0.3s ease;
+    padding: 10px 24px;
+    margin-top: 30px;
+    border-radius: 9999px; /* Pill shape */
+    border: 1px solid var(--accent-color);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 0.5px;
 }
 .wrapper .cols a:hover {
     color: var(--accent-color);
@@ -288,33 +289,35 @@ nav .fa {
     display: none;
 }
 
-.button-click {
-    display: flex;
-    justify-content: center;
-}
-
 .title-btn {
     background-color: transparent;
-    border: 2px solid rgb(240, 5, 83);
-    border-radius: 8px;
-    padding: 10px 20px;
-    color: #747884;
-    width: 170px;
-    height: 50px;
+    border: 1px solid var(--accent-color);
+    border-radius: 9999px;
+    padding: 10px 24px;
+    color: var(--text-nav);
+    width: auto;
+    min-width: 140px;
+    height: auto;
     overflow: hidden;
     position: relative;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 1px;
+    font-weight: 500;
 }
 
 .title-btn::after {
     content: "";
     width: 100%;
     height: 100%;
-    background-color: rgb(240, 5, 83);
+    background-color: var(--accent-color);
     display: block;
     position: absolute;
     top: 0;
     left: -100%;
-    transition: left 0.8s;
+    transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 0;
 }
 
 .title-btn:hover::after {
@@ -324,7 +327,12 @@ nav .fa {
 .title-btn > span {
     position: relative;
     z-index: 1;
-    color: #a6adbb;
+    color: var(--text-heading);
+    transition: color 0.3s;
+}
+
+.title-btn:hover > span {
+    color: #fff;
 }
 
 .icon-bar {
@@ -728,6 +736,42 @@ h2 {
     }
 }
 
+.skillCards > img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80px; /* Fixed width */
+    height: 80px; /* Fixed height to prevent shift */
+    object-fit: contain;
+    margin-bottom: 15px;
+    transition: opacity 0.3s;
+}
+
+/* Redefine content for cleaner hover */
+.content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0;
+    width: 100%;
+    text-align: center;
+    transition: all 0.3s ease;
+    color: var(--text-heading);
+}
+
+.skillCards:hover .content {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    bottom: auto; /* reset default */
+}
+
+.skillCards:hover .progresscards,
+.skillCards:hover > img {
+    opacity: 0.1;
+    filter: blur(2px);
+}
+
 .skills-section {
     width: 100%;
     background-color: var(--bg-primary);
@@ -740,45 +784,21 @@ h2 {
 
 .skillCards {
     width: 200px;
-    height: 170px;
+    height: 180px;
     background-color: var(--bg-card);
     position: relative;
     overflow: hidden;
-    padding: 10px;
-    transition: all 0.5s ease-in-out;
+    padding: 20px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     margin: 20px;
-    border-radius: 10px;
-}
-
-.skillCards>img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
-}
-
-.content {
-    position: absolute;
-    bottom: -300px;
-    left: 50px;
-    color: var(--text-white);
-    transition: all 0.5s ease-in-out;
-    margin-bottom: 25px;
-}
-
-.skillCards:hover .content {
-    bottom: 10px;
-}
-
-.skillCards:hover>img,
-.skillCards:hover>.progresscards {
-    opacity: 0;
+    border-radius: 16px;
+    border: 1px solid var(--bg-badge);
 }
 
 .skillCards:hover {
-    transform: scale(0.98);
-    border-radius: 20px;
-    box-shadow: 0px 0px 30px 1px var(--glass-bg-hover); /* Using hover accent color for shadow */
+    transform: translateY(-5px);
+    border-color: var(--accent-color);
+    box-shadow: 0 10px 30px -10px var(--glass-bg-hover);
 }
 
 @media (max-width: 768px) {

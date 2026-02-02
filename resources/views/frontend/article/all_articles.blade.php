@@ -5,30 +5,40 @@
             align-items: end !important;
         }
 
-        .form-select {
-            background-color: #000 !important;
-            color: #747884 !important;
-            border: 1px solid #747884 !important;
+        .article .form-select {
+            background-color: var(--bg-card) !important;
+            color: var(--text-body) !important;
+            border: 1px solid color-mix(in srgb, var(--text-body) 30%, transparent) !important;
+            transition: all 0.3s ease;
+        }
+        .article .form-select:focus {
+            border-color: var(--accent-color) !important;
+            box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-color) 20%, transparent) !important;
         }
 
         .ranges {
-            background: #000;
-            color: #fff;
+            background: var(--bg-card);
+            color: var(--text-heading);
         }
 
         .ranges li:hover {
-            background-color: #cf3f36 !important;
+            background-color: var(--accent-color) !important;
         }
 
         .ranges li.active {
-            background-color: #cf3f36 !important;
+            background-color: var(--accent-color) !important;
         }
 
-        .btn {
-            background-color: #cf3f36 !important;
-            color: #a6adbb !important;
+        .article .btn {
+            background-color: var(--accent-color) !important;
+            color: #fff !important;
             height: 39px;
             border-radius: 8px !important;
+            transition: all 0.3s ease;
+        }
+        .article .btn:hover {
+            filter: brightness(1.1);
+            transform: translateY(-1px);
         }
 
         @media(max-width: 768px) {

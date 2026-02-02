@@ -1,50 +1,57 @@
-<section class="speciality" id="speciality">
-    <div class="container-fluid project-lists">
-        <br>
-        <br>
-        <h4 class="mx-5">Projects</h4>
-        <hr>
-        @foreach ($projects as $key => $project)
-            <div class=" projects row d-flex mx-auto justify-content-center" style="max-width: 900px; mb-3">
-                <p class="col-sm-3" style="color: #747884; ">{{ optional($project)->year }}</p>
-                <div class="col-sm-9 mb-3">
-                    <div class="d-flex">
-                        <a href="{{ optional($project)->web_url }}"
-                            class=" project-title text-decoration-none d-flex me-2">
-                            <img src="{{ optional($project)->image_path }}" alt="{{ optional($project)->name }}"
-                                width="40" height="40" class="project-img me-2" style=" object-fit: cover;" />
-                            <h6>{{ optional($project)->name }}</h6>
-                            <svg style="width: 25px; height: 25px;" xmlns="http://www.w3.org/2000/svg"
-                                fill="currentColor" viewBox="0 0 20 20"
-                                class="project-svg inline-block h-1 w-1 shrink-0 transition-transform group-hover/title:-translate-y-1 group-hover/title:translate-x-1 motion-reduce:transition-none">
-                                <path
-                                    d="M5.22 14.78a.75.75 0 0 0 1.06 0l7.22-7.22v5.69a.75.75 0 0 0 1.5 0v-7.5a.75.75 0 0 0-.75-.75h-7.5a.75.75 0 0 0 0 1.5h5.69l-7.22 7.22a.75.75 0 0 0 0 1.06z">
-                                </path>
-                            </svg>
-                        </a>
-                        <a href="{{ optional($project)->github_url }}" target="_blank"><i
-                                class="fa-brands fa-square-github"></i></a>
+<section class="relative py-20" id="speciality">
+    <div class="container mx-auto px-6 relative z-10">
+        <h4 class="text-3xl font-bold text-heading mb-10 border-b border-heading/20 pb-4 inline-block">Projects</h4>
+        
+        <div class="space-y-12">
+            @foreach ($projects as $key => $project)
+                <div class="group relative grid grid-cols-1 md:grid-cols-12 gap-8 items-start hover:bg-card/30 p-6 rounded-2xl transition-all duration-300 border border-transparent hover:border-card/50">
+                    <!-- Year -->
+                    <div class="md:col-span-3">
+                        <span class="text-sm font-mono text-body/60 uppercase tracking-widest">{{ optional($project)->year }}</span>
                     </div>
-                    <p>
-                        {!! optional($project)->description !!}
 
-                        @php
-                            $techs = json_decode(optional($project)->tech_used);
-                        @endphp
-                        @if ($techs)
-                            @foreach ($techs as $key => $tech)
-                                <span class="badge"> {{ $tech }}</span>
-                            @endforeach
-                        @endif
-                    </p>
+                    <!-- Content -->
+                    <div class="md:col-span-9">
+                        <div class="flex items-center justify-between mb-4">
+                            <a href="{{ optional($project)->web_url }}" target="_blank" class="flex items-center gap-4 group/title text-heading font-bold text-xl hover:text-accent transition-colors">
+                                <img src="{{ optional($project)->image_path }}" alt="{{ optional($project)->name }}" class="w-10 h-10 object-cover rounded-lg shadow-sm" />
+                                <span>{{ optional($project)->name }}</span>
+                                <svg class="w-5 h-5 transition-transform group-hover/title:-translate-y-1 group-hover/title:translate-x-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                </svg>
+                            </a>
+                            
+                            <a href="{{ optional($project)->github_url }}" target="_blank" class="text-body hover:text-heading transition-colors">
+                                <i class="fa-brands fa-github text-2xl"></i>
+                            </a>
+                        </div>
+                        
+                        <div class="text-body mb-6 leading-relaxed">
+                            {!! optional($project)->description !!}
+                        </div>
+
+                        <div class="flex flex-wrap gap-2">
+                            @php
+                                $techs = json_decode(optional($project)->tech_used);
+                            @endphp
+                            @if ($techs)
+                                @foreach ($techs as $key => $tech)
+                                    <span class="px-3 py-1 text-xs font-medium text-accent bg-accent/10 rounded-full border border-accent/20">
+                                        {{ $tech }}
+                                    </span>
+                                @endforeach
+                            @endif
+                        </div>
+                    </div>
                 </div>
-        @endforeach
-    </div>
+            @endforeach
+        </div>
 
-    <a href="{{ route('projects.all') }}" class="text-decoration-none more">
-        <i class="fa-solid fa-angle-up" style="color: #cf3f36"></i>
-        <span class="more-projects">More projects....</span>
-    </a>
+        <div class="mt-16 text-center">
+            <a href="{{ route('projects.all') }}" class="inline-flex items-center gap-2 text-accent hover:text-heading transition-colors font-medium">
+                <i class="fa-solid fa-angle-up"></i>
+                <span class="text-lg">View Full Project Archive</span>
+            </a>
+        </div>
     </div>
-
 </section>
