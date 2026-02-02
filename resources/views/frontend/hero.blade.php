@@ -20,30 +20,30 @@
        
     </style>
 
-    <section class="relative min-h-screen flex items-center justify-center overflow-hidden py-10">
-        <div class="container mx-auto px-6 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+    <section class="relative min-h-[calc(100vh-80px)] flex items-center justify-center overflow-hidden">
+        <div class="container mx-auto px-6 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             
             <!-- Content Left -->
             <div class="text-center lg:text-left">
-                <span class="block text-xl md:text-2xl text-accent font-medium tracking-widest mb-4 uppercase">Hello I'm</span>
+                <span class="block text-lg md:text-xl text-accent font-medium tracking-widest mb-1 uppercase">Hello I'm</span>
                 @include('frontend.sandAnimation.sandAnimation')
 
-                <h1 class="text-3xl md:text-5xl font-black text-heading mb-6 leading-tight">
+                <h1 class="text-2xl md:text-4xl font-black text-heading mb-2 leading-tight">
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-heading to-body">A</span>
                     <span class="multiText text-accent"></span>
                 </h1>
                 
-                <p class="text-body text-lg md:text-xl font-light max-w-lg mx-auto lg:mx-0 mb-8 leading-relaxed">
+                <p class="text-body text-base md:text-lg font-light max-w-lg mx-auto lg:mx-0 mb-3 leading-relaxed">
                     {!! optional($home_setting)->description !!}
                 </p>
 
-                <p class="text-body/60 text-sm mb-10 font-mono">
+                <p class="text-body/60 text-xs mb-4 font-mono">
                     // I am usually occupied, but open to new opportunities. <br class="hidden md:block"> Hit me on Linkedin for chat.
                 </p>
 
                 <!-- Stats -->
-                <div class="flex flex-wrap justify-center lg:justify-start gap-8">
-                    <div class="stat-card-tooltip flex items-center gap-4 bg-card/40 border border-card p-4 rounded-2xl backdrop-blur-sm shadow-theme cursor-pointer" data-tooltip="�️ 55% Moltys, 30% bots, 10% SEO goblins, 4% my refresh button, 1% confused human">
+                <div class="flex flex-wrap justify-center lg:justify-start gap-4">
+                    <div class="stat-card-tooltip flex items-center gap-4 bg-card/40 border border-card p-3 rounded-2xl backdrop-blur-sm shadow-theme cursor-pointer" data-tooltip="�️ 55% Moltys, 30% bots, 10% SEO goblins, 4% my refresh button, 1% confused human">
                         <div class="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent">
                             <i class="fa-regular fa-eye text-xl"></i>
                         </div>
@@ -53,7 +53,7 @@
                         </div>
                     </div>
                     
-                    <div class="stat-card-tooltip flex items-center gap-4 bg-card/40 border border-card p-4 rounded-2xl backdrop-blur-sm shadow-theme cursor-pointer" data-tooltip="� Moltys, Moltbots, crawlers & one human who misclicked">
+                    <div class="stat-card-tooltip flex items-center gap-4 bg-card/40 border border-card p-3 rounded-2xl backdrop-blur-sm shadow-theme cursor-pointer" data-tooltip="� Moltys, Moltbots, crawlers & one human who misclicked">
                         <div class="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent">
                             <i class="fa-solid fa-users text-xl"></i>
                         </div>
@@ -66,7 +66,7 @@
             </div>
 
             <!-- Interactive SVG Illustration Right -->
-            <div class="relative hidden lg:block" id="hero-svg-container">
+            <div class="relative hidden lg:block max-h-[400px] w-full aspect-square my-auto" id="hero-svg-container">
                 <svg id="hero-interactive-svg" viewBox="0 0 500 500" class="w-full h-auto drop-shadow-2xl" style="cursor: default;">
                     <defs>
                         <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">

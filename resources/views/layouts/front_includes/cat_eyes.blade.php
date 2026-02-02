@@ -1,23 +1,52 @@
 <style>
     .cat-eyes-container {
         position: fixed;
-        bottom: 20px;
-        right: 20px;
+        bottom: 30px;
+        right: 30px;
         display: flex;
         gap: 15px;
         z-index: 9999;
-        pointer-events: none; /* Let clicks pass through */
     }
 
     .cat-eye {
-        width: 40px;
-        height: 40px;
+        width: 35px;
+        height: 35px;
         background: #fff;
         border-radius: 50%;
         position: relative;
-        overflow: hidden;
+        overflow: visible; /* Changed to visible for tooltip */
         box-shadow: 0 0 10px rgba(0,0,0,0.5);
         border: 2px solid var(--accent-color);
+        pointer-events: auto;
+        cursor: pointer;
+    }
+
+    .cat-eye::before {
+        content: attr(data-tooltip);
+        position: absolute;
+        top: 50%;
+        right: 100%;
+        transform: translateY(-50%) translateX(-15px);
+        padding: 8px 12px;
+        background: rgba(25, 25, 30, 0.97);
+        color: #ff6b5b;
+        font-size: 11px;
+        font-weight: 500;
+        white-space: nowrap;
+        border-radius: 8px;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        z-index: 10000;
+        pointer-events: none;
+        border: 1px solid rgba(207, 63, 54, 0.25);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    .cat-eye:hover::before {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(-50%) translateX(-10px);
     }
 
     .cat-pupil {
@@ -38,10 +67,10 @@
 </style>
 
 <div class="cat-eyes-container">
-    <div class="cat-eye">
+    <div class="cat-eye" data-tooltip="👀 I can't take my eyes off you, cutie pie! ">
         <div class="cat-pupil"></div>
     </div>
-    <div class="cat-eye">
+    <div class="cat-eye" data-tooltip="🫰 Here is my heart for you!">
         <div class="cat-pupil"></div>
     </div>
 </div>

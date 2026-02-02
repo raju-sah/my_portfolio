@@ -31,7 +31,7 @@
         const ctx = canvas.getContext('2d');
         let particlesArray = [];
         const word = 'Raju Sah';
-        
+
         // Sarcastic tooltip messages
         const sandTooltipMessages = [
             "😏 I knew it! You couldn't resist playing with sand. Neither can I!",
@@ -41,7 +41,7 @@
             "🤫 Shh... your boss doesn't need to know about this.",
         ];
         let hasShownTooltip = false;
-        
+
         // Create tooltip element
         const sandTooltip = document.createElement('div');
         sandTooltip.id = 'sand-tooltip';
@@ -64,24 +64,24 @@
             box-shadow: 0 15px 50px rgba(0,0,0,0.5);
         `;
         document.body.appendChild(sandTooltip);
-        
+
         function showSandTooltip(x, y) {
             if (hasShownTooltip) return;
             hasShownTooltip = true;
-            
+
             const message = sandTooltipMessages[Math.floor(Math.random() * sandTooltipMessages.length)];
             sandTooltip.textContent = message;
             sandTooltip.style.left = `${Math.min(x, window.innerWidth - 340)}px`;
             sandTooltip.style.top = `${y - 70}px`;
             sandTooltip.style.opacity = '1';
             sandTooltip.style.transform = 'translateY(0)';
-            
+
             setTimeout(() => {
                 sandTooltip.style.opacity = '0';
                 sandTooltip.style.transform = 'translateY(10px)';
             }, 3500);
         }
-        
+
         let mouse = {
             x: null,
             y: null,
@@ -92,34 +92,36 @@
             // Set canvas size matching the original design intent
             // Desktop: ~400x180, Mobile logic handled by JS resizing or fixed ratio
             if (window.innerWidth < 600) {
-                 // Mobile dimensions from original CSS: 72.5vw x 18.5vw approximately
-                 canvas.width = window.innerWidth * 0.725;
-                 canvas.height = window.innerWidth * 0.185;
+                // Mobile dimensions from original CSS: 72.5vw x 18.5vw approximately
+                canvas.width = window.innerWidth * 0.725;
+                canvas.height = window.innerWidth * 0.185;
             } else {
                 canvas.width = 700;
-                canvas.height = 185;
+                canvas.height = 120;
             }
         }
-        
+
         setCanvasDimensions();
 
         window.addEventListener('mousemove', function(event) {
             const rect = canvas.getBoundingClientRect();
             mouse.x = event.x - rect.left;
             mouse.y = event.y - rect.top;
-            
+
             // Show tooltip on first interaction within canvas bounds
             if (mouse.x >= 0 && mouse.x <= canvas.width && mouse.y >= 0 && mouse.y <= canvas.height) {
                 showSandTooltip(event.x, event.y);
             }
         });
-        
+
         // Handle touch events for mobile
         window.addEventListener('touchmove', function(event) {
             const rect = canvas.getBoundingClientRect();
             mouse.x = event.touches[0].clientX - rect.left;
             mouse.y = event.touches[0].clientY - rect.top;
-        }, {passive: true});
+        }, {
+            passive: true
+        });
 
         window.addEventListener('resize', function() {
             setCanvasDimensions();
@@ -159,7 +161,7 @@
                     let dy = this.baseY - this.y;
                     this.x += dx * 0.05; // Animation speed (5% each frame)
                     this.y += dy * 0.05;
-                    
+
                     // Check if close enough to target position
                     if (Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5) {
                         this.x = this.baseX;
@@ -199,11 +201,11 @@
         function init() {
             particlesArray = [];
             // Draw text to canvas to get data
-            ctx.clearRect(0,0, canvas.width, canvas.height); // clear for resize
-            
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // clear for resize
+
             let fontSize = 70;
-            if(window.innerWidth < 600) fontSize = 40; // Smaller font for mobile
-            
+            if (window.innerWidth < 600) fontSize = 40; // Smaller font for mobile
+
             ctx.font = 'bold ' + fontSize + 'px Arial';
             ctx.fillStyle = 'white'; // Color doesn't matter for scanning, just needs to be non-transparent
             ctx.textAlign = 'center';
@@ -211,11 +213,11 @@
             ctx.fillText(word, canvas.width / 2, canvas.height / 2);
 
             const textCoordinates = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            
+
             // Scan pixel data
             // step logic to reduce density if needed, or scan every pixel
             // For performance, scanning every 2nd or 3rd pixel is often enough
-            const step = 2; 
+            const step = 2;
 
             for (let y = 0, y2 = textCoordinates.height; y < y2; y += step) {
                 for (let x = 0, x2 = textCoordinates.width; x < x2; x += step) {

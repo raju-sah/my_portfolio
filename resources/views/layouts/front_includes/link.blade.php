@@ -57,6 +57,12 @@
     }
 
     /* Base HTML styling for theme */
+    html, body {
+        overflow-x: hidden;
+        width: 100%;
+        position: relative;
+    }
+    
     html {
         background-color: var(--bg-primary);
         color: var(--text-body);
