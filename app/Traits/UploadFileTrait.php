@@ -30,6 +30,25 @@ trait UploadFileTrait
         return $this;
     }
 
+    public function updatePDF(string $field, string $folder_name, $file): static
+    {
+        if (isset($this->{$field})) {
+            @unlink(public_path('uploaded-images/' . $folder_name . '/' . $this->{$field}));
+        }
+
+        $filename = $file->hashName();
+        $path = public_path('uploaded-images/' . $folder_name . '/' . $filename);
+
+        $directory = dirname($path);
+        if (!is_dir($directory)) {
+            mkdir($directory, 0755, true);
+        }
+
+        $file->move($directory, $filename);
+        $this->update([$field => $filename]);
+        return $this;
+    }
+
     public function deleteImage(string $field, string $folder_name): static
     {
         if (isset($this->{$field})) {
@@ -58,6 +77,11 @@ trait UploadFileTrait
     public function resizeAndSave($file, string $path, int $width = null, int $height = null): static
     {
         $imageConfig = config('imagesetting.default.image');
+
+        $directory = dirname($path);
+        if (!is_dir($directory)) {
+            mkdir($directory, 0755, true);
+        }
 
         $manager = new ImageManager(new Driver());
         $image = $manager->read($file->getRealPath());
