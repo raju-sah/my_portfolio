@@ -1,31 +1,39 @@
-<div class="relative py-20" id="skills">
+<div class="scroll-section relative py-20" id="skills" 
+     data-bg="rgb(30, 41, 59)" data-text="rgb(203, 213, 225)"
+     data-bg-light="rgb(215, 225, 235)" data-text-light="rgb(30, 45, 65)">
+    <div class="scroll-reveal-text">Skills</div>
     <div class="container mx-auto px-6 relative z-10">
         <h4 class="text-3xl font-bold text-heading mb-12 border-b border-heading/20 pb-4 inline-block">Skills</h4>
         
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             @foreach ($skills as $skill)
-                <div class="group relative bg-card/40 backdrop-blur-md border border-white/5 rounded-2xl p-6 hover:-translate-y-2 hover:border-accent/50 transition-all duration-300 shadow-lg shadow-black/20 hover:shadow-accent/20 overflow-hidden">
+                <div class="group relative bg-white/5 backdrop-blur-sm p-6 rounded-2xl transition-all duration-300 border border-white/5 hover:border-white/10 hover:bg-white/[0.08] flex flex-col items-center text-center">
                     
-                    <!-- Icon/Image -->
-                    <div class="flex justify-center mb-6 relative z-10">
-                        <div class="w-20 h-20 bg-black/20 rounded-full flex items-center justify-center p-4 group-hover:scale-110 transition-transform duration-300">
+                    <!-- Icon -->
+                    <div class="mb-5">
+                        <div class="w-16 h-16 bg-black/20 rounded-2xl flex items-center justify-center p-3 group-hover:scale-110 transition-transform duration-300">
                              <img src="{{ optional($skill)->image_path }}" alt="{{ optional($skill)->name }}" class="w-full h-full object-contain" />
                         </div>
                     </div>
-
-                    <!-- Info -->
-                    <div class="text-center relative z-10">
-                        <h6 class="text-heading font-bold text-lg mb-3 tracking-wide">{{ optional($skill)->name }}</h6>
-                        
-                        <!-- Progress Bar -->
-                        <div class="w-full bg-black/30 rounded-full h-2 mb-2 overflow-hidden">
-                             <div class="bg-accent h-full rounded-full transition-all duration-1000 ease-out w-0 group-hover:w-[var(--percent)]" style="--percent: {{ optional($skill)->percentage }}%"></div>
-                        </div>
-                        <span class="text-xs font-mono text-body/70">{{ optional($skill)->percentage }}% Proficiency</span>
+    
+                    <!-- Name & Info -->
+                    <div class="mb-6 w-full">
+                        <h6 class="text-heading font-bold text-lg tracking-wide mb-1">{{ optional($skill)->name }}</h6>
+                        <span class="text-xs font-mono text-body/40 uppercase tracking-widest">Proficiency</span>
                     </div>
 
-                    <!-- Decorative Glow -->
-                    <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-accent/20 blur-3xl rounded-full group-hover:bg-accent/30 transition-colors"></div>
+                    <!-- Progress Bar (Circular or slim at bottom) -->
+                    <div class="w-full mt-auto">
+                        <div class="flex flex-col gap-2">
+                            <div class="flex justify-between items-center px-1">
+                                <span class="text-xs font-mono text-accent">{{ optional($skill)->percentage }}%</span>
+                            </div>
+                            <div class="w-full bg-black/30 rounded-full h-1.5 overflow-hidden">
+                                 <div class="bg-accent h-full rounded-full transition-all duration-1000 ease-out w-0 group-hover:w-[var(--percent)]" style="--percent: {{ optional($skill)->percentage }}%"></div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             @endforeach
         </div>

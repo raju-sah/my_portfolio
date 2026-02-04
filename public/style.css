@@ -46,7 +46,7 @@
 }
 .body {
     overflow: hidden;
-    background-color: var(--bg-primary) !important;
+    background-color: var(--bg-primary);
 }
 
 .header {
@@ -116,6 +116,7 @@ nav {
 .alllogo {
     top: 10px;
     position: relative;
+    height: 50px;
 }
 
 .logo:hover {
@@ -1177,5 +1178,43 @@ footer {
     .contact-me {
         padding-left: 5% !important;
         padding-right: 5% !important;
+    }
+}
+
+/* -------------------------------------------------------------------------- */
+/*                          Scroll Text Reveal Effect                         */
+/* -------------------------------------------------------------------------- */
+.scroll-reveal-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(5rem, 18vw, 20rem);
+    font-weight: 950;
+    line-height: 1;
+    white-space: nowrap;
+    z-index: 0;
+    opacity: 0.12;
+    pointer-events: none;
+    text-transform: uppercase;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--text-heading);
+    background: linear-gradient(to right, var(--accent-color) 0%, var(--accent-color) 100%);
+    background-size: 0% 100%;
+    background-repeat: no-repeat;
+    -webkit-background-clip: text;
+    transition: opacity 0.5s ease;
+    user-select: none;
+}
+
+[data-theme="light"] .scroll-reveal-text {
+    -webkit-text-stroke: 1.5px var(--text-heading);
+    opacity: 0.04;
+}
+
+@media (max-width: 768px) {
+    .scroll-reveal-text {
+        font-size: clamp(3rem, 15vw, 6rem);
+        opacity: 0.05;
     }
 }

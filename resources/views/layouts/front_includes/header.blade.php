@@ -5,7 +5,7 @@
         <i class="fa fa-times" onclick="hideMenu()"></i>
 
         <ul class="menu-item justify-content-center align-items-center">
-            <li class="nav-tooltip-wrap" data-tooltip="🏠 Back to square one... where the magic begins!">
+            <li class="nav-tooltip-wrap" data-tooltip="🏠 where the magic begins!">
                 <a href="{{ url('/') }}">Home</a>
             </li>
             <li class="nav-tooltip-wrap" data-tooltip="💻 Proof I don't just binge Netflix all day">

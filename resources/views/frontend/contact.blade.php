@@ -1,4 +1,7 @@
-<div class="relative py-20" id="contact">
+<div class="scroll-section relative py-20" id="contact" 
+     data-bg="rgb(74, 44, 42)" data-text="rgb(248, 226, 226)"
+     data-bg-light="rgb(250, 235, 235)" data-text-light="rgb(85, 45, 45)">
+    <div class="scroll-reveal-text">Contact</div>
     <div class="container mx-auto px-6 relative z-10">
         <h4 class="text-3xl font-bold text-heading mb-12 border-b border-heading/20 pb-4 inline-block">Contact Me</h4>
         

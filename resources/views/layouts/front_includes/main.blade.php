@@ -21,6 +21,73 @@
     @include('_helpers.single_page_table_ajax', ['formId' => '#contact_form'])
 
     <script type="text/javascript">
+        // Register ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Parallax and Reveal Animation for Text
+        document.addEventListener('DOMContentLoaded', function() {
+            gsap.utils.toArray('.scroll-reveal-text').forEach(text => {
+                gsap.to(text, {
+                    backgroundSize: '100% 100%',
+                    y: -150, // Parallax effect
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: text,
+                        start: 'top bottom',
+                        end: 'bottom top',
+                        scrub: true,
+                    }
+                });
+            });
+
+            // Smoothing the transition between background and text colors using Scrub
+            const updateAllSections = () => {
+                const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+                
+                // Clear existing triggers to avoid conflicts on theme switch
+                ScrollTrigger.getAll().forEach(st => {
+                    if (st.vars.id && st.vars.id.includes('theme-')) st.kill();
+                });
+
+                gsap.utils.toArray('.scroll-section').forEach((section, i) => {
+                    const bg = isLight ? section.getAttribute('data-bg-light') : section.getAttribute('data-bg');
+                    const text = isLight ? section.getAttribute('data-text-light') : section.getAttribute('data-text');
+                    
+                    if (!bg || !text) return;
+
+                    // Scrub transitions for the section
+                    gsap.to(['body', document.documentElement], {
+                        backgroundColor: bg,
+                        color: text,
+                        '--bg-primary': bg,
+                        '--text-heading': text,
+                        '--text-body': text,
+                        scrollTrigger: {
+                            id: `theme-${i}`,
+                            trigger: section,
+                            start: 'top 80%',
+                            end: 'top 20%',
+                            scrub: 1.5,
+                        }
+                    });
+                });
+            };
+
+            updateAllSections();
+
+            // Watch for theme toggle changes
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+                        updateAllSections();
+                        ScrollTrigger.refresh();
+                    }
+                });
+            });
+
+            observer.observe(document.documentElement, { attributes: true });
+        });
+
         $(document).ready(function() {
             const btn_submit = $('.btn_submit');
 

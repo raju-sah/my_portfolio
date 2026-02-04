@@ -1,4 +1,7 @@
-<section class="relative py-20 bg-card/10 backdrop-blur-[2px]">
+<section class="scroll-section relative py-20 bg-card/10 backdrop-blur-[2px]"
+    data-bg="rgb(55, 40, 25)" data-text="rgb(245, 225, 205)"
+    data-bg-light="rgb(245, 225, 205)" data-text-light="rgb(55, 40, 25)">
+    <div class="scroll-reveal-text">Experience</div>
     <div class="container mx-auto px-6 relative z-10">
         <h4 class="text-3xl font-bold text-heading mb-10 border-b border-heading/20 pb-4 inline-block">Experiences</h4>
 
