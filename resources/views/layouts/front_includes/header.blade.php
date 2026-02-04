@@ -1,5 +1,5 @@
 <nav class="sticky top-0 z-50 backdrop-blur-md border-b border-white/5">
-    <a href="{{ url('/') }}"><img src="{{ asset('uploaded-images/home-setting-images/' . $home_setting->image) }}"
+    <a href="{{ url('/') }}"><img src="{{ asset('uploaded-images/home-setting-logo/' . $home_setting->logo) }}"
             class="alllogo" /></a>
     <div class="nav-links" id="navLinks">
         <i class="fa fa-times" onclick="hideMenu()"></i>
