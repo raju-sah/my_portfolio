@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\frontend\FrontArticleController;
+use App\Http\Controllers\frontend\ValentineController;
 use App\Http\Controllers\frontend\WebsiteController;
 use App\Http\Controllers\HomeController;
 use App\Mail\ContactEmail;
@@ -38,6 +39,14 @@ Route::get('/articles/all', [FrontArticleController::class, 'allArticleFilter'])
 Route::post('/contact/store', [WebsiteController::class, 'storeContact'])->name('contact.store');
 Route::post('articles/rating', [WebsiteController::class, 'storeRating'])->name('articles.rating.store');
 Route::get('articles/rating/{id}', [WebsiteController::class, 'showRating'])->name('articles.rating.index');
+
+// Valentine Routes
+Route::get('/valentine', [ValentineController::class, 'index'])->name('valentine.index');
+Route::post('/valentine', [ValentineController::class, 'store'])->name('valentine.store');
+Route::get('/valentine/tracker', [ValentineController::class, 'tracker'])->name('valentine.tracker');
+Route::get('/valentine/{uuid}', [ValentineController::class, 'show'])->name('valentine.show');
+Route::post('/valentine/{uuid}/interact', [ValentineController::class, 'interact'])->name('valentine.interact');
+Route::get('/valentine/{uuid}/qr', [ValentineController::class, 'qrCode'])->name('valentine.qr');
 
 
 

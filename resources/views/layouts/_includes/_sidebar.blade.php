@@ -54,6 +54,9 @@ $home_setting = HomeSetting::first();
         <x-sidebar-item route="{{ route('admin.testimonials.index') }}" name="Testimonials" uri="Admin/testimonials">
             <i class="menu-icon tf-icons bx bxs-star"></i>
         </x-sidebar-item>
+        <x-sidebar-item route="{{ route('admin.valentines.index') }}" name="Valentine Reports" uri="Admin/valentines">
+            <i class="menu-icon tf-icons bx bxs-heart"></i>
+        </x-sidebar-item>
         <x-sidebar-item route="{{ route('admin.home-settings.edit', $home_setting->id) }}" name="Home Settings"
             uri="Admin/home-settings">
             <i class="menu-icon tf-icons bx bxs-cog"></i>

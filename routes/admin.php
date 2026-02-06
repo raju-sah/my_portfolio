@@ -64,6 +64,9 @@ Route::group(['middleware' => 'auth', 'prefix' => 'Admin', 'as' => 'admin.'], fu
     Route::resource('contacts', ContactController::class);
     Route::get('show-contact-notification/{contact}', [ContactController::class, 'showNotification'])->name('contacts.show-notification');
 
+    // Valentine Reports
+    Route::resource('valentines', \App\Http\Controllers\Admin\ValentineController::class)->only(['index', 'show', 'destroy']);
+
 
     Route::get('article/reports', [ReportController::class, 'articleReport'])->name('article-reports.index');
     Route::get('article/filters', [ReportController::class, 'reportFilter'])->name('article-reports.filters');
