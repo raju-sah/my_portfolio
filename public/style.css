@@ -1186,7 +1186,7 @@ footer {
 /* -------------------------------------------------------------------------- */
 .scroll-reveal-text {
     position: absolute;
-    top: 50%;
+    top: 180px;
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: clamp(5rem, 18vw, 20rem);
@@ -1203,6 +1203,7 @@ footer {
     background-size: 0% 100%;
     background-repeat: no-repeat;
     -webkit-background-clip: text;
+    background-clip: text;
     transition: opacity 0.5s ease;
     user-select: none;
 }

@@ -16,7 +16,7 @@
                             <span class="text-[10px] font-mono text-body/40 uppercase tracking-[0.2em] block mb-1">{{ optional($project)->year }}</span>
                             <a href="{{ optional($project)->web_url }}" target="_blank" class="flex items-center gap-2 group/title text-heading font-bold text-xl hover:text-accent transition-all">
                                 <span>{{ optional($project)->name }}</span>
-                                <svg class="w-4 h-4 text-accent/60 group-hover/title:translate-x-1 transition-all duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg class="w-4 h-4 shrink-0 text-accent/60 group-hover/title:translate-x-1 transition-all duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                                 </svg>
                             </a>
