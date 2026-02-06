@@ -14,9 +14,8 @@
 
     @media (max-width: 600px) {
         #container-wrapper {
-            margin: 20px 0;
-            top: -55px;
-            right: 70px;
+            margin: 10px 0;
+            /* Removed problematic offsets that caused misalignment */
         }
     }
 </style>

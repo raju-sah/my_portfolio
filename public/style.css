@@ -1216,7 +1216,8 @@ footer {
 
 @media (max-width: 768px) {
     .scroll-reveal-text {
-        font-size: clamp(3rem, 15vw, 6rem);
-        opacity: 0.05;
+        font-size: clamp(2rem, 12vw, 4rem);
+        opacity: 0.08;
+        top: 35% !important; /* Move it slightly up on mobile to avoid overlapping main text */
     }
 }
