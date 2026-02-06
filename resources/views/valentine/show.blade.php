@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -125,6 +126,7 @@
 
                 <p class="final-message">Wishing you both a magical {{ $dayConfig['name'] }}! 💕</p>
             </div>
+
         </div>
     </div>
 
@@ -234,13 +236,14 @@
 
         /* Love Card */
         .love-card {
-            background: rgba(26, 26, 46, 0.95);
-            border: 2px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px dotted rgba(255, 255, 255, 0.3);
             border-radius: 25px;
             padding: 2rem;
             text-align: center;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            border-bottom: 2px dotted var(--theme-color);
         }
 
         .card-header {
@@ -281,8 +284,8 @@
         }
 
         .message-box {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px dotted rgba(255, 255, 255, 0.2);
             border-radius: 15px;
             padding: 1.5rem;
             margin-bottom: 1.5rem;
@@ -549,12 +552,12 @@
 
         /* Dating Ideas Card */
         .dates-card {
-            background: rgba(26, 26, 46, 0.95);
-            border: 2px solid rgba(255, 215, 0, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px dotted rgba(255, 215, 0, 0.4);
             border-radius: 25px;
             padding: 2rem;
             text-align: center;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
             margin: 2rem 0;
             animation: modalSlide 0.5s ease;
@@ -580,8 +583,8 @@
         }
 
         .date-idea-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 215, 0, 0.2);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px dotted rgba(255, 215, 0, 0.3);
             border-radius: 15px;
             padding: 1rem;
             display: flex;
@@ -596,6 +599,13 @@
             from { opacity: 0; transform: scale(0.9); }
             to { opacity: 1; transform: scale(1); }
         }
+
+        .date-idea-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #ffd700;
+        }
+
 
         .date-idea-card:hover {
             transform: translateY(-5px);
@@ -1045,6 +1055,8 @@
             // Load initial 4 ideas
             showMoreDateIdeas();
         }
+
+
     </script>
 </body>
 

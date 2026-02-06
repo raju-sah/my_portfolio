@@ -141,6 +141,9 @@
                     <a href="#" id="previewLink" target="_blank" class="action-btn preview-btn">
                         👁️ Preview
                     </a>
+                    <button class="action-btn download-btn" onclick="downloadQr()">
+                        📥 Download QR
+                    </button>
                     <button class="action-btn share-btn" onclick="shareLink()">📤 Share</button>
                 </div>
             </div>
@@ -667,6 +670,11 @@
             color: #fff;
         }
 
+        .download-btn {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: #fff;
+        }
+
         .action-btn:hover {
             transform: scale(1.05);
         }
@@ -944,6 +952,15 @@
             } else {
                 copyLink();
             }
+        }
+
+        // Download QR Code
+        function downloadQr() {
+            const canvas = document.getElementById('qrCode');
+            const link = document.createElement('a');
+            link.download = 'valentine_qr.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
         }
 
         // Load Tracker Data

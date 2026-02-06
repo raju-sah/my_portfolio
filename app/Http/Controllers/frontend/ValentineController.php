@@ -113,16 +113,7 @@ class ValentineController extends Controller
         ]);
     }
 
-    /**
-     * Generate QR code for a submission.
-     */
-    public function qrCode(string $uuid): mixed
-    {
-        $submission = ValentineSubmission::where('uuid', $uuid)->firstOrFail();
 
-        return response(QrCode::size(250)->generate($submission->share_url))
-            ->header('Content-Type', 'image/svg+xml');
-    }
 
     /**
      * Get tracker data for user's submissions.
