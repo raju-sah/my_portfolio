@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 
 <head>
     <meta charset="utf-8" />
@@ -9,10 +9,10 @@
     </title>
 
     @if (is_object($home_setting) && isset($home_setting))
-        <link rel="icon" type="image/x-icon"
-            href="{{ asset('uploaded-images/home-setting-images/' . $home_setting->image) }}">
+    <link rel="icon" type="image/x-icon"
+        href="{{ asset('uploaded-images/home-setting-images/' . $home_setting->image) }}">
     @else
-        <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon/favicon.ico') }}" />
+    <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon/favicon.ico') }}" />
     @endif
 
     <meta name="csrf-token" content="{{ csrf_token() }}" />

@@ -17,16 +17,21 @@ class ValentineController extends Controller
      */
     public function index(Request $request)
     {
+        $dayConfig = ValentineSubmission::getDayConfig();
+
         if ($request->ajax()) {
             $query = ValentineSubmission::query()
                 ->select(['id', 'uuid', 'sender_name', 'day_type', 'status', 'open_count', 'likes_count', 'created_at'])
                 ->latest();
 
+            if ($request->filled('day_type')) {
+                $query->where('day_type', $request->day_type);
+            }
+
             $config = [
                 'additionalColumns' => [
-                    'day_type' => function ($row) {
-                        $config = ValentineSubmission::getDayConfig();
-                        $day = $config[$row->day_type] ?? null;
+                    'day_type' => function ($row) use ($dayConfig) {
+                        $day = $dayConfig[$row->day_type] ?? null;
                         return $day ? $day['emoji'] . ' ' . $day['name'] : $row->day_type;
                     },
                     'status' => function ($row) {
@@ -61,17 +66,20 @@ class ValentineController extends Controller
             'total_likes' => ValentineSubmission::sum('likes_count'),
         ];
 
-        // Top days
-        $topDays = ValentineSubmission::selectRaw('day_type, COUNT(*) as count')
+        // Day-wise counts
+        $dayCounts = ValentineSubmission::selectRaw('day_type, COUNT(*) as count')
             ->groupBy('day_type')
-            ->orderByDesc('count')
-            ->limit(5)
-            ->get();
+            ->pluck('count', 'day_type')
+            ->toArray();
+
+        foreach ($dayConfig as $key => &$day) {
+            $day['count'] = $dayCounts[$key] ?? 0;
+        }
 
         return view('admin.valentine.index', [
             'columns' => ['sender_name', 'day_type', 'status', 'open_count', 'likes_count', 'created_at', 'view_link'],
             'stats' => $stats,
-            'topDays' => $topDays,
+            'dayConfig' => $dayConfig,
         ]);
     }
 

@@ -57,33 +57,59 @@
             </div>
         </div>
 
-        <!-- Top Days -->
-        @if($topDays->count() > 0)
+        <!-- Day Tabs -->
         <div class="card mb-4">
-            <div class="card-header">
-                <h5 class="mb-0">📊 Top Days by Submissions</h5>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    @php
-                        $dayConfig = \App\Models\ValentineSubmission::getDayConfig();
-                    @endphp
-                    @foreach($topDays as $day)
-                        @php
-                            $config = $dayConfig[$day->day_type] ?? null;
-                        @endphp
-                        <div class="col-md-2">
-                            <div class="text-center p-3 border rounded">
-                                <span style="font-size: 2rem;">{{ $config ? $config['emoji'] : '❤️' }}</span>
-                                <h6>{{ $config ? $config['name'] : $day->day_type }}</h6>
-                                <span class="badge bg-primary">{{ $day->count }} submissions</span>
-                            </div>
-                        </div>
+            <div class="card-body p-2">
+                <ul class="nav nav-pills nav-fill gap-2" id="dayTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active rounded-pill border" id="all-tab" data-bs-toggle="tab" data-day="" type="button" role="tab" aria-selected="true">
+                            🏠 All Days
+                            <span class="badge bg-secondary ms-1">{{ $stats['total'] }}</span>
+                        </button>
+                    </li>
+                    @foreach($dayConfig as $key => $day)
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link rounded-pill border nav-link-{{ $key }}" id="{{ $key }}-tab" data-bs-toggle="tab" data-day="{{ $key }}" type="button" role="tab" aria-selected="false">
+                                {{ $day['emoji'] }} {{ $day['name'] }}
+                                <span class="badge bg-light text-dark ms-1">{{ $day['count'] }}</span>
+                            </button>
+                        </li>
                     @endforeach
-                </div>
+                </ul>
             </div>
         </div>
-        @endif
+
+        <style>
+            #dayTabs .nav-link {
+                transition: all 0.3s ease;
+                font-weight: 500;
+                color: #566a7f;
+                background: #f5f5f9;
+            }
+            #dayTabs .nav-link:hover {
+                background: #eceef1;
+            }
+            #dayTabs .nav-link.active {
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                color: white !important;
+            }
+            #dayTabs .nav-link.active .badge {
+                background: rgba(255,255,255,0.3) !important;
+                color: white !important;
+            }
+            
+            @foreach($dayConfig as $key => $day)
+            .nav-link-{{ $key }}.active {
+                background-color: {{ $day['bg_color'] }} !important;
+                border-color: {{ $day['bg_color'] }} !important;
+            }
+            @endforeach
+            
+            #all-tab.active {
+                background-color: #696cff !important;
+                border-color: #696cff !important;
+            }
+        </style>
 
         <!-- Data Table -->
         <div class="card">
@@ -100,6 +126,39 @@
 @endsection
 
 @push('custom_js')
-    @include('_helpers.yajra',['url' => route("admin.valentines.index"), 'columns' => $columns])
+    <script>
+        $(document).ready(function () {
+            let currentDayType = '';
+
+            const table = $('#datatable').DataTable({
+                deferRender: true,
+                responsive: true,
+                pageLength: 10,
+                pagingType: "full_numbers",
+                lengthMenu: [[10, 20, 50, -1], [10, 20, 50, 'All']],
+                searchDelay: 600,
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "{{ route('admin.valentines.index') }}",
+                    data: function(d) {
+                        d.day_type = currentDayType;
+                    }
+                },
+                columns: [
+                    {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
+                    @foreach ($columns as $column)
+                    { data: '{{ $column }}', name: '{{ $column }}' },
+                    @endforeach
+                    { data: 'action', name: 'action', orderable: false, searchable: false },
+                ],
+            });
+
+            $('#dayTabs button').on('shown.bs.tab', function (e) {
+                currentDayType = $(e.target).data('day');
+                table.ajax.reload();
+            });
+        });
+    </script>
     @include('_helpers.swal_delete')
 @endpush

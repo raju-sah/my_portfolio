@@ -1,39 +1,5 @@
-{{-- Tailwind CDN with Custom Config --}}
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-    tailwind.config = {
-        darkMode: 'class', // We'll add 'dark' class to html element for theme
-        theme: {
-            extend: {
-                colors: {
-                    // Theme-aware colors using CSS variables
-                    primary: 'var(--bg-primary)',
-                    card: 'var(--bg-card)',
-                    heading: 'var(--text-heading)',
-                    body: 'var(--text-body)',
-                    accent: 'var(--accent-color)',
-                    badge: 'var(--bg-badge)',
-                },
-                animation: {
-                    'float-slow': 'float 6s ease-in-out infinite',
-                    'spin-slow': 'spin 20s linear infinite',
-                    'spin-reverse': 'spin-reverse 25s linear infinite',
-                    'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                },
-                keyframes: {
-                    float: {
-                        '0%, 100%': { transform: 'translateY(0)' },
-                        '50%': { transform: 'translateY(-20px)' },
-                    },
-                    'spin-reverse': {
-                        from: { transform: 'rotate(360deg)' },
-                        to: { transform: 'rotate(0deg)' },
-                    }
-                }
-            }
-        }
-    }
-</script>
+{{-- Vite for Production Tailwind/JS --}}
+@vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
 {{-- Main Stylesheet --}}
 <link rel="stylesheet" href="{{ asset('style.css') }}">

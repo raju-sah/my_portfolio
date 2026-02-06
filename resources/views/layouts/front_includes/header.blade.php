@@ -19,7 +19,7 @@
             <li class="nav-tooltip-wrap" data-tooltip="📝 My thoughts... at 3 AM with coffee">
                 <a href="{{ route('articles.all') }}">Articles</a>
             </li>
-            <li class="nav-tooltip-wrap valentine-menu-item" data-tooltip="💕 Find your Valentine... maybe?">
+            <li class="nav-tooltip-wrap valentine-menu-item {{ request()->routeIs('valentine.*') ? 'active' : '' }}" id="valentineNavItem" data-tooltip="💕 Find your Valentine... maybe?">
                 <a href="{{ route('valentine.index') }}">Valentine</a>
             </li>
             @if(request()->routeIs('index'))
@@ -104,6 +104,25 @@
         transform: translateX(-50%) translateY(2px);
     }
 
+    /* Active Tooltip for Valentine only */
+    #valentineNavItem::before,
+    #valentineNavItem::after {
+        opacity: 1;
+        visibility: visible;
+    }
+    #valentineNavItem::before {
+        transform: translateX(-50%) translateY(12px);
+        animation: tooltipFloat 2s infinite ease-in-out;
+    }
+    #valentineNavItem::after {
+        transform: translateX(-50%) translateY(2px);
+    }
+
+    @keyframes tooltipFloat {
+        0%, 100% { transform: translateX(-50%) translateY(12px); }
+        50% { transform: translateX(-50%) translateY(8px); }
+    }
+
     /* Social icon tooltips - positioned to the right */
     .icon-bar .social-icon {
         position: relative;
@@ -172,6 +191,25 @@
         opacity: 1;
         transform: scale(1) rotate(0deg);
     }
+
+    /* Valentine Special Nav Style */
+    .valentine-menu-item.active a {
+        color: #ff4d6d !important;
+        text-shadow: 0 0 10px rgba(255, 77, 109, 0.5);
+    }
+
+    .nav-particle {
+        position: absolute;
+        pointer-events: none;
+        font-size: 1.2rem;
+        z-index: 1000;
+        animation: particleFly 3s ease-out forwards;
+    }
+
+    @keyframes particleFly {
+        0% { transform: translate(0, 0) scale(1); opacity: 1; }
+        100% { transform: translate(var(--tx), var(--ty)) scale(0) rotate(var(--rot)); opacity: 0; }
+    }
 </style>
 
 <script>
@@ -213,4 +251,76 @@
     function hideMenu() {
         navLinks.style.right = "-280px";
     }
+
+    // Valentine Nav Enhancements
+    document.addEventListener('DOMContentLoaded', function() {
+        let valNav = document.getElementById('valentineNavItem');
+        
+        // Fallback: Find by text if ID is missing (e.g. production cache)
+        if (!valNav) {
+            const allLinks = document.querySelectorAll('nav a');
+            for (const link of allLinks) {
+                if (link.textContent.toLowerCase().includes('valentine')) {
+                    valNav = link.closest('li') || link; 
+                    valNav.id = 'valentineNavItem';
+                    break;
+                }
+            }
+        }
+
+        if (!valNav) return;
+
+        // Tooltip Rotation
+        const rizzMessages = [
+            "💕 Slay! It's giving soulmate energy 💅",
+            "💍 manifesting a main character moment ✨",
+            "🍫 snack or sniped? find out here 🏹",
+            "🧸 warning: high risk of falling in love ⚠️",
+            "💋 rizz level: absolutely illegal 👑"
+        ];
+        let msgIndex = 0;
+
+        // Ensure initial tooltip if missing
+        if (!valNav.hasAttribute('data-tooltip')) {
+            valNav.setAttribute('data-tooltip', rizzMessages[0]);
+        }
+
+        setInterval(() => {
+            msgIndex = (msgIndex + 1) % rizzMessages.length;
+            valNav.setAttribute('data-tooltip', rizzMessages[msgIndex]);
+        }, 5000);
+
+        // Infinite Burst
+        const emojis = ['🌹', '🍫', '❤️', '💖', '🧸', '💋', '🤗', '💍'];
+        
+        function burstEmoji() {
+            const rect = valNav.getBoundingClientRect();
+            // Don't burst if not visible or zero size
+            if (rect.width === 0) return;
+
+            const emoji = document.createElement('div');
+            emoji.className = 'nav-particle';
+            emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            
+            const startX = rect.left + Math.random() * rect.width;
+            const startY = rect.top + Math.random() * rect.height;
+            
+            const angle = Math.random() * Math.PI * 2;
+            const dist = 30 + Math.random() * 70;
+            const tx = Math.cos(angle) * dist;
+            const ty = Math.sin(angle) * dist;
+            const rot = (Math.random() - 0.5) * 360;
+
+            emoji.style.left = startX + 'px';
+            emoji.style.top = startY + 'px';
+            emoji.style.setProperty('--tx', `${tx}px`);
+            emoji.style.setProperty('--ty', `${ty}px`);
+            emoji.style.setProperty('--rot', `${rot}deg`);
+
+            document.body.appendChild(emoji);
+            setTimeout(() => emoji.remove(), 3000);
+        }
+
+        setInterval(burstEmoji, 400); // Constant stream of love
+    });
 </script>
