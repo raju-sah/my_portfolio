@@ -8,12 +8,22 @@
             <li class="nav-tooltip-wrap" data-tooltip="🏠 where the magic begins!">
                 <a href="{{ url('/') }}">Home</a>
             </li>
+            @if(request()->routeIs('index'))
+            <li class="nav-tooltip-wrap" data-tooltip="⚡ My superpowers (AI helped)">
+                <a href="#skills">Skills</a>
+            </li>
+            @endif
             <li class="nav-tooltip-wrap" data-tooltip="💻 Proof I don't just binge Netflix all day">
                 <a href="{{ route('projects.all') }}">Projects</a>
             </li>
             <li class="nav-tooltip-wrap" data-tooltip="📝 My thoughts... at 3 AM with coffee">
                 <a href="{{ route('articles.all') }}">Articles</a>
             </li>
+            @if(request()->routeIs('index'))
+            <li class="nav-tooltip-wrap" data-tooltip="👋 Say hi! I don't bite (much)">
+                <a href="#contact">Contact</a>
+            </li>
+            @endif
         </ul>
         
         {{-- Enhanced Theme Toggle Button --}}
