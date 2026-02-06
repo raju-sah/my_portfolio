@@ -42,6 +42,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'Admin', 'as' => 'admin.'], fu
     Route::resource('projects', ProjectController::class);
 
     Route::get('status-change-skill', [SkillController::class, 'changeStatus'])->name('status-change-skill');
+    Route::post('update-skill-order', [SkillController::class, 'updateOrder'])->name('skills.update-order');
     Route::resource('skills', SkillController::class);
 
     Route::get('status-change-experience', [ExperienceController::class, 'changeStatus'])->name('status-change-experience');

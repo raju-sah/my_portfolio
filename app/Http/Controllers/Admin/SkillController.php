@@ -10,16 +10,28 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\SkillRequest;
 use App\Http\Requests\Admin\SkillUpdateRequest;
 use App\Traits\StatusTrait;
-use App\Traits\UploadFileTrait;
 
 class SkillController extends Controller
 {
-    use StatusTrait,UploadFileTrait;
+    use StatusTrait;
     public function index(): View
     {
         return view('admin.skill.index', [
-            'skills' => Skill::query()->select(['id', 'name', 'percentage', 'display_order','status'])->latest()->get()
+            'skills' => Skill::query()
+                ->select(['id', 'name', 'percentage', 'display_order', 'skill_domain', 'status'])
+                ->orderBy('display_order')
+                ->get()
+                ->groupBy(fn($skill) => optional($skill->skill_domain)->value ?? 0)
         ]);
+    }
+
+    public function updateOrder(Request $request): RedirectResponse
+    {
+        $order = $request->input('order');
+        foreach ($order as $index => $id) {
+            Skill::where('id', $id)->update(['display_order' => $index + 1]);
+        }
+        return redirect()->back()->with('success', 'Order Updated Successfully!');
     }
 
     public function create(): View
@@ -29,11 +41,7 @@ class SkillController extends Controller
 
     public function store(SkillRequest $request): RedirectResponse
     {
-        $skill = Skill::create($request->safe()->except('image'));
-        if ($request->hasFile('image')) {
-            $skill->storeImage('image', 'skill-images', $request->file('image'),100,100);
-        }
-
+        Skill::create($request->validated());
         return redirect()->route('admin.skills.index')->with('success', 'Skill Created Successfully!');
     }
 
@@ -49,22 +57,13 @@ class SkillController extends Controller
 
     public function update(SkillUpdateRequest $request, Skill $skill): RedirectResponse
     {
-        $skill->update($request->safe()->except('image'));
-        if ($request->hasFile('image')) {
-            $skill->updateImage('image', 'skill-images', $request->file('image'),100,100);
-        }
-
+        $skill->update($request->validated());
         return redirect()->route('admin.skills.index')->with('success', 'Skill Updated Successfully!');
     }
 
     public function destroy(Skill $skill): RedirectResponse
     {
-        if ($skill->image) {
-            $skill->deleteImage('image', 'skill-images');
-        }
-
         $skill->delete();
-
         return redirect()->route('admin.skills.index')->with('error', 'Skill Deleted Successfully!');
     }
 

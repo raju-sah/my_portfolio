@@ -5,8 +5,8 @@
         &nbsp;{{ $skill->display_order }}</span>
 
     @php
-        $createdDate = $skill->created_at->format('d M Y g:i A');
-        $updatedDate = $skill->updated_at->format('d M Y g:i A');
+    $createdDate = $skill->created_at->format('d M Y g:i A');
+    $updatedDate = $skill->updated_at->format('d M Y g:i A');
 
     @endphp
     <span class=" badge bg-primary ms-3 "><i class='bx bx-time-five'></i> created_at:&nbsp;{{ $createdDate }}</span>
@@ -16,13 +16,6 @@
 
 <div class="row border-top border-bottom py-3">
 
-    <div class="col-xl-3 col-md-3">
-        <div class="card-content">
-            <b class="d-block text-uppercase text-14">image</b>
-            <x-table.table_image name="{{ $skill->image_path }}" url="{{ $skill->image_path }}" height="100px"
-                width="100px" />
-        </div>
-    </div>
 
     <div class="col-xl-3 col-md-3">
         <div class="card-content">

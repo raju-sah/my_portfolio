@@ -9,14 +9,16 @@
             <!-- Left: Info -->
             <div class="space-y-8">
                 <div>
-                    <h3 class="text-2xl font-bold text-heading mb-2">Get in Touch</h3>
+                    <h3 class="text-2xl font-bold text-heading mb-2" title="Yes, I'm a real human. Mostly code and coffee, though.">Get in Touch</h3>
                     <p class="text-body/70">I'm always open to discussing new projects, creative ideas or opportunities to be part of your visions.</p>
                 </div>
 
                 @foreach ($social_links as $social_link)
                     <div class="space-y-6">
                         @php $emails = explode(',', $social_link->email); @endphp
-                        <a href="mailto:{{ $emails[0] ?? '' }}" class="flex items-center gap-4 group p-4 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/10">
+                        <a href="mailto:{{ $emails[0] ?? '' }}" 
+                           data-tooltip="Yes, I read these. Spam me and I'll sign your email up for 100 'Daily Cat Facts' newsletters."
+                           class="contact-tooltip flex items-center gap-4 group p-4 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/10">
                             <div class="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent text-xl group-hover:scale-110 transition-transform">
                                 <i class="fa-solid fa-envelope"></i>
                             </div>
@@ -27,7 +29,9 @@
                         </a>
 
                         @php $phones = explode(',', $social_link->phone); @endphp
-                        <a href="tel:{{ $phones[0] ?? '' }}" class="flex items-center gap-4 group p-4 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/10">
+                        <a href="tel:{{ $phones[0] ?? '' }}" 
+                           data-tooltip="Only call if you're prepared for awkward silence or a very excited talk about code."
+                           class="contact-tooltip flex items-center gap-4 group p-4 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/10">
                             <div class="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent text-xl group-hover:scale-110 transition-transform">
                                 <i class="fa-solid fa-square-phone"></i>
                             </div>
@@ -38,7 +42,9 @@
                         </a>
 
                         @php $address = explode(',', $social_link->address); @endphp
-                        <a href="https://maps.app.goo.gl/E6ku8RzFvSMuz12cA" target="_blank" class="flex items-center gap-4 group p-4 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/10">
+                        <a href="https://maps.app.goo.gl/E6ku8RzFvSMuz12cA" target="_blank" 
+                           data-tooltip="If you show up unannounced, I'll assume you're bringing pizza."
+                           class="contact-tooltip flex items-center gap-4 group p-4 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/10">
                             <div class="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent text-xl group-hover:scale-110 transition-transform">
                                 <i class="fa-solid fa-location-dot"></i>
                             </div>
@@ -182,6 +188,54 @@
 
     .iti--allow-dropdown {
         width: 100% !important;
+    }
+
+    /* Custom Contact Tooltips */
+    .contact-tooltip {
+        position: relative;
+    }
+
+    .contact-tooltip::before {
+        content: attr(data-tooltip);
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-10px);
+        padding: 10px 16px;
+        background: rgba(25, 25, 30, 0.97);
+        color: #ff6b5b;
+        font-size: 12px;
+        font-weight: 500;
+        white-space: nowrap;
+        border-radius: 10px;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        z-index: 100;
+        pointer-events: none;
+        border: 1px solid rgba(207, 63, 54, 0.25);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .contact-tooltip::after {
+        content: '';
+        position: absolute;
+        bottom: calc(100% - 10px);
+        left: 50%;
+        transform: translateX(-50%) translateY(-10px);
+        border: 6px solid transparent;
+        border-top-color: rgba(25, 25, 30, 0.97);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        z-index: 101;
+    }
+
+    .contact-tooltip:hover::before,
+    .contact-tooltip:hover::after {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
     }
 </style>
 

@@ -10,21 +10,17 @@
 
                 <x-form.wrapper action="{{ route('admin.skills.store') }}" method="POST" enctype="multipart/form-data">
                     <x-form.row>
-                        <x-form.input type="file" label="Image" id="image" name="image" alt="image"
-                            accept="image/*" onchange="previewThumb(this,'featured-thumb')" />
-                    </x-form.row>
-                    <x-form.preview id="featured-thumb" . />
-                    <x-form.row>
                         <x-form.input type="text" col="6" :req="true" label="Name" id="name"
                             name="name" value="{{ old('name') }}" />
                         <x-form.input type="text" col="6" :req="true" label="Slug" id="slug"
                             name="slug" value="{{ old('slug') }}" />
                     </x-form.row>
                     <x-form.row>
-                        <x-form.input type="text" col="6" :req="true" label="percentage" id="percentage"
+                        <x-form.input type="text" col="4" :req="true" label="percentage" id="percentage"
                             name="percentage" value="{{ old('percentage') }}" />
-                        <x-form.input type="number" col="6" :req="true" label="display_order"
+                        <x-form.input type="number" col="4" :req="true" label="display_order"
                             id="display_order" name="display_order" value="{{ old('display_order') }}" />
+                        <x-form.enum-select :options="App\Enums\SkillDomain::cases()" col="4" :req="true" label="Skill Domain" id="skill_domain" name="skill_domain" />
                     </x-form.row>
                     <x-form.textarea label="Description" id="description" name="description"
                         value="{{ old('description') }}" rows="5" cols="5" />

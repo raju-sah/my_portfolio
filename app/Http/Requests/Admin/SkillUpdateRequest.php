@@ -14,14 +14,14 @@ class SkillUpdateRequest extends FormRequest
     public function rules(): array
     {
         $imageConfig = config('imagesetting.default.image');
-        
+
         return [
             'name' => 'required|string',
             'slug' => "required|string|unique:skills,slug,{$this->skill->id}|regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/",
             'percentage' => 'required|integer|min:0|max:100',
             'display_order' => 'nullable|integer',
             'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:' . $imageConfig['mime_types'] . '|max:' . $imageConfig['max_size'],
+            'skill_domain' => ['required', new \Illuminate\Validation\Rules\Enum(\App\Enums\SkillDomain::class)],
             'status' => 'boolean',
         ];
     }

@@ -20,7 +20,7 @@ class CreateSkillsTable extends Migration
             $table->string('percentage');
             $table->text('description')->nullable();
             $table->integer('display_order')->nullable();
-            $table->string('image')->nullable();
+            $table->integer('skill_domain')->nullable();
             $table->boolean('status')->default(1);
             $table->timestamps();
         });

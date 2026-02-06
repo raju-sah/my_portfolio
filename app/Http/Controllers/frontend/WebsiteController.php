@@ -41,11 +41,11 @@ class WebsiteController extends Controller
                 'projects' => Project::query()->select('id', 'name', 'year', 'tech_used', 'web_url', 'github_url', 'description', 'image')->where('status', 1)->orderBy('display_order')->latest()->get(),
 
                 'skills' => Skill::query()
-                    ->select(['id', 'name', 'description', 'percentage', 'image'])
+                    ->select(['id', 'name', 'description', 'percentage', 'skill_domain'])
                     ->where('status', 1)
                     ->orderBy('display_order')
-                    ->limit(5)
-                    ->get(),
+                    ->get()
+                    ->groupBy(fn($skill) => optional($skill->skill_domain)->value),
 
                 'experiences' => Experience::query()
                     ->select(['id', 'name', 'description', 'image', 'web_url', 'role', 'location', 'date_from', 'date_to', 'curently_here'])
