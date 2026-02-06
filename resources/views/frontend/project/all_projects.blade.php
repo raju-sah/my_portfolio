@@ -38,9 +38,9 @@
                             <i class="fa-brands fa-github text-xl"></i>
                         </a>
                     </div>
-                    <p class="text-body leading-relaxed text-sm max-w-2xl">
+                    <div class="text-body leading-relaxed text-sm max-w-2xl rich-content">
                         {!! optional($project)->description !!}
-                    </p>
+                    </div>
                 </div>
 
                 {{-- Tech Stack --}}
@@ -51,7 +51,7 @@
                         @endphp
                         @if ($techs)
                             @foreach ($techs as $key => $tech)
-                                <span class="px-2 py-1 text-[10px] uppercase font-bold tracking-wider text-accent border border-accent/20 rounded bg-accent/5">{{ $tech }}</span>
+                                <span class="px-2 py-1 text-[10px] uppercase font-bold tracking-wider text-accent border border-accent/20 rounded-full bg-accent/5">{{ $tech }}</span>
                             @endforeach
                         @endif
                     </div>

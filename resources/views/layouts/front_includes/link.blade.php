@@ -186,6 +186,39 @@
         background: rgba(255, 255, 255, 0.95) !important;
         backdrop-filter: blur(10px);
     }
+
+    /* Rich Content Styles (Sanitized HTML from DB) */
+    .rich-content {
+        line-height: 1.6;
+    }
+    .rich-content h1, .rich-content h2, .rich-content h3, .rich-content h4 {
+        margin-top: 1.5rem !important;
+        margin-bottom: 0.75rem !important;
+        font-weight: 700 !important;
+        color: var(--text-heading) !important;
+        display: block !important;
+    }
+    .rich-content h3 { font-size: 1.25rem !important; }
+    .rich-content ul {
+        list-style-type: disc !important;
+        padding-left: 1.5rem !important;
+        margin-top: 0.75rem !important;
+        margin-bottom: 1rem !important;
+        display: block !important;
+    }
+    .rich-content li {
+        margin-bottom: 0.5rem !important;
+        display: list-item !important;
+        color: var(--text-body) !important;
+    }
+    .rich-content p {
+        margin-bottom: 1rem !important;
+        display: block !important;
+    }
+    .rich-content span {
+        display: inline !important;
+        background: transparent !important;
+    }
 </style>
 
 @stack('front_css')
