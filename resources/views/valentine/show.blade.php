@@ -36,6 +36,115 @@
         </div>
 
         <div class="receiver-container">
+            <!-- Cat Companions -->
+            <div class="cat-companion cat-left">
+                <svg viewBox="0 0 200 250" class="cat-svg">
+                    <!-- Tail (Back) -->
+                    <path class="cat-body" d="M150 200 Q190 200 190 160 T160 130" fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round" style="color: #ffb7c5;" />
+                    
+                    <!-- Back Paws -->
+                    <ellipse class="cat-body" cx="75" cy="230" rx="18" ry="12" />
+                    <ellipse class="cat-body" cx="125" cy="230" rx="18" ry="12" />
+                    
+                    <!-- Body -->
+                    <ellipse class="cat-body" cx="100" cy="170" rx="55" ry="60" />
+                    
+                    <!-- Ears -->
+                    <path class="cat-body" d="M45 70 L60 10 L90 60 Z" />
+                    <path class="cat-body" d="M155 70 L140 10 L110 60 Z" />
+                    <path class="cat-inner-ear" d="M52 65 L62 25 L80 55 Z" />
+                    <path class="cat-inner-ear" d="M148 65 L138 25 L120 55 Z" />
+                    
+                    <!-- Head -->
+                    <circle class="cat-body" cx="100" cy="110" r="65" />
+                    
+                    <!-- Hands Holding Heart (Front) -->
+                    <g class="cat-front-pose">
+                        <g transform="translate(100, 185) scale(0.9)">
+                            <g class="cat-held-heart">
+                                <!-- Main Heart Shape -->
+                                <path class="heart-main" d="M0 15 Q-20 -5 -20 -20 Q-20 -35 -5 -35 Q0 -35 0 -25 Q0 -35 5 -35 Q20 -35 20 -20 Q20 -5 0 15" />
+                                <!-- Highlights and Shadows for 3D look -->
+                                <path class="heart-highlight" d="M-12 -28 Q-15 -25 -15 -20" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" opacity="0.6" />
+                                <path class="heart-shadow" d="M10 -5 Q15 -15 15 -20" fill="none" stroke="black" stroke-width="3" stroke-linecap="round" opacity="0.2" />
+                            </g>
+                        </g>
+                        <!-- Front Paws/Hands -->
+                        <ellipse class="cat-body" cx="70" cy="185" rx="15" ry="10" transform="rotate(-20, 70, 185)" />
+                        <ellipse class="cat-body" cx="130" cy="185" rx="15" ry="10" transform="rotate(20, 130, 185)" />
+                    </g>
+
+                    <!-- Face (Front) -->
+                    <g class="cat-eyes">
+                        <g transform="translate(70, 105)">
+                            <circle cx="0" cy="0" r="14" fill="#1a1a2e" />
+                            <circle cx="5" cy="-5" r="5" fill="white" />
+                            <rect x="-18" y="-18" width="36" height="36" class="eyelid" fill="#ffb7c5" />
+                            <path class="cat-heart" d="M0 0 Q-15 -25 0 -40 Q15 -25 0 0" style="--tx: -70px; --ty: -110px; --tr: -30deg; animation-delay: 0s;" />
+                            <path class="cat-heart" d="M0 0 Q-15 -25 0 -40 Q15 -25 0 0" style="--tx: -35px; --ty: -140px; --tr: 20deg; animation-delay: 0.7s;" />
+                        </g>
+                        <g transform="translate(130, 105)">
+                            <circle cx="0" cy="0" r="14" fill="#1a1a2e" />
+                            <circle cx="5" cy="-5" r="5" fill="white" />
+                            <rect x="-18" y="-18" width="36" height="36" class="eyelid" fill="#ffb7c5" />
+                            <path class="cat-heart" d="M0 0 Q-15 -25 0 -40 Q15 -25 0 0" style="--tx: 70px; --ty: -110px; --tr: 30deg; animation-delay: 0.3s;" />
+                            <path class="cat-heart" d="M0 0 Q-15 -25 0 -40 Q15 -25 0 0" style="--tx: 35px; --ty: -140px; --tr: -20deg; animation-delay: 1s;" />
+                        </g>
+                    </g>
+                    <path class="cat-nose" d="M100 125 L94 133 L106 133 Z" />
+                    <path d="M100 133 Q100 143 90 143 M100 133 Q100 143 110 143" fill="none" stroke="#1a1a2e" stroke-width="2" stroke-linecap="round" />
+                    <circle fill="#ff99aa" opacity="0.4" cx="55" cy="125" r="12" />
+                    <circle fill="#ff99aa" opacity="0.4" cx="145" cy="125" r="12" />
+                </svg>
+            </div>
+
+            <div class="cat-companion cat-right">
+                <svg viewBox="0 0 200 250" class="cat-svg">
+                    <!-- Tail -->
+                    <path class="cat-body" d="M150 200 Q190 200 190 160 T160 130" fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round" style="color: #ffb7c5;" />
+                    <ellipse class="cat-body" cx="75" cy="230" rx="18" ry="12" />
+                    <ellipse class="cat-body" cx="125" cy="230" rx="18" ry="12" />
+                    <ellipse class="cat-body" cx="100" cy="170" rx="55" ry="60" />
+                    <path class="cat-body" d="M45 70 L60 10 L90 60 Z" />
+                    <path class="cat-body" d="M155 70 L140 10 L110 60 Z" />
+                    <circle class="cat-body" cx="100" cy="110" r="65" />
+                    
+                    <!-- Front Pose -->
+                    <g class="cat-front-pose">
+                        <g transform="translate(100, 185) scale(0.9)">
+                            <g class="cat-held-heart">
+                                <path class="heart-main" d="M0 15 Q-20 -5 -20 -20 Q-20 -35 -5 -35 Q0 -35 0 -25 Q0 -35 5 -35 Q20 -35 20 -20 Q20 -5 0 15" />
+                                <path class="heart-highlight" d="M-12 -28 Q-15 -25 -15 -20" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" opacity="0.6" />
+                                <path class="heart-shadow" d="M10 -5 Q15 -15 15 -20" fill="none" stroke="black" stroke-width="3" stroke-linecap="round" opacity="0.2" />
+                            </g>
+                        </g>
+                        <ellipse class="cat-body" cx="70" cy="185" rx="15" ry="10" transform="rotate(-20, 70, 185)" />
+                        <ellipse class="cat-body" cx="130" cy="185" rx="15" ry="10" transform="rotate(20, 130, 185)" />
+                    </g>
+
+                    <g class="cat-eyes">
+                        <g transform="translate(70, 105)">
+                            <circle cx="0" cy="0" r="14" fill="#1a1a2e" />
+                            <circle cx="5" cy="-5" r="5" fill="white" />
+                            <rect x="-18" y="-18" width="36" height="36" class="eyelid" fill="#ffb7c5" />
+                            <path class="cat-heart" d="M0 0 Q-15 -25 0 -40 Q15 -25 0 0" style="--tx: -70px; --ty: -110px; --tr: -30deg; animation-delay: 0.2s;" />
+                            <path class="cat-heart" d="M0 0 Q-15 -25 0 -40 Q15 -25 0 0" style="--tx: -35px; --ty: -140px; --tr: 20deg; animation-delay: 0.9s;" />
+                        </g>
+                        <g transform="translate(130, 105)">
+                            <circle cx="0" cy="0" r="14" fill="#1a1a2e" />
+                            <circle cx="5" cy="-5" r="5" fill="white" />
+                            <rect x="-18" y="-18" width="36" height="36" class="eyelid" fill="#ffb7c5" />
+                            <path class="cat-heart" d="M0 0 Q-15 -25 0 -40 Q15 -25 0 0" style="--tx: 70px; --ty: -110px; --tr: 30deg; animation-delay: 0.5s;" />
+                            <path class="cat-heart" d="M0 0 Q-15 -25 0 -40 Q15 -25 0 0" style="--tx: 35px; --ty: -140px; --tr: -20deg; animation-delay: 1.2s;" />
+                        </g>
+                    </g>
+                    <path class="cat-nose" d="M100 125 L94 133 L106 133 Z" />
+                    <path d="M100 133 Q100 143 90 143 M100 133 Q100 143 110 143" fill="none" stroke="#1a1a2e" stroke-width="2" stroke-linecap="round" />
+                    <circle fill="#ff99aa" opacity="0.4" cx="55" cy="125" r="12" />
+                    <circle fill="#ff99aa" opacity="0.4" cx="145" cy="125" r="12" />
+                </svg>
+            </div>
+
             <!-- Card Display -->
             <div class="love-card">
                 <div class="card-header">
@@ -234,6 +343,111 @@
             width: 100%;
         }
 
+        /* Cat Companions */
+        .cat-companion {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 220px;
+            height: 250px;
+            z-index: 1;
+            transition: all 0.8s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+            pointer-events: none;
+            filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.3));
+        }
+
+        .cat-left {
+            left: -190px;
+        }
+
+        .cat-right {
+            right: -190px;
+            transform: translateY(-50%) scaleX(-1);
+        }
+
+        .receiver-container:hover .cat-left {
+            left: 100px;
+            opacity: 0;
+            transform: translateY(-50%) scale(0.5) rotate(-45deg);
+            filter: blur(10px);
+        }
+
+        .receiver-container:hover .cat-right {
+            right: 100px;
+            opacity: 0;
+            transform: translateY(-50%) scale(0.5) scaleX(-1) rotate(45deg);
+            filter: blur(10px);
+        }
+
+        .cat-svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
+        }
+
+        /* Cat Animations */
+        .eyelid {
+            animation: blink 4s infinite;
+            transform-origin: top;
+        }
+
+        @keyframes blink {
+            0%, 45%, 55%, 100% { transform: scaleY(0); }
+            50% { transform: scaleY(1); }
+        }
+
+        .cat-heart {
+            fill: #ff4d6d;
+            opacity: 0;
+            animation: catHeartBurst 2s infinite;
+        }
+
+        @keyframes catHeartBurst {
+            0% {
+                transform: translate(0, 0) scale(0);
+                opacity: 0;
+            }
+            20% {
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(1.2) rotate(var(--tr));
+                opacity: 0;
+            }
+        }
+
+        /* Fluffy effect */
+        .cat-body {
+            fill: #ffb7c5;
+        }
+        
+        .cat-inner-ear {
+            fill: #ff99aa;
+        }
+
+        .cat-nose {
+            fill: #ff6b81;
+        }
+
+        .cat-held-heart {
+            animation: heartBeat 1.2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+            transform-origin: center;
+            filter: drop-shadow(0 0 10px rgba(255, 77, 109, 0.7));
+        }
+
+        .heart-main { fill: #ff4d6d; }
+        .heart-highlight { fill: rgba(255, 255, 255, 0.4); }
+        .heart-shadow { fill: rgba(0, 0, 0, 0.15); }
+
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            15% { transform: scale(1.25); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.15); }
+            60% { transform: scale(1); }
+            100% { transform: scale(1); }
+        }
+
         /* Love Card */
         .love-card {
             background: rgba(255, 255, 255, 0.05);
@@ -244,10 +458,12 @@
             backdrop-filter: blur(15px);
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
             border-bottom: 2px dotted var(--theme-color);
+            position: relative;
+            z-index: 2;
         }
 
         .card-header {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.5rem
         }
 
         .day-emoji {
@@ -680,6 +896,12 @@
         }
 
         /* Mobile Responsive */
+        @media (max-width: 1000px) {
+            .cat-companion {
+                display: none;
+            }
+        }
+
         @media (max-width: 768px) {
             .valentine-receiver {
                 padding: 1rem;
