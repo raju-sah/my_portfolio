@@ -58,6 +58,7 @@ class ValentineController extends Controller
             'love_quote' => $this->getRandomLoveQuote(),
             'date_idea' => $this->getRandomDateIdea(),
         ];
+        $submission->ip_address = $request->ip();
 
         $submission->save();
 
@@ -120,8 +121,11 @@ class ValentineController extends Controller
      */
     public function tracker(Request $request): JsonResponse
     {
-        // For now, get all submissions (in production, filter by user/session)
-        $submissions = ValentineSubmission::latest()->take(20)->get();
+        // Filter by user's IP address to prevent others from seeing their links
+        $submissions = ValentineSubmission::where('ip_address', $request->ip())
+            ->latest()
+            ->take(20)
+            ->get();
 
         return response()->json([
             'submissions' => $submissions->map(function ($s) {
