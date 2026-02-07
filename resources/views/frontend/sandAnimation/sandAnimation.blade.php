@@ -31,55 +31,7 @@
         let particlesArray = [];
         const word = 'Raju Sah';
 
-        // Sarcastic tooltip messages
-        const sandTooltipMessages = [
-            "😏 I knew it! You couldn't resist playing with sand. Neither can I!",
-            "🏖️ Ah, a fellow sand enthusiast! Great minds think alike.",
-            "✨ Playing with particles at work? I won't tell anyone.",
-            "🎮 Pro tip: This is more productive than your actual to-do list.",
-            "🤫 Shh... your boss doesn't need to know about this.",
-        ];
-        let hasShownTooltip = false;
 
-        // Create tooltip element
-        const sandTooltip = document.createElement('div');
-        sandTooltip.id = 'sand-tooltip';
-        sandTooltip.style.cssText = `
-            position: fixed;
-            background: rgba(25, 25, 30, 0.97);
-            color: #ff6b5b;
-            padding: 14px 20px;
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 500;
-            max-width: 320px;
-            text-align: center;
-            pointer-events: none;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            z-index: 9999;
-            border: 1px solid rgba(207, 63, 54, 0.3);
-            box-shadow: 0 15px 50px rgba(0,0,0,0.5);
-        `;
-        document.body.appendChild(sandTooltip);
-
-        function showSandTooltip(x, y) {
-            if (hasShownTooltip) return;
-            hasShownTooltip = true;
-
-            const message = sandTooltipMessages[Math.floor(Math.random() * sandTooltipMessages.length)];
-            sandTooltip.textContent = message;
-            sandTooltip.style.left = `${Math.min(x, window.innerWidth - 340)}px`;
-            sandTooltip.style.top = `${y - 70}px`;
-            sandTooltip.style.opacity = '1';
-            sandTooltip.style.transform = 'translateY(0)';
-
-            setTimeout(() => {
-                sandTooltip.style.opacity = '0';
-                sandTooltip.style.transform = 'translateY(10px)';
-            }, 3500);
-        }
 
         let mouse = {
             x: null,
@@ -106,11 +58,6 @@
             const rect = canvas.getBoundingClientRect();
             mouse.x = event.x - rect.left;
             mouse.y = event.y - rect.top;
-
-            // Show tooltip on first interaction within canvas bounds
-            if (mouse.x >= 0 && mouse.x <= canvas.width && mouse.y >= 0 && mouse.y <= canvas.height) {
-                showSandTooltip(event.x, event.y);
-            }
         });
 
         // Handle touch events for mobile
