@@ -163,6 +163,8 @@
                                 <th>Day</th>
                                 <th>Name</th>
                                 <th>Status</th>
+                                <th>Accepted At</th>
+                                <th>Rejected At</th>
                                 <th>Opens</th>
                                 <th>Likes</th>
                                 <th>Created</th>
@@ -973,7 +975,7 @@
                 tbody.innerHTML = '';
 
                 if (data.submissions.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #888;">No submissions yet. Start spreading love! 💕</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; color: #888;">No submissions yet. Start spreading love! 💕</td></tr>';
                     return;
                 }
 
@@ -987,6 +989,8 @@
                     <td>${dayInfo.emoji} ${dayInfo.name}</td>
                     <td>${s.sender_name}</td>
                     <td><span class="status-badge status-${s.status}">${s.status}</span></td>
+                    <td>${s.accepted_at || '-'}</td>
+                    <td>${s.rejected_at || '-'}</td>
                     <td>${s.open_count}</td>
                     <td>${s.likes_count}</td>
                     <td>${s.created_at}</td>
