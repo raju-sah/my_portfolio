@@ -30,12 +30,12 @@
         </ul>
         
         {{-- Enhanced Theme Toggle Button --}}
-        <button class="theme-toggle group nav-tooltip-wrap" data-tooltip="🌓 Embrace the dark side... or don't" onclick="toggleTheme()" aria-label="Toggle theme">
+        <!-- <button class="theme-toggle group nav-tooltip-wrap" data-tooltip="🌓 Embrace the dark side... or don't" onclick="toggleTheme()" aria-label="Toggle theme">
             <span class="relative w-10 h-10 flex items-center justify-center rounded-full bg-card border border-white/10 hover:border-accent/50 transition-all duration-300 hover:scale-110 group-hover:shadow-lg group-hover:shadow-accent/20">
                 <i class="fa-solid fa-sun theme-icon-sun absolute transition-all duration-300" id="theme-icon-sun"></i>
                 <i class="fa-solid fa-moon theme-icon-moon absolute transition-all duration-300 opacity-0 scale-50 rotate-90" id="theme-icon-moon"></i>
             </span>
-        </button>
+        </button> -->
     </div>
     <i class="fa fa-bars" onclick="showMenu()"></i>
 </nav>
