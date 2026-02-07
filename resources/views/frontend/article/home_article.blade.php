@@ -1,4 +1,4 @@
-<div class="scroll-section relative py-20 bg-card/10 backdrop-blur-[2px]"
+<div class="scroll-section relative py-20 transition-all duration-300"
     data-bg="rgb(45, 30, 60)" data-text="rgb(230, 210, 245)"
     data-bg-light="rgb(235, 220, 240)" data-text-light="rgb(45, 30, 65)">
     <div class="scroll-reveal-text">Articles</div>

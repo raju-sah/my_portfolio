@@ -55,7 +55,7 @@
                     
                     if (!bg || !text) return;
 
-                    // Scrub transitions for the section
+                    // Faster scrub (0.5s lag instead of 1.5s) and better trigger points
                     gsap.to(['body', document.documentElement], {
                         backgroundColor: bg,
                         color: text,
@@ -65,9 +65,9 @@
                         scrollTrigger: {
                             id: `theme-${i}`,
                             trigger: section,
-                            start: 'top 80%',
-                            end: 'top 20%',
-                            scrub: 1.5,
+                            start: 'top 65%', // Start transition when section is well into view
+                            end: 'top 35%',   // End transition faster
+                            scrub: 0.5,
                         }
                     });
                 });

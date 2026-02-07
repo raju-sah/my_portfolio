@@ -21,10 +21,10 @@
 
 {{-- Global Theme Transition CSS --}}
 <style>
-    /* Smooth theme transitions for ALL elements */
-    *,
-    *::before,
-    *::after {
+    /* Smooth theme transitions for elements EXCEPT body/html to avoid GSAP scroll conflict */
+    *:not(body):not(html),
+    *:not(body):not(html)::before,
+    *:not(body):not(html)::after {
         transition: background-color 0.4s ease, 
                     color 0.3s ease, 
                     border-color 0.3s ease,
