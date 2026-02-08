@@ -60,10 +60,30 @@
                 <p class="countdown-text">until Valentine's Day ❤️</p>
             </div>
 
+            <!-- Stats Section -->
+            <div class="valentine-stats-header">
+                <div class="valentine-stat-card">
+                    <div class="stat-icon">💝</div>
+                    <div class="stat-info">
+                        <span class="stat-number" id="submissionCount">{{ $totalSubmissions }}+</span>
+                        <span class="stat-label">Lovers already created the link</span>
+                    </div>
+                </div>
+                <p class="stat-tagline">now its your turn to confess your love</p>
+            </div>
+
+            <!-- New Heading -->
+            <div class="valentine-callout">
+                <h2>create your love link and shoot your shot buddy before anyone😎</h2>
+            </div>
+
             <!-- Day Cards -->
             <div class="day-cards-grid">
                 @foreach($dayConfig as $key => $day)
-                <div class="day-card {{ $day['is_active'] ? 'active' : 'inactive' }} {{ $day['is_today'] ? 'today' : '' }}"
+                <div class="day-card {{ $day['is_active'] ? 'active' : 'inactive' }} {{ $day['is_today'] ? 'today' : '' }} {{ $day['is_active'] && !$day['is_today'] ? 'day-card-tooltip' : '' }}"
+                    @if($day['is_active'] && !$day['is_today'])
+                    data-tooltip="you missed it, didnot know about the site no worries you can send now remember its never late"
+                    @endif
                     data-day="{{ $key }}"
                     data-theme="{{ $day['theme'] }}"
                     onclick="{{ $day['is_active'] ? 'openModal(\'' . $key . '\')' : '' }}">
@@ -83,6 +103,11 @@
 
             <!-- Tracker Section -->
             <div class="tracker-section">
+                <div class="tracker-pointing-arrow">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 5V19M12 19L5 12M12 19L19 12" stroke="#ff4d6d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
                 <button class="tracker-btn" onclick="openTracker()">
                     📊 View My Links
                 </button>
@@ -793,6 +818,200 @@
                 max-width: 100%;
             }
         }
+        /* Valentine Callout */
+        .valentine-callout {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 77, 109, 0.05);
+            border-radius: 20px;
+            border: 1px dashed rgba(255, 77, 109, 0.3);
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .valentine-callout h2 {
+            font-size: 1.4rem;
+            color: #ff758f;
+            font-weight: 700;
+            text-shadow: 0 0 15px rgba(255, 117, 143, 0.3);
+            margin: 0;
+        }
+
+        /* Day Card Tooltips */
+        .day-card-tooltip {
+            position: relative;
+        }
+
+        .day-card-tooltip::before {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 110%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            padding: 12px 16px;
+            background: rgba(26, 26, 46, 0.98);
+            color: #ff758f;
+            font-size: 0.85rem;
+            font-weight: 500;
+            width: 220px;
+            text-align: center;
+            border-radius: 12px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 100;
+            pointer-events: none;
+            border: 1px solid rgba(255, 77, 109, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            line-height: 1.4;
+        }
+
+        .day-card-tooltip::after {
+            content: '';
+            position: absolute;
+            bottom: 105%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 8px solid transparent;
+            border-top-color: rgba(255, 77, 109, 0.3);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 101;
+        }
+
+        .day-card-tooltip:hover::before {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .day-card-tooltip:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        @media (max-width: 768px) {
+            .valentine-callout h2 {
+                font-size: 1.1rem;
+            }
+            .day-card-tooltip::before {
+                width: 180px;
+                font-size: 0.75rem;
+            }
+        }
+
+        /* Valentine Stats */
+        .valentine-stats-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 2rem;
+            animation: zoomIn 0.8s ease-out;
+        }
+
+        .valentine-stat-card {
+            background: rgba(255, 77, 109, 0.15);
+            border: 2px solid rgba(255, 77, 109, 0.4);
+            border-radius: 20px;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .valentine-stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 77, 109, 0.3);
+            border-color: #ff4d6d;
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        .stat-info {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #ff4d6d;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #ff758f;
+            font-weight: 500;
+            margin-top: 0.2rem;
+        }
+
+        .stat-tagline {
+            margin-top: 1rem;
+            font-size: 1.1rem;
+            color: #ccc;
+            font-style: italic;
+            opacity: 0.9;
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Tracker Pointing Arrow */
+        .tracker-pointing-arrow {
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: center;
+            animation: pointDown 1.5s infinite;
+        }
+
+        .tracker-pointing-arrow svg {
+            filter: drop-shadow(0 0 8px rgba(255, 77, 109, 0.5));
+        }
+
+        @keyframes pointDown {
+            0%, 100% {
+                transform: translateY(0);
+                opacity: 0.5;
+            }
+            50% {
+                transform: translateY(10px);
+                opacity: 1;
+            }
+        }
     </style>
 
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
@@ -897,6 +1116,13 @@
                 if (data.success) {
                     closeModal();
                     showSuccess(data.share_url, data.uuid);
+
+                    // Update count in UI
+                    const countEl = document.getElementById('submissionCount');
+                    if (countEl) {
+                        const currentCount = parseInt(countEl.textContent);
+                        countEl.textContent = (currentCount + 1) + '+';
+                    }
                 } else {
                     alert('Something went wrong. Please try again.');
                 }

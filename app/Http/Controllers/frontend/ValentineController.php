@@ -34,6 +34,7 @@ class ValentineController extends Controller
         return view('valentine.index', [
             'dayConfig' => $dayConfig,
             'valentineDate' => $valentineDate,
+            'totalSubmissions' => ValentineSubmission::count(),
         ]);
     }
 
