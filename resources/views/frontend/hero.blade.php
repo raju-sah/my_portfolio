@@ -22,7 +22,7 @@
         }
     </style>
 
-    <section class="scroll-section relative min-h-[calc(100vh-80px)] flex items-center justify-center overflow-hidden"
+    <section class="scroll-section relative min-h-[70vh] md:min-h-[calc(100vh-80px)] py-12 md:py-0 flex items-center justify-center overflow-hidden"
         data-bg="rgb(26, 26, 26)" data-text="rgb(240, 240, 240)"
         data-bg-light="rgb(245, 245, 245)" data-text-light="rgb(30, 30, 30)">
         <div class="scroll-reveal-text">Portfolio</div>

@@ -5,7 +5,7 @@
     <div class="container mx-auto px-6 relative z-10">
         <h4 class="text-3xl font-bold text-heading mb-12 border-b border-heading/20 pb-4 inline-block">Contact Me</h4>
         
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 bg-card/30 backdrop-blur-md border border-white/5 rounded-3xl p-8 lg:p-12 shadow-2xl shadow-black/30">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 bg-card/30 backdrop-blur-md border border-white/5 rounded-3xl p-6 lg:p-12 shadow-2xl shadow-black/30">
             <!-- Left: Info -->
             <div class="space-y-8">
                 <div>
@@ -18,39 +18,39 @@
                         @php $emails = explode(',', $social_link->email); @endphp
                         <a href="mailto:{{ $emails[0] ?? '' }}" 
                            data-tooltip="Yes, I read these. Spam me and I'll sign your email up for 100 'Daily Cat Facts' newsletters."
-                           class="contact-tooltip flex items-center gap-4 group p-4 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/10">
+                           class="contact-tooltip flex items-center gap-3 sm:gap-4 group p-4 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/10">
                             <div class="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent text-xl group-hover:scale-110 transition-transform">
                                 <i class="fa-solid fa-envelope"></i>
                             </div>
                             <div>
                                 <span class="block text-xs font-bold text-body/50 uppercase tracking-widest">Email</span>
-                                <span class="text-lg font-medium text-heading group-hover:text-accent transition-colors">{{ $emails[0] ?? '' }}</span>
+                                <span class="text-sm sm:text-lg font-medium text-heading group-hover:text-accent transition-colors">{{ $emails[0] ?? '' }}</span>
                             </div>
                         </a>
 
                         @php $phones = explode(',', $social_link->phone); @endphp
                         <a href="tel:{{ $phones[0] ?? '' }}" 
                            data-tooltip="Only call if you're prepared for awkward silence or a very excited talk about code."
-                           class="contact-tooltip flex items-center gap-4 group p-4 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/10">
+                           class="contact-tooltip flex items-center gap-3 sm:gap-4 group p-4 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/10">
                             <div class="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent text-xl group-hover:scale-110 transition-transform">
                                 <i class="fa-solid fa-square-phone"></i>
                             </div>
                             <div>
                                 <span class="block text-xs font-bold text-body/50 uppercase tracking-widest">Phone</span>
-                                <span class="text-lg font-medium text-heading group-hover:text-accent transition-colors">{{ $phones[0] ?? '' }}</span>
+                                <span class="text-sm sm:text-lg font-medium text-heading group-hover:text-accent transition-colors">{{ $phones[0] ?? '' }}</span>
                             </div>
                         </a>
 
                         @php $address = explode(',', $social_link->address); @endphp
                         <a href="https://maps.app.goo.gl/E6ku8RzFvSMuz12cA" target="_blank" 
                            data-tooltip="If you show up unannounced, I'll assume you're bringing pizza."
-                           class="contact-tooltip flex items-center gap-4 group p-4 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/10">
+                           class="contact-tooltip flex items-center gap-3 sm:gap-4 group p-4 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/10">
                             <div class="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent text-xl group-hover:scale-110 transition-transform">
                                 <i class="fa-solid fa-location-dot"></i>
                             </div>
                             <div>
                                 <span class="block text-xs font-bold text-body/50 uppercase tracking-widest">Location</span>
-                                <span class="text-lg font-medium text-heading group-hover:text-accent transition-colors">{{ $address[0] ?? '' }}</span>
+                                <span class="text-sm sm:text-lg font-medium text-heading group-hover:text-accent transition-colors">{{ $address[0] ?? '' }}</span>
                             </div>
                         </a>
                     </div>

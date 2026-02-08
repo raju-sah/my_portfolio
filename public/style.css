@@ -380,13 +380,13 @@ nav .fa {
 @media only screen and (max-width: 768px) {
     nav {
         position: relative;
-        padding: 35px 0;
+        padding: 15px 0;
     }
 
     .fa-bars {
         position: absolute;
         right: 20px;
-        top: 25px;
+        top: 20px;
         font-size: 24px;
         cursor: pointer;
     }
@@ -394,12 +394,12 @@ nav .fa {
     .alllogo {
         display: block;
         position: relative;
-        height: 60px;
-        width: 60px;
+        height: 45px;
+        width: 45px;
         top: 0;
-        left: 0;
+        left: 20px;
         color: var(--accent-color);
-        font-size: 40px;
+        font-size: 32px;
         font-family: "Lucida Calligraphy";
         font-weight: 600;
     }
@@ -487,8 +487,9 @@ nav .fa {
         min-height: 60vh;
     }
     .wrapper {
-        height: calc(89vh - 74px);
-        padding: 0 5%;
+        height: auto;
+        min-height: calc(80vh - 60px);
+        padding: 2rem 5%;
     }
 
     .wrapper::before {
