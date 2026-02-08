@@ -781,20 +781,35 @@
 
         /* Mobile Responsive */
         @media (max-width: 768px) {
-            .valentine-title {
-                font-size: 2rem;
-            }
-
-            .countdown-container {
-                gap: 0.8rem;
-            }
-
-            .countdown-item {
+            .valentine-page {
                 padding: 1rem;
             }
 
+            .valentine-title {
+                font-size: 2.2rem;
+            }
+
+            .countdown-container {
+                gap: 0.5rem;
+                padding: 0;
+                justify-content: center;
+                margin: 1.5rem 0;
+            }
+
+            .countdown-item {
+                padding: 0.8rem 0.5rem;
+                flex: 1;
+                min-width: 70px;
+                max-width: 90px;
+            }
+
             .countdown-value {
-                font-size: 1.5rem;
+                font-size: 1.2rem;
+            }
+
+            .countdown-label {
+                font-size: 0.6rem;
+                letter-spacing: 0.5px;
             }
 
             .day-cards-grid {
