@@ -23,8 +23,18 @@ class ChatController extends Controller
         ]);
 
         try {
-            $answer = $this->chatService->ask($request->input('question'));
+            $question = $request->input('question');
+            $answer = $this->chatService->ask($question);
             
+            // Log interaction
+            \App\Models\ChatInteraction::create([
+                'question' => $question,
+                'answer' => $answer,
+                'ip_address' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+                'session_id' => $request->hasSession() ? $request->session()->getId() : null,
+            ]);
+
             return response()->json([
                 'answer' => $answer
             ]);
