@@ -43,7 +43,7 @@
                 </p>
 
                 <p class="text-body/60 text-xs mb-4 font-mono">
-                    // I am usually occupied, but open to new opportunities. <br class="hidden md:block"> Hit me on Linkedin for chat.
+                    // I am usually occupied, but open to new opportunities. <br class="hidden md:block"> Hit me on Linkedin for chai.
                 </p>
 
                 <!-- Stats -->
