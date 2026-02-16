@@ -36,4 +36,9 @@ return [
         'secret_key' => env('RECAPTCHA_SECRET_KEY'),
     ],
 
+    'openrouter' => [
+        'api_key' => env('OPENROUTER_API_KEY'),
+        'preferred_models' => env('OPENROUTER_PREFERRED_MODELS', ''),
+    ],
+
 ];

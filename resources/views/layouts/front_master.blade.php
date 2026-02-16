@@ -38,7 +38,8 @@
     @include('layouts.front_includes.header')
     @yield('content')
     @include('layouts.front_includes.footer')
-    @include('layouts.front_includes.cat_eyes')
+    <!-- @include('layouts.front_includes.cat_eyes') -->
+    @include('layouts.front_includes.chat_widget')
     @include('layouts.front_includes.script')
 </body>
 

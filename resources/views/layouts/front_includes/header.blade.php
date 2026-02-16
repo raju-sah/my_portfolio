@@ -19,9 +19,9 @@
             <li class="nav-tooltip-wrap" data-tooltip="📝 My thoughts... at 3 AM with coffee">
                 <a href="{{ route('articles.all') }}">Articles</a>
             </li>
-            <li class="nav-tooltip-wrap valentine-menu-item {{ request()->routeIs('valentine.*') ? 'active' : '' }}" id="valentineNavItem" data-tooltip="💕 Find your Valentine... maybe?">
+            <!-- <li class="nav-tooltip-wrap valentine-menu-item {{ request()->routeIs('valentine.*') ? 'active' : '' }}" id="valentineNavItem" data-tooltip="💕 Find your Valentine... maybe?">
                 <a href="{{ route('valentine.index') }}">Valentine</a>
-            </li>
+            </li> -->
             @if(request()->routeIs('index'))
             <li class="nav-tooltip-wrap" data-tooltip="👋 Say hi! I don't bite (much)">
                 <a href="#contact">Contact</a>

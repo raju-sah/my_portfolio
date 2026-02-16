@@ -14,6 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// RAG Chat API
+Route::post('/chat', [App\Http\Controllers\Api\ChatController::class, 'ask'])
+    ->middleware('throttle:10,1');
