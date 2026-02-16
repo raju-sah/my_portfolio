@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Models\DocumentChunk;
 use Illuminate\Support\Facades\Log;
-use Spatie\PdfToText\Pdf;
+use Smalot\PdfParser\Parser;
 
 class IngestionService
 {
@@ -19,7 +19,10 @@ class IngestionService
     {
         Log::info("Ingesting Resume from: {$path}");
         
-        $text = (new Pdf())->setPdf($path)->text();
+        $parser = new Parser();
+        $pdf = $parser->parseFile($path);
+        $text = $pdf->getText();
+        
         $this->processContent($text, 'resume', ['path' => $path]);
     }
 
