@@ -20,11 +20,17 @@ class ChatController extends Controller
     {
         $request->validate([
             'question' => 'required|string|max:1000',
+            'session_id' => 'nullable|string|max:255',
         ]);
 
         try {
             $question = $request->input('question');
-            $answer = $this->chatService->ask($question);
+            
+            // Priority: Request Input -> Laravel Native Session -> Generated UUID (fallback)
+            $sessionId = $request->input('session_id') ?: 
+                         ($request->hasSession() ? $request->session()->getId() : (string) \Illuminate\Support\Str::uuid());
+
+            $answer = $this->chatService->ask($question, $sessionId);
             
             // Log interaction
             \App\Models\ChatInteraction::create([
@@ -32,11 +38,12 @@ class ChatController extends Controller
                 'answer' => $answer,
                 'ip_address' => $request->ip(),
                 'user_agent' => $request->userAgent(),
-                'session_id' => $request->hasSession() ? $request->session()->getId() : null,
+                'session_id' => $sessionId,
             ]);
 
             return response()->json([
-                'answer' => $answer
+                'answer' => $answer,
+                'session_id' => $sessionId
             ]);
         } catch (\Exception $e) {
             Log::error("Chat Error: " . $e->getMessage());

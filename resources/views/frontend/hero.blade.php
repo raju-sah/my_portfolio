@@ -38,7 +38,7 @@
                     <span class="multiText text-accent"></span>
                 </h1>
 
-                <p class="text-body text-base md:text-lg font-light max-w-lg mx-auto lg:mx-0 mb-3 leading-relaxed">
+                <p class="text-body text-base text-white md:text-lg font-light max-w-lg mx-auto lg:mx-0 mb-3 leading-relaxed">
                     {!! optional($home_setting)->description !!}
                 </p>
 

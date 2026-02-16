@@ -69,3 +69,8 @@ Route::get('mark-all-as-read', function () {
     auth()->user()->unreadNotifications->markAsRead();
     return back();
 })->name('mark_all_as_read');
+
+// RAG Chat Route (Web middleware for session support)
+Route::post('/chat', [App\Http\Controllers\Api\ChatController::class, 'ask'])
+    ->name('chat.ask')
+    ->middleware('throttle:20,1');

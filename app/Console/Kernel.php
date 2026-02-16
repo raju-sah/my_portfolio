@@ -12,8 +12,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        // sync knowledge base every week (Monday at midnight)
+        $schedule->command('rag:sync-all')->weekly();
     }
+
 
     /**
      * Register the commands for the application.

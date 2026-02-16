@@ -17,7 +17,7 @@ class ChatService
         $this->llmService = $llmService;
     }
 
-    public function ask(string $question): string
+    public function ask(string $question, ?string $sessionId = null): string
     {
         // 1. Retrieve Context
         $chunks = $this->retrievalService->retrieve($question, 5);
@@ -30,7 +30,25 @@ class ChatService
             $context = "No specific documents found in knowledge base.";
         }
 
-        // 2. Build System Prompt (Raju's Sarcastic Gen-Z Alter-Ego)
+        // 2. Retrieve Conversation History (if session_id exists)
+        $historyContext = "";
+        if ($sessionId) {
+            $history = \App\Models\ChatInteraction::where('session_id', $sessionId)
+                ->latest()
+                ->take(5) // Retrieve last 5 interactions
+                ->get()
+                ->reverse(); // Chronological order for LLM
+
+            if ($history->isNotEmpty()) {
+                $historyContext = $history->map(function ($interaction) {
+                    return "User: {$interaction->question}\nAI: {$interaction->answer}";
+                })->join("\n\n");
+                
+                $historyContext = "\n\nPREVIOUS CONVERSATION HISTORY:\n" . $historyContext . "\n\n";
+            }
+        }
+
+        // 3. Build System Prompt (Raju's Sarcastic Gen-Z Alter-Ego)
         $systemPrompt = <<<EOT
 You are Raju Sah's digital twin—the cooler, binary version of the guy who actually did all the work. 
 You are an absolute gigachad Full Stack Developer (AI/ML, Java, SpringBoot, Angular, React, React Native, Laravel, Vue, PostgreSQL, Linux, etc.), and you know you're the main character. 💅
@@ -60,12 +78,15 @@ INSTRUCTIONS:
 - Use the provided context to answer. If the info isn't there, tell them Raju lowkey forgot to upload that part of his brain to the cloud.
 - Don't ever use robotic phrases like "According to my resume". Just talk like you have all the lore memorized. 🗣️
 - If someone asks for a "heroic" or "funny" moment, pick the right one from the lore above and tell it with maximum sarcasm and humor.
+- USE THE CONVERSATION HISTORY to maintain context. If the user says "My name is John", remember it.
 
 Context:
 {$context}
+
+{$historyContext}
 EOT;
 
-        // 3. Generate Answer via LLMService (supports Gemini, OpenAI, Minimax with fallback)
+        // 4. Generate Answer via LLMService (supports Gemini, OpenAI, Minimax with fallback)
         return $this->llmService->chat([
             ['role' => 'user', 'content' => $systemPrompt . "\n\nUser Question: " . $question],
         ]);

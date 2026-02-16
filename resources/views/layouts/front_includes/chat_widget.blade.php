@@ -97,8 +97,6 @@
         const statuses = [
             "Unfolding Raju's 'heroic' myths (lol)...",
             "Exposing his funniest life failures...",
-            "Accessing his 'scary' coding habits...",
-            "Retrieving embarrassing core memories...",
             "Digging for secrets he'd pay me to hide..."
         ];
         let statusIndex = 0;
@@ -161,22 +159,32 @@
             showTyping(true);
             disableInput(true);
 
+            // Get session_id from localStorage
+            const storedSessionId = localStorage.getItem('chat_session_id');
+
             try {
-                // 2. Send Request
-                const response = await fetch('/api/chat', {
+                // 2. Send Request to web route (with CSRF token)
+                const response = await fetch('/chat', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },
-                    body: JSON.stringify({ question: question })
+                    body: JSON.stringify({ 
+                        question: question,
+                        session_id: storedSessionId 
+                    })
                 });
 
                 const data = await response.json();
 
-                // 3. Add Assistant Message
+                // 3. Add Assistant Message and Store Session
                 if (response.ok) {
                     appendMessage('assistant', data.answer);
+                    if (data.session_id) {
+                        localStorage.setItem('chat_session_id', data.session_id);
+                    }
                 } else {
                     appendMessage('assistant', "My brain is offline. Error: " + (data.error || response.statusText));
                 }

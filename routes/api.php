@@ -14,6 +14,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// RAG Chat API
-Route::post('/chat', [App\Http\Controllers\Api\ChatController::class, 'ask'])
-    ->middleware('throttle:10,1');
+// Routes removed and moved to web.php for session support
+
