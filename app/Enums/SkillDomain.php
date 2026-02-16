@@ -10,6 +10,7 @@ enum SkillDomain: int
     case Mobile = 4;
     case DevOps = 5;
     case Tools = 6;
+    case AI_ML = 7;
 
     public function label(): string
     {
@@ -20,6 +21,7 @@ enum SkillDomain: int
             self::Mobile => 'Mobile',
             self::DevOps => 'DevOps',
             self::Tools => 'Tools',
+            self::AI_ML => 'AI/ML',
         };
     }
 
