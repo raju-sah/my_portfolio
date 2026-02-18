@@ -42,10 +42,18 @@ class IngestionService
         $response = \Illuminate\Support\Facades\Http::withToken($apiKey)
             ->post('https://api.firecrawl.dev/v0/scrape', [
                 'url' => $url,
-                'pageOptions' => ['onlyMainContent' => true]
+                'pageOptions' => [
+                    'onlyMainContent' => true,
+                    'max_age' => 0 // Bypass Firecrawl cache for fresh data
+                ]
             ]);
 
         if ($response->successful()) {
+            // Delete old chunks for this URL before ingesting new ones
+            DocumentChunk::where('source_type', 'website')
+                ->where('metadata->url', $url)
+                ->delete();
+
             $markdown = $response->json('data.markdown');
             $this->processContent($markdown, 'website', ['url' => $url]);
         } else {
@@ -61,6 +69,9 @@ class IngestionService
         $response = \Illuminate\Support\Facades\Http::get("https://api.github.com/users/{$username}/repos?sort=updated&per_page=5");
         
         if ($response->successful()) {
+            // Delete old chunks for this GitHub user
+            DocumentChunk::where('source_type', 'github')->delete();
+
             foreach ($response->json() as $repo) {
                 $description = $repo['description'] ?? '';
                 $readmeUrl = str_replace('github.com', 'raw.githubusercontent.com', $repo['html_url']) . '/master/README.md';
