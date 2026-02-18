@@ -8,10 +8,10 @@ return [
             //  Thumbnails: 150-300 pixels wide.
 
             'mime_types' => 'png,jpg,jpeg,gif,webp',
-            'max_size' => 200, //in KB
-            'width' => 50, //in pixels
-            'height' => 50, //in pixels
-            'quality' => 80, // image compression quality in percentage
+            'max_size' => 500, //in KB
+            'width' => 500, //in pixels
+            'height' => 500, //in pixels
+            'quality' => 100, // image compression quality in percentage
         ],
     ],
 ];

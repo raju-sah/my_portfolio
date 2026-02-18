@@ -33,9 +33,33 @@ class OpenRouterDriver implements LLMInterface
 
     public function embed(string $text): array
     {
-        // OpenRouter doesn't support embeddings — use OpenAI directly
-        return (new OpenAIDriver())->embed($text);
+        $model = config('services.openrouter.embedding_model', 'openai/text-embedding-3-small');
+        
+        try {
+            $response = Http::withHeaders([
+                    'Authorization' => "Bearer {$this->apiKey}",
+                    'HTTP-Referer' => config('app.url', 'https://sahraju.com.np'),
+                    'X-Title' => 'RajuGPT Portfolio Chatbot',
+                    'Content-Type' => 'application/json',
+                ])
+                ->timeout(60)
+                ->post("{$this->baseUrl}/embeddings", [
+                    'model' => $model,
+                    'input' => $text,
+                ]);
+
+            if ($response->successful()) {
+                return $response->json('data.0.embedding');
+            }
+
+            throw new \Exception("OpenRouter embedding failed ({$response->status()}): " . $response->body());
+        } catch (\Exception $e) {
+            Log::warning("OpenRouter embedding failed, trying OpenAI fallback: " . $e->getMessage());
+            // Fallback to OpenAI (original behavior)
+            return (new OpenAIDriver())->embed($text);
+        }
     }
+
 
     public function chat(array $messages): string
     {

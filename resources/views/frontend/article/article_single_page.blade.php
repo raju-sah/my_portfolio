@@ -2,86 +2,111 @@
 @section('title', $article->name)
 @section('content')
 
-    <div class="continaer-fluid article-single ">
-        <br>
-        <br>
-        <br>
-        <div class=" px-5 mx-5 mb-5">
-            <h6 class="card-title">{{ $article->name }}</h6>
-            <div class="d-flex mb-2">
-                <span style="color: #ffc700">
-                    @if ($article->reviews_avg_rating === 0)
-                        <span>No review yet</span>
-                    @else
-                        {!! str_repeat('<i class="fa-solid fa-star"></i>', $article->reviews_avg_rating) !!}
-                    @endif
-                </span>
-            </div>
-            <div class="card-subtitle d-flex justify-content-start flex-wrap mb-3">
-                @php
-                    $article->min_read = $article->min_read . ' min read';
-                @endphp
-                <span>{{ $article->min_read }}</span>
-                <span>&nbsp; · &nbsp;</span>
-                @php
-                    $new_format = $article->created_at->format('d M Y');
-                @endphp
-                <span>{{ $new_format }},</span>
-                <span class="ms-2"><a href="{{ route('article.detail', $article->slug) }}"><i
-                            class="fa-regular fa-eye"></i></a>&nbsp;{{ $views['screenPageViews']?? '0' }}&nbsp;Views</span>
-            </div>
+    <div class="scroll-section relative py-20 transition-all duration-300"
+        data-bg="rgb(45, 30, 60)" data-text="rgb(230, 210, 245)"
+        data-bg-light="rgb(235, 220, 240)" data-text-light="rgb(45, 30, 65)">
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="max-w-4xl mx-auto">
+                <!-- Header -->
+                <div class="text-center mb-4">
+                    <h1 class="text-4xl md:text-5xl font-bold text-heading mb-4 tracking-tight leading-tight">
+                        {{ $article->name }}
+                    </h1>
+                    
+                    <div class="flex flex-wrap items-center justify-center text-xs text-body/60 gap-4 font-mono uppercase tracking-[0.2em]">
+                        <span class="flex items-center gap-1"><i class="fa-regular fa-calendar-alt text-accent"></i> {{ $article->created_at->format('d M Y') }}</span>
+                        <span class="w-1.5 h-1.5 bg-accent/30 rounded-full hidden md:block"></span>
+                        <span class="flex items-center gap-1"><i class="fa-regular fa-clock text-accent"></i> {{ $article->min_read }} min read</span>
+                        <span class="w-1.5 h-1.5 bg-accent/30 rounded-full hidden md:block"></span>
+                        <span class="flex items-center gap-1 px-2 py-1 rounded-md ">
+                            <i class="fa-regular fa-eye text-accent"></i> {{ $views['screenPageViews'] ?? '0' }} Views
+                        </span>
+                    </div>
 
-            <div style="color: #747884">{!! $article->description ?? '' !!}</div>
-            <div class="mb-3 mt-4 d-flex justify-content-start flex-wrap">
-                @php
-                    $article->about = explode(',', $article->about);
-                @endphp
-                @foreach ($article->about as $about)
-                    <span class="badge m-1">{{ $about }}</span>
-                @endforeach
-            </div>
+                    <div class="flex items-center justify-center mt-2 text-yellow-500 gap-1">
+                        @if ($article->reviews_avg_rating === 0)
+                            <span class="text-body/40 italic text-sm">No reviews yet</span>
+                        @else
+                            @for ($i = 0; $i < $article->reviews_avg_rating; $i++)
+                                <i class="fa-solid fa-star"></i>
+                            @endfor
+                        @endif
+                    </div>
+                </div>
 
+                <!-- Featured Image -->
+                <div class="mb-12 rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-white/10 group">
+                    <img src="{{ $article->image_path }}" alt="{{ $article->name }}" 
+                         style="height: 400px !important;"
+                         class="w-full object-cover transition-transform duration-700 group-hover:scale-105">
+                </div>
+
+                <!-- Content -->
+                <article class="prose prose-invert prose-lg max-w-none text-body/70 leading-[1.8] mb-12 article-content">
+                    {!! $article->description !!}
+                </article>
+
+                <!-- Tags -->
+                <div class="flex flex-wrap gap-3 py-3 mb-12">
+                    @php
+                        $tags = is_string($article->about) ? explode(',', $article->about) : $article->about;
+                    @endphp
+                    @foreach ($tags as $tag)
+                        <span class="px-5 py-2 text-xs uppercase font-bold tracking-[0.15em] text-accent border border-accent/20 rounded-full bg-accent/5 backdrop-blur-md">
+                            {{ trim($tag) }}
+                        </span>
+                    @endforeach
+                </div>
+            </div>
         </div>
-        <h1 class="a-title d-flex justify-content-start mx-5 px-5 mt-5 mb-4">Reviews</h1>
-        <div id="review_card"></div>
-
-        <x-form.wrapper action="" method="POST" id="rating_form" class="mx-5 px-5">
-
-            <div class="star-rating mt-5 mb-3">
-                <input type="radio" id="5-stars" name="rating" value="5" checked />
-                <label for="5-stars" class="star">&#9733;</label>
-                <input type="radio" id="4-stars" name="rating" value="4" />
-                <label for="4-stars" class="star">&#9733;</label>
-                <input type="radio" id="3-stars" name="rating" value="3" />
-                <label for="3-stars" class="star">&#9733;</label>
-                <input type="radio" id="2-stars" name="rating" value="2" />
-                <label for="2-stars" class="star">&#9733;</label>
-                <input type="radio" id="1-star" name="rating" value="1" />
-                <label for="1-star" class="star">&#9733;</label>
-            </div>
-            <input type="text" id="pri_min" name="pri_min" style="opacity: 0; height: 0" value="">
-            <input type="hidden" name="article_id" value="{{ $article->id }}">
-
-            <x-form.row>
-                <x-form.input type="text" col="5" :req="true" label="Name" id="name" name="name"
-                    value="{{ old('name') }}" />
-                <x-form.input type="text" col="5" :req="true" label="email" id="email" name="email"
-                    value="{{ old('email') }}" />
-            </x-form.row>
-            <x-form.textarea label="description" col="10" :req="true" id="description" name="description"
-                value="{{ old('description') }}" rows="3" cols="3" />
-
-            <div class="g-recaptcha mt-3 d-flex justify-content-center" style="max-width: 304px;" id="feedback-recaptcha"
-                data-sitekey="{{ config('services.recaptcha.site_key') }}">
-            </div>
-
-            <div class="button-click mt-4 d-flex justify-content-start ">
-                <button type="submit" class="title-btn btn_submit">
-                    <span>Submit</span>
-                </button>
-            </div>
-        </x-form.wrapper>
     </div>
+        <div class="container mx-auto px-6 max-w-4xl pb-12">
+            <h2 class="text-3xl font-bold text-heading mb-10 pb-4 border-b border-white/10">Community Reviews</h2>
+            <div id="review_card" class="space-y-6 mb-16"></div>
+
+            <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 md:p-12 shadow-xl">
+                <h3 class="text-2xl font-bold text-heading mb-8">Leave a Review</h3>
+                <x-form.wrapper action="" method="POST" id="rating_form" class="space-y-6">
+                    <div class="flex flex-col md:flex-row md:items-center gap-6 mb-8">
+                        <span class="text-body/60 font-medium">Your Rating:</span>
+                        <div class="star-rating">
+                            <input type="radio" id="5-stars" name="rating" value="5" checked />
+                            <label for="5-stars" class="star">&#9733;</label>
+                            <input type="radio" id="4-stars" name="rating" value="4" />
+                            <label for="4-stars" class="star">&#9733;</label>
+                            <input type="radio" id="3-stars" name="rating" value="3" />
+                            <label for="3-stars" class="star">&#9733;</label>
+                            <input type="radio" id="2-stars" name="rating" value="2" />
+                            <label for="2-stars" class="star">&#9733;</label>
+                            <input type="radio" id="1-star" name="rating" value="1" />
+                            <label for="1-star" class="star">&#9733;</label>
+                        </div>
+                    </div>
+
+                    <input type="text" id="pri_min" name="pri_min" style="opacity: 0; height: 0; position: absolute;" value="">
+                    <input type="hidden" name="article_id" value="{{ $article->id }}">
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <x-form.input type="text" :req="true" label="Name" id="name" name="name" placeholder="John Doe"
+                            value="{{ old('name') }}" class="modern-input" />
+                        <x-form.input type="text" :req="true" label="Email" id="email" name="email" placeholder="john@example.com"
+                            value="{{ old('email') }}" class="modern-input" />
+                    </div>
+
+                    <x-form.textarea label="Comment" :req="true" id="description" name="description" placeholder="Share your thoughts on this article..."
+                        value="{{ old('description') }}" rows="4" class="modern-input" />
+
+                    <div class="flex flex-col md:flex-row items-center justify-between gap-8 pt-6">
+                        <div class="g-recaptcha" id="feedback-recaptcha" data-sitekey="{{ config('services.recaptcha.site_key') }}"></div>
+                        <button type="submit" class="group relative px-3 py-2 bg-accent hover:bg-white text-white hover:text-accent font-bold rounded-2xl transition-all duration-300 flex items-center gap-1 overflow-hidden btn_submit">
+                            <span class="relative z-10">Submit Review</span>
+                            <i class="fa-solid fa-paper-plane relative z-10 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
+                        </button>
+                    </div>
+                </x-form.wrapper>
+            </div>
+        </div>
     </div>
 @endsection
 
@@ -135,22 +160,24 @@
                 }
                 const formattedDate = formatDate(review.created_at);
 
+                const initials = review.name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
                 let row = `
-                    <div class="card mt-2 mx-5 py-3 px-5" id="review_card_${review.id}" style="background: #000; color: #747884; box-shadow: #8a2e2e82 4px 19px 151px;">
-                        <div class="d-flex mb-2">
-                            <span style="color: #ffc700">
-                                ${ratingHtml}
-                            </span>
-                        </div>
-                        <div class="d-flex flex-wrap align-items-center row1" data-id="${review.id}">
-                            <img src="https://www.freeiconspng.com/thumbs/person-icon/person-icon-8.png" height="40px" width="40px" alt="">
-                            <div class="ms-1">
-                                <span class="d-flex flex-start">${review.name}</span>
-                                <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${review.email}</span>
+                    <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-2 transition-all duration-300 hover:border-accent/30 shadow-lg" id="review_card_${review.id}">
+                        <div class="flex justify-between items-start">
+                            <div class="flex items-center gap-2">
+                                <div class="w-10 h-10 rounded-full bg-accent/10 border border-accent/20 flex items-center justify-center text-accent font-bold text-xs">
+                                    ${initials}
+                                </div>
+                                <div>
+                                    <h4 class="text-heading font-bold text-sm mb-0.5">${review.name}</h4>
+                                    <p class="text-body/40 text-[10px] font-mono uppercase tracking-wider">${formattedDate}</p>
+                                </div>
                             </div>
-                            <div class="ms-auto">${formattedDate}</div>
+                            <div class="flex text-yellow-500 text-[10px] bg-yellow-500/5 px-2.5 py-1 rounded-full">
+                                ${ratingHtml}
+                            </div>
                         </div>
-                        <p class="d-flex mt-2 review_desc" id="review_${review.id}">${review.description}</p>
+                        <p class="text-body/70 leading-relaxed text-sm review_desc" id="review_${review.id}">${review.description}</p>
                     </div>
                     `;
 
@@ -212,23 +239,24 @@
                             }
 
                             const formattedDate = formatDate(review.created_at);
-
+                            const initials = review.name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
                             let row = `
-                            <div class="card mt-2 mx-5 py-3 px-5" id="review_card" style="background: #000; color: #747884; box-shadow: #8a2e2e82 4px 19px 151px; border-radius: 10px;">
-                                <div class="d-flex mb-2">
-                                    <span style="color: #ffc700">
-                                        ${ratingHtml}
-                                    </span>
-                                </div>
-                                <div class="d-flex flex-wrap align-items-center row1" data-id="${review.id}">
-                                    <img src="https://www.freeiconspng.com/thumbs/person-icon/person-icon-8.png" height="40px" width="40px" alt="">
-                                    <div class="ms-1">
-                                        <span class="d-flex flex-start">${review.name}</span>
-                                        <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${review.email}</span>
+                            <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-4 transition-all duration-300 hover:border-accent/30 shadow-lg" id="review_card_${review.id}">
+                                <div class="flex justify-between items-start">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-10 h-10 rounded-full bg-accent/10 border border-accent/20 flex items-center justify-center text-accent font-bold text-xs">
+                                            ${initials}
+                                        </div>
+                                        <div>
+                                            <h4 class="text-heading font-bold text-sm mb-0.5">${review.name}</h4>
+                                            <p class="text-body/40 text-[10px] font-mono uppercase tracking-wider">${formattedDate}</p>
+                                        </div>
                                     </div>
-                                    <div class="ms-auto">${formattedDate}</div>
+                                    <div class="flex text-yellow-500 text-[10px] bg-yellow-500/5 px-2.5 py-1 rounded-full">
+                                        ${ratingHtml}
+                                    </div>
                                 </div>
-                                <p class="d-flex mt-2 review_desc" id="review">${review.description}</p>
+                                <p class="text-body/70 leading-relaxed text-sm review_desc" id="review_${review.id}">${review.description}</p>
                             </div>
                             `;
                             tableBody.append(row);

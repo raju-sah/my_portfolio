@@ -23,7 +23,11 @@ class FrontArticleController extends Controller
         $views  = $analyticsService->pageViews($this->period, $article->name);
 
         $article = Article::query()
-            ->select(['id', 'name', 'description', 'image', 'slug', 'views', 'min_read', 'about', 'created_at'])->where('slug', $slug)->where('status', 1)->firstOrFail();
+            ->select(['id', 'name', 'description', 'image', 'slug', 'views', 'min_read', 'about', 'created_at'])
+            ->where('slug', $slug)
+            ->where('status', 1)
+            ->withAvgRating()
+            ->firstOrFail();
         return  view('frontend.article.article_single_page', [
             'article' => $article,
             'views' => $views

@@ -78,15 +78,7 @@ class WebsiteController extends Controller
         $data = $request->safe()->except('g-recaptcha-response');
         $contact = Contact::create($data);
 
-        $users = User::where('user_type', UserType::Admin->value)->get();
-        Notification::send($users, new ContactedNotification($contact));
-
-        $data['created_at'] = now()->format('dS M Y g:i A');
-
-        $socialSetting = SocialSetting::first();
-        $mails = $socialSetting->email ? explode(',', $socialSetting->email) : ['rajusah0318@gmail.com', 'try.rajusah@gmail.com'];
-        $ccmails = ['rajucode7@gmail.com'];
-        Mail::to($mails)->cc($ccmails)->send(new ContactEmail($data));
+        \App\Jobs\ProcessContactJob::dispatch($contact, $data);
 
         return response()->json(['message' => 'Thank you for reaching Out! I will get back to you soon😊. Peace Out✌️.'], 201);
     }
@@ -95,16 +87,8 @@ class WebsiteController extends Controller
     {
         $data = $request->safe()->except('g-recaptcha-response');
         $review = Review::create($data);
-        $users = User::where('user_type', UserType::Admin->value)->get();
-        Notification::send($users, new ReviewNotification($review));
 
-        $data['created_at'] = now()->format('dS M Y g:i A');
-        $data['article_name'] = Article::where('id', $request->article_id)->value('name');
-
-        $socialSetting = SocialSetting::first();
-        $mails = $socialSetting->email ? explode(',', $socialSetting->email) : ['rajusah0318@gmail.com', 'try.rajusah@gmail.com'];
-        $ccmails = ['rajucode7@gmail.com'];
-        Mail::to($mails)->cc($ccmails)->queue(new ReviewEmail($data));
+        \App\Jobs\ProcessReviewJob::dispatch($review, $data);
 
         return response()->json([
             'message' => 'Thanks for your feedback!',

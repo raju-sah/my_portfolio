@@ -16,13 +16,23 @@ class LLMService
 
     public function embed(string $text): array
     {
+        // try OpenRouter first (which also has an OpenAI fallback internally)
         try {
             return $this->driver->embed($text);
         } catch (\Exception $e) {
-            Log::error("Embedding failed: " . $e->getMessage());
+            Log::warning("Primary embedding (OpenRouter/OpenAI) failed: " . $e->getMessage());
+        }
+
+        // Fallback to Hugging Face (Free)
+        try {
+            Log::info("Attempting Hugging Face fallback for embedding...");
+            return (new \App\Services\LLM\Drivers\HuggingFaceDriver())->embed($text);
+        } catch (\Exception $e) {
+            Log::error("All embedding methods failed.");
             throw $e;
         }
     }
+
 
     public function chat(array $messages): string
     {

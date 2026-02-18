@@ -14,6 +14,9 @@ class Kernel extends ConsoleKernel
     {
         // sync knowledge base every week (Monday at midnight)
         $schedule->command('rag:sync-all')->weekly();
+
+        // Process queued jobs every 30 minutes
+        $schedule->command('queue:work --stop-when-empty')->everyThirtyMinutes();
     }
 
 
