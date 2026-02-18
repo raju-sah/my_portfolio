@@ -13,8 +13,8 @@ class HuggingFaceDriver implements LLMInterface
 
     public function __construct()
     {
-        $this->apiKey = env('HUGGING_FACE_API_KEY', '');
-        $this->model = env('HUGGING_FACE_EMBEDDING_MODEL', 'sentence-transformers/all-MiniLM-L6-v2');
+        $this->apiKey = config('services.huggingface.api_key', '');
+        $this->model = config('services.huggingface.embedding_model', 'sentence-transformers/all-MiniLM-L6-v2');
     }
 
     public function embed(string $text): array

@@ -33,7 +33,7 @@ class IngestionService
         // Call Firecrawl API (POST /v0/scrape)
         // Note: In production you'd use a dedicated client or the command line tool if available.
         // We use Laravel's Http client here for simplicity.
-        $apiKey = env('FIRECRAWL_API_KEY');
+        $apiKey = config('services.firecrawl.api_key');
         if (!$apiKey) {
             Log::warning("Skipping Website ingestion: FIRECRAWL_API_KEY not set");
             return;

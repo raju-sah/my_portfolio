@@ -41,4 +41,13 @@ return [
         'preferred_models' => env('OPENROUTER_PREFERRED_MODELS', ''),
     ],
 
+    'firecrawl' => [
+        'api_key' => env('FIRECRAWL_API_KEY'),
+    ],
+
+    'huggingface' => [
+        'api_key' => env('HUGGING_FACE_API_KEY'),
+        'embedding_model' => env('HUGGING_FACE_EMBEDDING_MODEL', 'sentence-transformers/all-MiniLM-L6-v2'),
+    ],
+
 ];
