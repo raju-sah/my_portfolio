@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\frontend;
 
 use App\Enums\UserType;
+use App\Enums\ArticleType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ContactRequest;
 use App\Http\Requests\Admin\ReviewStoreRequest;
@@ -56,9 +57,19 @@ class WebsiteController extends Controller
                 'articles' => Article::query()
                     ->select(['id', 'name', 'description', 'image', 'slug', 'views', 'min_read', 'about', 'created_at'])
                     ->where('status', 1)
+                    ->articles()
                     ->withAvgRating()
                     ->orderBy('reviews_avg_rating', 'desc')
                     ->limit(5)
+                    ->get(),
+
+                'stories' => Article::query()
+                    ->select(['id', 'name', 'description', 'image', 'slug', 'views', 'min_read', 'about', 'created_at'])
+                    ->where('status', 1)
+                    ->stories()
+                    ->withAvgRating()
+                    ->orderBy('reviews_avg_rating', 'desc')
+                    ->limit(4)
                     ->get(),
         ]);
     }

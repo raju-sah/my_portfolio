@@ -30,6 +30,19 @@
                         <x-form.input type="text" col="6" :req="true" label="about" id="about"
                             name="about" value="{{ $article->about }}" />
                     </x-form.row>
+                    <x-form.row>
+                        <div class="col-md-6">
+                            <label class="form-label">Type <span class="text-danger">*</span></label>
+                            <select name="type" id="type" class="form-select" required>
+                                @foreach (\App\Enums\ArticleType::cases() as $type)
+                                    <option value="{{ $type->value }}"
+                                        {{ old('type', $article->type?->value) === $type->value ? 'selected' : '' }}>
+                                        {{ $type->label() }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </x-form.row>
                     <x-form.textarea label="Description" :req="true" id="description" name="description"
                         value="{!! $article->description !!}" rows="5" cols="5" />
 

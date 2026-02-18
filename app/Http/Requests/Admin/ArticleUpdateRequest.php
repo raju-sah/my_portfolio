@@ -22,6 +22,7 @@ class ArticleUpdateRequest extends FormRequest
             'about'=>'required|string',
             'min_read'=>'required|integer',
             'display_order'=>'required|integer',
+            'type'=>'required|string|in:article,story',
             'image' => 'nullable|image|mimes:' . $imageConfig['mime_types'] . '|max:' . $imageConfig['max_size'],
             'status'=>'boolean',
             ];

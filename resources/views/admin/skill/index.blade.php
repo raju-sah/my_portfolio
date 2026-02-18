@@ -14,6 +14,49 @@
             background-color: #f4f4f4;
             border: 2px dashed #696cff;
         }
+
+        /* Modern Pill Tabs */
+        .admin-type-tabs {
+            border-bottom: none !important;
+            background: rgba(0, 0, 0, 0.05);
+            padding: 5px;
+            border-radius: 50px;
+            display: inline-flex;
+            margin-bottom: 2rem;
+        }
+
+        .admin-type-tabs .nav-item {
+            margin-bottom: 0;
+        }
+
+        .admin-type-tabs .nav-link {
+            border: none !important;
+            border-radius: 50px !important;
+            padding: 8px 25px !important;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #6c757d !important;
+        }
+
+        .admin-type-tabs .nav-link.active {
+            background: #696cff !important;
+            color: #fff !important;
+            box-shadow: 0 4px 15px rgba(105, 108, 255, 0.3) !important;
+        }
+
+        .admin-type-tabs .badge-count {
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 20px;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .admin-type-tabs .nav-link.active .badge-count {
+            background: rgba(255, 255, 255, 0.2);
+        }
     </style>
 @endpush
 
@@ -30,19 +73,22 @@
                     </a>
                 </div>
 
-                <!-- Nav Tabs -->
-                <ul class="nav nav-tabs nav-fill mb-3" id="skillTabs" role="tablist">
-                    @foreach (\App\Enums\SkillDomain::cases() as $domain)
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link {{ $loop->first ? 'active' : '' }}" id="tab-{{ $domain->value }}"
-                                data-bs-toggle="tab" data-bs-target="#content-{{ $domain->value }}" type="button"
-                                role="tab">
-                                {{ $domain->label() }}
-                                <span class="badge bg-secondary ms-1">{{ count($skills[$domain->value] ?? []) }}</span>
-                            </button>
-                        </li>
-                    @endforeach
-                </ul>
+                {{-- Nav Tabs Centered --}}
+                <div class="d-flex justify-content-center">
+                    <ul class="nav nav-tabs admin-type-tabs" id="skillTabs" role="tablist">
+                        @foreach (\App\Enums\SkillDomain::cases() as $domain)
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link {{ $loop->first ? 'active' : '' }}" id="tab-{{ $domain->value }}"
+                                    data-bs-toggle="tab" data-bs-target="#content-{{ $domain->value }}" type="button"
+                                    role="tab">
+                                    <i class='bx bx-category'></i>
+                                    {{ $domain->label() }}
+                                    <span class="badge-count">{{ count($skills[$domain->value] ?? []) }}</span>
+                                </button>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
 
                 <!-- Tab Content -->
                 <div class="tab-content" id="skillTabsContent">

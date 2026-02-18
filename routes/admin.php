@@ -52,6 +52,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'Admin', 'as' => 'admin.'], fu
     Route::resource('backgrounds', BackgroundController::class);
 
     Route::get('status-change-article', [ArticleController::class, 'changeStatus'])->name('status-change-article');
+    Route::post('update-article-order', [ArticleController::class, 'updateOrder'])->name('articles.update-order');
     Route::resource('articles', ArticleController::class);
 
     Route::get('status-change-review', [ReviewController::class, 'changeStatus'])->name('status-change-review');

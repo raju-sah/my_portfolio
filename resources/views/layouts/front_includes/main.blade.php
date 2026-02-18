@@ -40,7 +40,7 @@
                 });
             });
 
-            // Smoothing the transition between background and text colors using Scrub
+            // Smoothing the transition between background and text colors
             const updateAllSections = () => {
                 const isLight = document.documentElement.getAttribute('data-theme') === 'light';
                 
@@ -55,19 +55,35 @@
                     
                     if (!bg || !text) return;
 
-                    // Faster scrub (0.5s lag instead of 1.5s) and better trigger points
-                    gsap.to(['body', document.documentElement], {
-                        backgroundColor: bg,
-                        color: text,
-                        '--bg-primary': bg,
-                        '--text-heading': text,
-                        '--text-body': text,
-                        scrollTrigger: {
-                            id: `theme-${i}`,
-                            trigger: section,
-                            start: 'top 65%', // Start transition when section is well into view
-                            end: 'top 35%',   // End transition faster
-                            scrub: 0.5,
+                    ScrollTrigger.create({
+                        id: `theme-${i}`,
+                        trigger: section,
+                        start: 'top 70%', // Start transition earlier
+                        end: 'bottom 30%', // End transition later to ensure overlap
+                        onToggle: self => {
+                            if (self.isActive) {
+                                gsap.to(['body', document.documentElement], {
+                                    backgroundColor: bg,
+                                    color: text,
+                                    '--bg-primary': bg,
+                                    '--text-heading': text,
+                                    '--text-body': text,
+                                    duration: 0.8,
+                                    overwrite: 'auto',
+                                    ease: "power2.inOut"
+                                });
+                            }
+                        },
+                        onEnter: () => {
+                            if (i === 0 && window.scrollY < 100) {
+                                gsap.set(['body', document.documentElement], {
+                                    backgroundColor: bg,
+                                    color: text,
+                                    '--bg-primary': bg,
+                                    '--text-heading': text,
+                                    '--text-body': text
+                                });
+                            }
                         }
                     });
                 });

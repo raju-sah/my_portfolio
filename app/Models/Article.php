@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ArticleType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -16,6 +17,10 @@ class Article extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'type' => ArticleType::class,
+    ];
+
     public function getImagePathAttribute(): string
     {
         return $this->image ? asset('uploaded-images/article-images/' . $this->image) : 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg';
@@ -24,6 +29,16 @@ class Article extends Model
     public function ipAddresses(): MorphMany
     {
         return $this->morphMany(IpAddress::class, 'ip_addressable');
+    }
+
+    public function scopeArticles($query)
+    {
+        return $query->where('type', ArticleType::Article);
+    }
+
+    public function scopeStories($query)
+    {
+        return $query->where('type', ArticleType::Story);
     }
 
     public function scopeWithAvgRating($query)

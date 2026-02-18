@@ -17,7 +17,10 @@
                 <a href="{{ route('projects.all') }}">Projects</a>
             </li>
             <li class="nav-tooltip-wrap" data-tooltip="📝 My thoughts... at 3 AM with coffee">
-                <a href="{{ route('articles.all') }}">Articles</a>
+                <a href="{{ route('articles.all') }}?tab=article">Articles</a>
+            </li>
+            <li class="nav-tooltip-wrap" data-tooltip="📖 Tales that make sense (hopefully)">
+                <a href="{{ route('articles.all') }}?tab=story">Stories</a>
             </li>
             <!-- <li class="nav-tooltip-wrap valentine-menu-item {{ request()->routeIs('valentine.*') ? 'active' : '' }}" id="valentineNavItem" data-tooltip="💕 Find your Valentine... maybe?">
                 <a href="{{ route('valentine.index') }}">Valentine</a>

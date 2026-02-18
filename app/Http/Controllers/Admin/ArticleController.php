@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use App\Enums\ArticleType;
 use App\Models\Article;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ArticleRequest;
@@ -18,35 +19,26 @@ class ArticleController extends Controller
     use StatusTrait, DatatableTrait,UploadFileTrait;
     public function index(Request $request)
     {
-        if ($request->ajax()) {
-            $query = Article::query()        // this is working because it has query() and other does not work because those doesnot have query()
-            ->select(['id', 'name', 'min_read', 'about', 'display_order', 'views', 'status'])
-            ->latest();
-    
-            $config = [
-                'additionalColumns' => [
-                    'min_read' => function ($row) {
-                        return $row->min_read . ' min';
-                    },
-                ],
-                'disabledButtons' => [],
-                'model' => 'Article',
-                'rawColumns' => ['min_read'],
-                'sortable' => false,
-                'routeClass' => null,
-            ];
-    
-            return $this->getDataTable($request, $query, $config)->make(true);
-        }
-
-        // foreach ($articles as $article) {
-        //     $article->about = explode(',', $article->about);
-        //     $article->min_read = $article->min_read . ' min';
-        // }
+        $articles = Article::query()
+            ->select(['id', 'name', 'min_read', 'about', 'display_order', 'views', 'status', 'type'])
+            ->orderBy('display_order')
+            ->get()
+            ->groupBy(fn($article) => $article->type->value);
 
         return view('admin.article.index', [
-            'columns' => ['name', 'min_read', 'about', 'display_order', 'views', 'status'],
+            'articles' => $articles,
+            'articleCount' => Article::articles()->count(),
+            'storyCount'   => Article::stories()->count(),
         ]);
+    }
+
+    public function updateOrder(Request $request): RedirectResponse
+    {
+        $order = $request->input('order');
+        foreach ($order as $index => $id) {
+            Article::where('id', $id)->update(['display_order' => $index + 1]);
+        }
+        return redirect()->back()->with('success', 'Order Updated Successfully!');
     }
 
     public function create(): View
