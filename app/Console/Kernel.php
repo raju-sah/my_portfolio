@@ -12,8 +12,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // sync knowledge base every week (Monday at midnight)
-        $schedule->command('rag:sync-all')->weekly();
+        // sync knowledge base every day (at midnight)
+        $schedule->command('rag:sync-all')->dailyAt('00:00');
 
         // Process queued jobs every 30 minutes
         $schedule->command('queue:work --stop-when-empty')->everyThirtyMinutes();
