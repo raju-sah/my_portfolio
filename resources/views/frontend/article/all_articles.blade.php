@@ -182,7 +182,6 @@
         justify-content: center;
         gap: 8px;
         font-weight: 600;
-        margin-top: auto;
     }
 
 </style>
@@ -200,8 +199,8 @@
                     @csrf
                     <input type="hidden" name="tab" id="active_tab_input" value="{{ request('tab', 'article') }}">
                     
-                    <div class="row g-2">
-                        <div class="col-lg-2 col-md-4">
+                    <div class="row g-2 align-items-end">
+                        <div class="col-lg-3 col-md-4">
                             <div class="filter-group">
                                 <label class="filter-label">Filter By</label>
                                 <select id="common_filter" class="form-select" name="common_filter">
@@ -216,7 +215,7 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-4 col-md-8">
+                        <div class="col-lg-5 col-md-8">
                             <div class="filter-group">
                                 <label class="filter-label">Date Range</label>
                                 <div id="reportrange" name="reportrange" class="form-select">
@@ -228,21 +227,7 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-1 col-md-3">
-                            <div class="filter-group">
-                                <label class="filter-label">Order</label>
-                                <select id="asc_desc_filter" class="form-select" name="asc_desc_filter">
-                                    @foreach (\App\Enums\AscDescFilterType::cases() as $ascDesc)
-                                    <option value="{{ $ascDesc->value }}"
-                                        {{ old('asc_desc_filter', $request->asc_desc_filter) == $ascDesc->value ? 'selected' : '' }}>
-                                        {{ $ascDesc->name }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-2 col-md-3">
+                        <div class="col-lg-2 col-md-6">
                             <div class="filter-group">
                                 <label class="filter-label">Per Page</label>
                                 <select id="pagination_filter" class="form-select" name="pagination_filter">
@@ -256,9 +241,9 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-3 col-md-6 d-flex">
+                        <div class="col-lg-2 col-md-6">
                             <button type="submit" class="btn filter-btn">
-                                <i class="fa-solid fa-sliders"></i> Apply Filters
+                                <i class="fa-solid fa-sliders"></i> Filter
                             </button>
                         </div>
                     </div>
@@ -299,8 +284,6 @@
             id="tab-articles" role="tabpanel">
 
             @include('frontend.article.articles', ['all_articles' => $all_articles])
-            @include('frontend.article.default_filter')
-            @include('frontend.article.common_filter')
 
         </div>
 

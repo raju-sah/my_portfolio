@@ -1,7 +1,4 @@
-@if(is_null($request->common_filter) && is_null($request->pagination_filter))
 @if ($all_articles->isNotEmpty())
-<!-- <h4 class="mx-5">All Articles</h4>
-    <hr> -->
 <div class="row g-4">
     @foreach ($all_articles as $all_article)
     <div class="col-12 col-md-6">
@@ -36,7 +33,5 @@
     @endforeach
 </div>
 @else
-<span style="color: #a6adbb">No Articles Found
-
-    @endif
-    @endif
+<span style="color: #a6adbb" class="mx-3 mt-4 d-block">No Articles Found</span>
+@endif

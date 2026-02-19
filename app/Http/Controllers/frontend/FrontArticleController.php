@@ -36,67 +36,60 @@ class FrontArticleController extends Controller
         ]);
     }
 
-    public function allArticleFilter(ArticleFilterRequest $request, Article $article, AnalyticsService $analyticsService): View
+    public function allArticleFilter(ArticleFilterRequest $request, AnalyticsService $analyticsService): View
     {
-        $views  = $analyticsService->pageViews($this->period, $article->name);
+        // For general "Experience" views (passing fake article for now as per previous logic)
+        $views = $analyticsService->pageViews($this->period, 'Articles');
 
-        $startDate = Carbon::parse($request->from_date)->startOfDay();
-        $endDate   = Carbon::parse($request->to_date)->endOfDay();
+        $from = $request->from_date ? Carbon::parse($request->from_date)->startOfDay() : null;
+        $to = $request->to_date ? Carbon::parse($request->to_date)->endOfDay() : null;
+        $order = $request->asc_desc_filter ?? 'desc';
+        $perPage = $request->pagination_filter ?? 10;
 
-        // Base query for articles (type = article)
         $articleQuery = Article::query()
-            ->select(['id', 'name', 'description', 'image', 'slug', 'min_read', 'about', 'created_at'])
+            ->select(['id', 'name', 'description', 'image', 'slug', 'min_read', 'about', 'created_at', 'views'])
             ->where('status', 1)
             ->articles()
             ->withAvgRating();
 
-        // Base query for stories (type = story)
         $storyQuery = Article::query()
-            ->select(['id', 'name', 'description', 'image', 'slug', 'min_read', 'about', 'created_at'])
+            ->select(['id', 'name', 'description', 'image', 'slug', 'min_read', 'about', 'created_at', 'views'])
             ->where('status', 1)
             ->stories()
             ->withAvgRating();
 
-        $most_rated    = collect();
-        $most_viewed   = collect();
-        $default_result = collect();
-
-        switch ($request->common_filter) {
-            case CommonFilterType::Views->value:
-                $most_viewed = $articleQuery
-                    ->clone()
-                    ->orderBy('views', $request->asc_desc_filter)
-                    ->whereBetween('created_at', [$startDate, $endDate])
-                    ->take($request->pagination_filter === '-1' ? $articleQuery->count() : $request->pagination_filter)
-                    ->get();
-                break;
-            case CommonFilterType::Ratings->value:
-                $most_rated = $articleQuery
-                    ->clone()
-                    ->orderBy('reviews_avg_rating', $request->asc_desc_filter)
-                    ->whereBetween('created_at', [$startDate, $endDate])
-                    ->take($request->pagination_filter === '-1' ? $articleQuery->count() : $request->pagination_filter)
-                    ->get();
-                break;
+        // Apply Common Filter (Ordering)
+        if ($request->common_filter === CommonFilterType::Views->value) {
+            $articleQuery->orderBy('views', $order);
+            $storyQuery->orderBy('views', $order);
+        } elseif ($request->common_filter === CommonFilterType::Ratings->value) {
+            $articleQuery->orderBy('reviews_avg_rating', $order);
+            $storyQuery->orderBy('reviews_avg_rating', $order);
+        } else {
+            $articleQuery->orderBy('created_at', $order);
+            $storyQuery->orderBy('created_at', $order);
         }
 
-        if ($request->has('pagination_filter') && $request->has('asc_desc_filter')) {
-            $default_result = $articleQuery
-                ->clone()
-                ->orderBy('created_at', $request->asc_desc_filter)
-                ->whereBetween('created_at', [$startDate, $endDate])
-                ->take($request->pagination_filter === '-1' ? $articleQuery->count() : $request->pagination_filter)
-                ->get();
+        // Apply Date Range
+        if ($from && $to) {
+            $articleQuery->whereBetween('created_at', [$from, $to]);
+            $storyQuery->whereBetween('created_at', [$from, $to]);
+        }
+
+        // Handle Pagination
+        if ($perPage == -1) {
+            $all_articles = $articleQuery->get();
+            $all_stories = $storyQuery->get();
+        } else {
+            $all_articles = $articleQuery->take($perPage)->get();
+            $all_stories = $storyQuery->take($perPage)->get();
         }
 
         return view('frontend.article.all_articles', [
-            'request'         => $request,
-            'most_rated'      => $most_rated,
-            'most_viewed'     => $most_viewed,
-            'default_results' => $default_result,
-            'all_articles'    => $articleQuery->clone()->orderBy('created_at', 'desc')->get(),
-            'all_stories'     => $storyQuery->clone()->orderBy('created_at', 'desc')->get(),
-            'views'           => $views,
+            'request'      => $request,
+            'all_articles' => $all_articles,
+            'all_stories'  => $all_stories,
+            'views'        => $views,
         ]);
     }
 }

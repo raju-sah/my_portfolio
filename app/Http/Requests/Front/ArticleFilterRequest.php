@@ -29,7 +29,7 @@ class ArticleFilterRequest extends FormRequest
             'start_date' => ['nullable', 'date'],
             'end_date' => ['nullable', 'date'],
             'common_filter' => ['nullable', new Enum(CommonFilterType::class)],
-            'asc_desc_filter' => [new Enum(AscDescFilterType::class)],
+            'asc_desc_filter' => ['nullable', new Enum(AscDescFilterType::class)],
             'pagination_filter' => [new Enum(PaginationFilterType::class)],
         ];
     }
