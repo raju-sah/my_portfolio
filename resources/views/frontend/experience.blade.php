@@ -26,9 +26,9 @@
                     <!-- Timeline Dot -->
                     <span class="hidden md:block absolute -left-[5px] top-2 w-2.5 h-2.5 rounded-full bg-accent ring-4 ring-bg-primary"></span>
 
-                    <a href="{{ optional($experience)->web_url }}" target="_blank" class="flex items-center gap-3 mb-4 group/link">
+                    <a href="{{ optional($experience)->web_url }}" target="_blank" class="flex items-center gap-3 mb-4 group/link no-underline text-decoration-none">
                         <img src="{{ optional($experience)->image_path }}" alt="{{ optional($experience)->name }}" class="w-8 h-8 rounded object-cover" />
-                        <h6 class="text-xl font-bold text-heading group-hover/link:text-accent transition-colors">{{ optional($experience)->name }}</h6>
+                        <h6 class="text-xl font-bold text-heading transition-colors">{{ optional($experience)->name }}</h6>
                         <svg class="w-4 h-4 text-body opacity-0 group-hover/link:opacity-100 transition-all -translate-x-2 group-hover/link:translate-x-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                         </svg>
