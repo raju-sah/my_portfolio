@@ -29,7 +29,8 @@ class ExperienceController extends Controller
 
     public function store(ExperienceRequest $request) : RedirectResponse
     {
-        $data = $request->safe()->except('image');
+        $data = $request->safe()->except('image', 'tags');
+        $data['tags'] = json_encode($request->tags);
     
         // Explicitly cast 'curently_here' to boolean
         $data['curently_here'] = $request->has('curently_here');
@@ -54,7 +55,8 @@ if ($request->hasFile('image')) {
 
     public function update(ExperienceUpdateRequest $request, Experience $experience) : RedirectResponse
     {
-        $data = $request->safe()->except('image');
+        $data = $request->safe()->except('image', 'tags');
+        $data['tags'] = json_encode($request->tags);
     
         // Explicitly cast 'curently_here' to boolean
         $data['curently_here'] = $request->has('curently_here');

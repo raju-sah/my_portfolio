@@ -49,7 +49,7 @@ class WebsiteController extends Controller
                     ->groupBy(fn($skill) => optional($skill->skill_domain)->value),
 
                 'experiences' => Experience::query()
-                    ->select(['id', 'name', 'description', 'image', 'web_url', 'role', 'location', 'date_from', 'date_to', 'curently_here'])
+                    ->select(['id', 'name', 'description', 'image', 'web_url', 'role', 'location', 'date_from', 'date_to', 'curently_here', 'tags'])
                     ->where('status', 1)
                     ->orderBy('display_order')
                     ->get(),

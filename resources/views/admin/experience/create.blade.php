@@ -58,9 +58,27 @@
 
 
 
+                    <div class="d-flex" style="max-width: 45%">
+                        <x-form.input type="text" :req="true" label="Tags" id="tags" name="tags[]"
+                            placeholder="Tag Name" value="{{ old('tags[]') }}" />
+                        <span class="ms-2  rajuspan btn btn-success js-add--field-row"
+                            style="margin-top: 34px; height: 38.95px;"><i class="bx bx-plus">Add</i></span>
+                    </div>
+
+                    <div id="form-variations-list"></div>
+
                     <x-form.button class="btn btn-sm btn-dark" type="submit"><i class='bx bx-save bx-xs'></i>
                         Save</x-form.button>
                 </x-form.wrapper>
+
+                <template id="template-form">
+                    <div class="input-container d-flex mt-1" style="max-width: 50%;">
+
+                        <input type="text" :req="true" name="tags[]" class="form-control ms-2 me-2"
+                            placeholder="Tag Name" style="height: 38.95px;
+      margin-top: 34px;">
+                    </div>
+                </template>
 
             </div>
         </div>
@@ -73,4 +91,5 @@
     @include('_helpers.slugify', ['title' => 'name'])
     @include('_helpers.ck_editor', ['textarea_id' => 'description'])
     @include('_helpers.visibility_when_checked')
+    @include('_helpers.repeater')
 @endpush

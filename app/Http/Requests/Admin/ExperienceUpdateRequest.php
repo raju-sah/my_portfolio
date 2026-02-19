@@ -27,6 +27,7 @@ class ExperienceUpdateRequest extends FormRequest
             'date_to' => 'nullable|string',
             'status' => 'boolean',
             'currently_here' => 'boolean',
+            'tags' => 'nullable|array',
         ];
     }
 }

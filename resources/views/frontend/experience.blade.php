@@ -125,16 +125,14 @@
 
                     {{-- Tech Tags --}}
                     <div class="station-tech-tags">
-                        {{-- In a real app, these would come from the database. --}}
-                        {{-- Here we'll generate some relevant tags for visual modernization. --}}
                         @php
-                        $mockTags = ['GSAP', 'SVG', 'Three.js', 'Blade', 'Tailwind', 'Laravel', 'UI/UX'];
-                        shuffle($mockTags);
-                        $tags = array_slice($mockTags, 0, 3);
+                            $tags = json_decode($experience->tags);
                         @endphp
-                        @foreach($tags as $tag)
-                        <span class="tech-tag">{{ $tag }}</span>
-                        @endforeach
+                        @if ($tags)
+                            @foreach ($tags as $tag)
+                                <span class="tech-tag">{{ $tag }}</span>
+                            @endforeach
+                        @endif
                     </div>
                 </div>
             </div>
