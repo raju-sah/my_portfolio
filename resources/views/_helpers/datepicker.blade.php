@@ -1,7 +1,7 @@
 <script type="text/javascript">
     $(function() {
 
-        const start = moment().subtract(6, 'days');
+        const start = moment().subtract(6, 'months').startOf('month');
         const end = moment();
 
         function cb(start, end, label) {
@@ -43,7 +43,7 @@
             }
         }, cb);
 
-        var defaultLabel = 'Last 7 Days';
+        var defaultLabel = 'Last 6 Months';
         cb(start, end, defaultLabel);
 
     });

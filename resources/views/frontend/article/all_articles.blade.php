@@ -1,9 +1,7 @@
 @extends('layouts.front_master')
 @push('front_css')
 <style>
-    .row {
-        align-items: end !important;
-    }
+
 
     .article .form-select {
         background-color: var(--bg-card) !important;
@@ -131,6 +129,62 @@
         transform: translateY(-2px);
     }
 
+    /* Modern Filter Bar */
+    .filter-container {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(12px);
+        border: 1px solid color-mix(in srgb, var(--text-heading) 10%, transparent);
+        border-radius: 24px;
+        padding: 20px;
+        margin-bottom: 2rem;
+        transition: all 0.3s ease;
+    }
+
+    .filter-container:focus-within {
+        border-color: color-mix(in srgb, var(--accent-color) 40%, transparent);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+
+    .filter-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .filter-label {
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--text-body);
+        opacity: 0.6;
+        margin-left: 4px;
+    }
+
+    .article .form-select, #reportrange {
+        height: 45px;
+        border-radius: 12px !important;
+        padding-left: 12px;
+        padding-right: 12px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+        font-size: 0.9rem;
+    }
+
+    .filter-btn {
+        height: 45px;
+        width: 100%;
+        border-radius: 12px !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-weight: 600;
+        margin-top: auto;
+    }
+
 </style>
 @endpush
 @section('title', 'Articles & Stories')
@@ -139,59 +193,79 @@
 <div class="container-fluid article">
     <br>
     <br>
-    <form id="filter_form" action="{{ route('articles.all') }}" class="mb-3 mx-3" method="GET">
-        @csrf
-        {{-- Preserve active tab across filter submissions --}}
-        <input type="hidden" name="tab" id="active_tab_input" value="{{ request('tab', 'article') }}">
+    <div class="row justify-content-center px-3">
+        <div class="col-xl-10">
+            <div class="filter-container">
+                <form id="filter_form" action="{{ route('articles.all') }}" method="GET">
+                    @csrf
+                    <input type="hidden" name="tab" id="active_tab_input" value="{{ request('tab', 'article') }}">
+                    
+                    <div class="row g-2">
+                        <div class="col-lg-2 col-md-4">
+                            <div class="filter-group">
+                                <label class="filter-label">Filter By</label>
+                                <select id="common_filter" class="form-select" name="common_filter">
+                                    <option value="">Default View</option>
+                                    @foreach (\App\Enums\CommonFilterType::cases() as $common_filter)
+                                    <option value="{{ $common_filter->value }}"
+                                        {{ old('common_filter', $request->common_filter) == $common_filter->value ? 'selected' : '' }}>
+                                        {{ $common_filter->name }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
 
-        <div class="row mx-1 justify-content-center">
-            <div class="col-md-2">
-                <select id="common_filter" class="form-select mb-3" name="common_filter">
-                    <option value="">Select</option>
-                    @foreach (\App\Enums\CommonFilterType::cases() as $common_filter)
-                    <option value="{{ $common_filter->value }}"
-                        {{ old('common_filter', $request->common_filter) == $common_filter->value ? 'selected' : '' }}>
-                        {{ $common_filter->name }}
-                    </option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-md-3 d-flex align-items-end mb-3">
-                <div id="reportrange" name="reportrange" class="form-select" style="cursor: pointer;">
-                    <i class="fa-solid fa-calendar-days"></i>&nbsp;
-                    <span id="date_range_filter" name="date_range_filter"></span>
-                </div>
-                <!-- Hidden input fields to store date range values -->
-                <input type="hidden" id="from_date" name="from_date">
-                <input type="hidden" id="to_date" name="to_date">
-            </div>
-            <div class="col-md-2">
-                <select id="asc_desc_filter" class="form-select mb-3" name="asc_desc_filter">
-                    @foreach (\App\Enums\AscDescFilterType::cases() as $ascDesc)
-                    <option value="{{ $ascDesc->value }}"
-                        {{ old('asc_desc_filter', $request->asc_desc_filter) == $ascDesc->value ? 'selected' : '' }}>
-                        {{ $ascDesc->name }}
-                    </option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-md-2">
-                <select id="pagination_filter" class="form-select mb-3" name="pagination_filter">
-                    @foreach (\App\Enums\PaginationFilterType::cases() as $case)
-                    <option value="{{ $case->value }}"
-                        {{ old('pagination_filter', $request->pagination_filter) == $case->value ? 'selected' : '' }}>
-                        {{ $case->value == -1 ? 'All' : $case->value }}
-                    </option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-md-2 mb-3">
-                <x-form.button class="btn w-50"><i class="fa-solid fa-filter"></i>
-                </x-form.button>
+                        <div class="col-lg-4 col-md-8">
+                            <div class="filter-group">
+                                <label class="filter-label">Date Range</label>
+                                <div id="reportrange" name="reportrange" class="form-select">
+                                    <i class="fa-solid fa-calendar-days me-2 opacity-50"></i>
+                                    <span id="date_range_filter" name="date_range_filter" style="overflow: hidden; text-overflow: ellipsis;"></span>
+                                </div>
+                                <input type="hidden" id="from_date" name="from_date">
+                                <input type="hidden" id="to_date" name="to_date">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-1 col-md-3">
+                            <div class="filter-group">
+                                <label class="filter-label">Order</label>
+                                <select id="asc_desc_filter" class="form-select" name="asc_desc_filter">
+                                    @foreach (\App\Enums\AscDescFilterType::cases() as $ascDesc)
+                                    <option value="{{ $ascDesc->value }}"
+                                        {{ old('asc_desc_filter', $request->asc_desc_filter) == $ascDesc->value ? 'selected' : '' }}>
+                                        {{ $ascDesc->name }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2 col-md-3">
+                            <div class="filter-group">
+                                <label class="filter-label">Per Page</label>
+                                <select id="pagination_filter" class="form-select" name="pagination_filter">
+                                    @foreach (\App\Enums\PaginationFilterType::cases() as $case)
+                                    <option value="{{ $case->value }}"
+                                        {{ old('pagination_filter', $request->pagination_filter) == $case->value ? 'selected' : '' }}>
+                                        {{ $case->value == -1 ? 'All' : $case->value }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 d-flex">
+                            <button type="submit" class="btn filter-btn">
+                                <i class="fa-solid fa-sliders"></i> Apply Filters
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
-
-    </form>
+    </div>
 
     {{-- ── Type Tabs ── --}}
     <div class="d-flex justify-content-center mt-4">
@@ -237,37 +311,36 @@
             @if ($all_stories->isNotEmpty())
             <!-- <h4 class="mx-5 mt-4">All Stories</h4>
             <hr> -->
-            <div class="d-flex flex-wrap justify-content-center align-items-center">
+            <div class="row g-4">
                 @foreach ($all_stories as $story)
-                <div class="card article-card col-11 col-sm-11 col-md-6 mb-4 mx-2 overflow-hidden">
-                    <a href="{{ route('article.detail', optional($story)->slug) }}" class="block overflow-hidden mb-3" style="height: 220px; border-radius: 18px;">
-                        <img src="{{ $story->image_path }}" alt="{{ $story->name }}" class="w-100 h-100 object-fit-cover transition-transform hover-scale-110" style="transition: transform 0.5s ease;">
-                    </a>
-                    <!-- <span class="badge bg-success mb-2" style="width:fit-content">Story</span> -->
-                    <h6 class="card-title">{{ optional($story)->name }}</h6>
-                    <div class="d-flex mb-2">
-                        <span style="color: #ffc700">
-                            @if (optional($story)->reviews_avg_rating === 0)
-                            <span>No review yet</span>
-                            @else
-                            {!! str_repeat('<i class="fa-solid fa-star"></i>', optional($story)->reviews_avg_rating) !!}
-                            @endif
-                        </span>
+                <div class="col-12 col-md-6">
+                    <div class="card article-card h-100 overflow-hidden">
+                        <a href="{{ route('article.detail', optional($story)->slug) }}" class="block overflow-hidden mb-3" style="height: 220px; border-radius: 18px;">
+                            <img src="{{ $story->image_path }}" alt="{{ $story->name }}" class="w-100 h-100 object-fit-cover transition-transform hover-scale-110" style="transition: transform 0.5s ease;">
+                        </a>
+                        <h6 class="card-title">{{ optional($story)->name }}</h6>
+                        <div class="d-flex mb-2">
+                            <span style="color: #ffc700">
+                                @if (optional($story)->reviews_avg_rating === 0)
+                                <span>No review yet</span>
+                                @else
+                                {!! str_repeat('<i class="fa-solid fa-star"></i>', optional($story)->reviews_avg_rating) !!}
+                                @endif
+                            </span>
+                        </div>
+                        <div class="card-subtitle d-flex justify-content-start flex-wrap mb-3 text-muted" style="font-size: 0.85rem; gap: 15px;">
+                            <span><i class="fa-regular fa-clock me-1 text-accent"></i> {{ optional($story)->min_read }} min read</span>
+                            <span><i class="fa-regular fa-calendar-alt me-1 text-accent"></i> {{ optional($story)->created_at->format('d M Y') }}</span>
+                            <span><a href="{{ route('article.detail', optional($story)->slug) }}" class="text-muted text-decoration-none"><i class="fa-regular fa-eye me-1 text-primary"></i> {{ $views['screenPageViews'] ?? '0' }} Views</a></span>
+                        </div>
+                        <div class="article-description text-body/70">{!! optional($story)->description !!}</div>
+                        <div class="mb-3 mt-4 d-flex justify-content-start flex-wrap mt-auto">
+                            @foreach (explode(',', optional($story)->about) as $about)
+                            <span class="article-tag">{{ trim($about) }}</span>
+                            @endforeach
+                        </div>
                     </div>
-                    <div class="card-subtitle d-flex justify-content-start flex-wrap mb-3 text-muted" style="font-size: 0.85rem; gap: 15px;">
-                        <span><i class="fa-regular fa-clock me-1 text-accent"></i> {{ optional($story)->min_read }} min read</span>
-                        <span><i class="fa-regular fa-calendar-alt me-1 text-accent"></i> {{ optional($story)->created_at->format('d M Y') }}</span>
-                        <span><a href="{{ route('article.detail', optional($story)->slug) }}" class="text-muted text-decoration-none"><i class="fa-regular fa-eye me-1 text-primary"></i> {{ $views['screenPageViews'] ?? '0' }} Views</a></span>
-                    </div>
-                    <div class="article-description text-body/70">{!! optional($story)->description !!}</div>
-                    <div class="mb-3 mt-4 d-flex justify-content-start flex-wrap">
-                        @foreach (explode(',', optional($story)->about) as $about)
-                        <span class="article-tag">{{ trim($about) }}</span>
-                        @endforeach
-                    </div>
-
                 </div>
-
                 @endforeach
             </div>
             @else

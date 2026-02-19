@@ -18,7 +18,7 @@ class ExperienceController extends Controller
     public function index() : View
     {
         return view('admin.experience.index', [
-            'experiences' => Experience::query()->select(['id','name','role','date_to','curently_here','display_order','date_from','status'])->latest()->get()
+            'experiences' => Experience::query()->select(['id','name','role','date_to','curently_here','display_order','date_from','status'])->orderBy('display_order', 'asc')->get()
         ]);
     }
 
@@ -80,6 +80,15 @@ $experience->deleteImage('image', 'experience-images');
 
     public function changeStatus(Request $request):void {
 $this->changeItemStatus('Experience',$request->id,$request->status);
+}
+
+public function updateOrder(Request $request): RedirectResponse
+{
+    $order = $request->input('order');
+    foreach ($order as $index => $id) {
+        Experience::where('id', $id)->update(['display_order' => $index + 1]);
+    }
+    return redirect()->back()->with('success', 'Order Updated Successfully!');
 }
 
 }

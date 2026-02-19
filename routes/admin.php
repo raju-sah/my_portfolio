@@ -46,6 +46,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'Admin', 'as' => 'admin.'], fu
     Route::resource('skills', SkillController::class);
 
     Route::get('status-change-experience', [ExperienceController::class, 'changeStatus'])->name('status-change-experience');
+    Route::post('update-experience-order', [ExperienceController::class, 'updateOrder'])->name('experiences.update-order');
     Route::resource('experiences', ExperienceController::class);
 
     Route::get('status-change-background', [BackgroundController::class, 'changeStatus'])->name('status-change-background');

@@ -1,3 +1,16 @@
+@push('front_css')
+<style>
+    .article-card-hover {
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    .article-card-hover:hover {
+        transform: translateY(-8px) !important;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3) !important;
+    }
+</style>
+@endpush
+
 {{-- ── Articles Section ── --}}
 <div class="scroll-section relative py-20 transition-all duration-300"
     data-bg="rgb(45, 30, 60)" data-text="rgb(230, 210, 245)"
@@ -8,7 +21,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
             @foreach ($articles as $article)
-            <div class="group bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:border-accent/40 transition-all duration-300 flex flex-col h-full shadow-lg shadow-black/10 overflow-hidden">
+            <div class="article-card-hover group bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:border-accent/40 transition-all duration-300 flex flex-col h-full shadow-lg shadow-black/10 overflow-hidden">
                 <!-- Image -->
                 <a href="{{ route('article.detail', $article->slug) }}" class="relative h-40 mb-6 overflow-hidden rounded-xl block">
                     <img src="{{ $article->image_path }}" alt="{{ $article->name }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
@@ -80,7 +93,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
             @foreach ($stories as $story)
-            <div class="group bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:border-accent/40 transition-all duration-300 flex flex-col h-full shadow-lg shadow-black/10 overflow-hidden">
+            <div class="article-card-hover group bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:border-accent/40 transition-all duration-300 flex flex-col h-full shadow-lg shadow-black/10 overflow-hidden">
                 <!-- Image -->
                 <a href="{{ route('article.detail', $story->slug) }}" class="relative h-40 mb-6 overflow-hidden rounded-xl block">
                     <img src="{{ $story->image_path }}" alt="{{ $story->name }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
