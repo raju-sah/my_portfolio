@@ -1183,9 +1183,546 @@ footer {
     }
 }
 
-/* -------------------------------------------------------------------------- */
-/*                          Scroll Text Reveal Effect                         */
-/* -------------------------------------------------------------------------- */
+/* ========================================================================== */
+/*                       3D ROAD JOURNEY — Experience                         */
+/* ========================================================================== */
+
+.road-container {
+    position: relative;
+    min-height: 600px;
+    perspective: 1200px;
+    perspective-origin: 50% 40%;
+}
+
+/* ---- SVG Road ---- */
+.road-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.road-body {
+    stroke: rgba(255, 255, 255, 0.06);
+    stroke-width: 48;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.road-glow-edge {
+    stroke: var(--accent-color);
+    stroke-width: 50;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0.07;
+}
+
+.road-center-line {
+    stroke: rgba(255, 255, 255, 0.15);
+    stroke-width: 2;
+    stroke-dasharray: 16 12;
+    stroke-linecap: round;
+}
+
+.traveler-trail {
+    stroke: var(--accent-color);
+    stroke-width: 3;
+    opacity: 0.6;
+    stroke-linecap: round;
+}
+
+/* ---- Traveler Dot ---- */
+.traveler-dot {
+    fill: var(--accent-color);
+    opacity: 0.7;
+}
+
+.traveler-core {
+    fill: #fff;
+}
+
+@keyframes travelerPulse {
+    0%, 100% { r: 8; opacity: 0.7; }
+    50% { r: 12; opacity: 0.4; }
+}
+
+#travelerDot {
+    animation: travelerPulse 2s ease-in-out infinite;
+}
+
+/* ---- Milestone Markers ---- */
+.milestone-circle {
+    fill: var(--bg-primary, #0a0a0a);
+    stroke: var(--accent-color);
+    stroke-width: 2;
+}
+
+.milestone-text {
+    fill: var(--accent-color);
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    text-anchor: middle;
+    dominant-baseline: central;
+}
+
+/* ---- Station Cards ---- */
+.road-station {
+    position: relative;
+    width: 42%;
+    margin-bottom: 100px;
+    z-index: 5;
+    /* 3D initial state — hidden */
+    opacity: 0;
+    transform: translateY(50px) scale(0.88);
+    transition: none; /* JS handles animation */
+}
+
+.road-station:last-child {
+    margin-bottom: 40px;
+}
+
+/* Alternating positions */
+.road-left {
+    margin-left: 5%;
+    transform-origin: right center;
+}
+
+.road-right {
+    margin-left: 53%;
+    transform-origin: left center;
+}
+
+/* ---- Station Connector (branch line to road) ---- */
+.station-connector {
+    position: absolute;
+    top: 30px;
+    width: 30px;
+    height: 2px;
+    background: linear-gradient(
+        to right,
+        transparent,
+        var(--accent-color)
+    );
+    opacity: 0;
+    transition: opacity 0.6s ease 0.3s;
+}
+
+.road-left .station-connector {
+    right: -30px;
+    background: linear-gradient(to right, transparent, var(--accent-color));
+}
+
+.road-right .station-connector {
+    left: -30px;
+    background: linear-gradient(to left, transparent, var(--accent-color));
+}
+
+.road-station.is-reached .station-connector {
+    opacity: 1;
+}
+
+/* ---- Glassmorphic Card ---- */
+.station-card {
+    position: relative;
+    padding: 24px 28px;
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    transition: border-color 0.4s ease, box-shadow 0.4s ease;
+    overflow: hidden;
+}
+
+.station-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        var(--accent-color),
+        transparent
+    );
+    opacity: 0;
+    transition: opacity 0.6s ease 0.4s;
+}
+
+.road-station.is-reached .station-card::before {
+    opacity: 1;
+}
+
+.road-station.is-reached .station-card {
+    border-color: rgba(var(--accent-rgb), 0.15);
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        0 0 30px rgba(var(--accent-rgb), 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* ---- Station Number Badge ---- */
+.station-number {
+    position: absolute;
+    top: -14px;
+    right: 20px;
+    background: var(--accent-color);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.3);
+}
+
+/* ---- Company Header ---- */
+.station-company {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none !important;
+    margin-bottom: 12px;
+    color: inherit;
+}
+
+.station-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+}
+
+.station-company-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-heading);
+    margin: 0;
+    line-height: 1.3;
+    transition: color 0.3s ease;
+}
+
+.station-company:hover .station-company-name {
+    color: var(--accent-color);
+}
+
+.station-dates {
+    font-size: 12px;
+    font-family: 'Courier New', monospace;
+    color: var(--text-body);
+    opacity: 0.7;
+}
+
+.station-link-icon {
+    width: 16px;
+    height: 16px;
+    color: var(--text-body);
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: all 0.3s ease;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.station-company:hover .station-link-icon {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* ---- Role ---- */
+.station-role {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--accent-color);
+    margin: 0 0 10px 0;
+    padding-left: 12px;
+    border-left: 2px solid var(--accent-color);
+    line-height: 1.4;
+}
+
+/* ---- Description ---- */
+.station-description {
+    font-size: 14px;
+    color: var(--text-body);
+    line-height: 1.7;
+    opacity: 0.85;
+}
+
+.station-description ul {
+    padding-left: 16px;
+    margin: 6px 0;
+}
+
+.station-description li {
+    margin-bottom: 4px;
+}
+
+/* ---- Light Theme Adjustments ---- */
+[data-theme="light"] .road-body {
+    stroke: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .road-glow-edge {
+    opacity: 0.05;
+}
+
+[data-theme="light"] .road-center-line {
+    stroke: rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="light"] .station-card {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .station-logo {
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .milestone-circle {
+    fill: #fff;
+}
+
+/* ---- Celestial Starfield ---- */
+.road-stars-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0; /* Behind everything */
+}
+
+/* ---- Floating Tech Assets ---- */
+.road-floating-assets {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.road-asset {
+    position: absolute;
+    color: var(--accent-color);
+    filter: drop-shadow(0 0 10px rgba(var(--accent-rgb), 0.3));
+    will-change: transform;
+}
+
+/* ---- Interactive 3D Card Support ---- */
+.road-station {
+    transform-style: preserve-3d;
+}
+
+/* ---- Station Card: Ultra Modernization ---- */
+.station-card {
+    position: relative;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(30px) saturate(200%);
+    -webkit-backdrop-filter: blur(30px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 
+        0 20px 50px rgba(0, 0, 0, 0.4),
+        inset 0 0 1px 1px rgba(255, 255, 255, 0.03);
+    transition: all 0.6s cubic-bezier(0.2, 1, 0.2, 1);
+    will-change: transform, opacity;
+    
+    /* Reactive variables */
+    --reactive-glow: 0; 
+    --beam-opacity: 0;
+}
+
+.station-card:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(var(--accent-rgb), 0.4);
+    transform: translateY(-5px) scale(1.02);
+}
+
+/* Holographic Shimmer */
+.card-shimmer {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        135deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0) 30%,
+        rgba(var(--accent-rgb), 0.05) 45%,
+        rgba(255, 255, 255, 0.1) 50%,
+        rgba(var(--accent-rgb), 0.05) 55%,
+        rgba(255, 255, 255, 0) 70%,
+        transparent 100%
+    );
+    background-size: 200% 200%;
+    background-position: var(--shimmer-pos, 200%) var(--shimmer-pos, 200%);
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: color-dodge;
+    transition: background-position 0s;
+}
+
+/* Animated Border Beam */
+.border-beam {
+    position: absolute;
+    inset: -2px;
+    padding: 2px;
+    background: conic-gradient(
+        from var(--beam-angle, 0deg),
+        transparent 0%,
+        transparent 80%,
+        var(--accent-color) 90%,
+        transparent 100%
+    );
+    -webkit-mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 2;
+    opacity: var(--beam-opacity);
+    transition: opacity 0.5s ease;
+}
+
+@property --beam-angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+
+.road-station.is-reached .border-beam {
+    animation: beam-rotate 4s linear infinite;
+    --beam-opacity: 0.6;
+}
+
+@keyframes beam-rotate {
+    to { --beam-angle: 360deg; }
+}
+
+.card-grain {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    filter: url(#noiseFilter);
+    opacity: 0.12;
+    pointer-events: none;
+    z-index: -1;
+    mix-blend-mode: overlay;
+}
+
+/* ---- Tech Tags: Buoyant & Modern ---- */
+.station-tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.tech-tag {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 4px 12px;
+    background: rgba(var(--accent-rgb), 0.08);
+    color: var(--accent-color);
+    border: 1px solid rgba(var(--accent-rgb), 0.15);
+    border-radius: 100px;
+    font-weight: 700;
+    backdrop-filter: blur(5px);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation: tag-drift 3s ease-in-out infinite alternate;
+    animation-delay: var(--delay, 0s);
+}
+
+@keyframes tag-drift {
+    from { transform: translateY(0); }
+    to { transform: translateY(-4px); }
+}
+
+.tech-tag:nth-child(2) { --delay: -1s; }
+.tech-tag:nth-child(3) { --delay: -2s; }
+
+.tech-tag:hover {
+    background: var(--accent-color);
+    color: #000;
+    transform: scale(1.1) translateY(-6px) !important;
+    box-shadow: 0 10px 20px rgba(var(--accent-rgb), 0.4);
+}
+
+/* ---- Milestone Shockwave ---- */
+.shockwave {
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid var(--accent-color);
+    pointer-events: none;
+    z-index: 2;
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.8;
+}
+
+@keyframes shockwave-expand {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 0.8; }
+    100% { transform: translate(-50%, -50%) scale(4); opacity: 0; }
+}
+
+/* ---- Milestone: Pulse when reached ---- */
+.road-station.is-reached .milestone-circle {
+    filter: drop-shadow(0 0 15px var(--accent-color));
+    animation: milestone-pulse 2s infinite;
+}
+
+@keyframes milestone-pulse {
+    0% { r: 14; opacity: 1; transform: scale(1); }
+    50% { r: 18; opacity: 0.8; transform: scale(1.1); }
+    100% { r: 14; opacity: 1; transform: scale(1); }
+}
+
+/* ---- Depth Fog (Mask) ---- */
+#roadContainer::before,
+#roadContainer::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 15%;
+    z-index: 10;
+    pointer-events: none;
+}
+
+#roadContainer::before {
+    top: 0;
+    background: linear-gradient(to bottom, var(--bg-primary) 0%, transparent 100%);
+}
+
+#roadContainer::after {
+    bottom: 0;
+    background: linear-gradient(to top, var(--bg-primary) 0%, transparent 100%);
+}
+
+/* ---- Scroll Reveal Backdrop (Text) ---- */
 .scroll-reveal-text {
     position: absolute;
     top: 180px;
