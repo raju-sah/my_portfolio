@@ -13,7 +13,7 @@ class ArticleRequest extends FormRequest
 
     public function rules(): array
     {
-        $imageConfig = config('imagesetting.default.image');
+        $imageConfig = config('imagesetting.default.article');
         
         return [
             'name'=>'required|string',

@@ -9,8 +9,15 @@ return [
 
             'mime_types' => 'png,jpg,jpeg,gif,webp',
             'max_size' => 500, //in KB
-            'width' => 500, //in pixels
-            'height' => 500, //in pixels
+            'width' => 1200, //in pixels
+            'height' => 2000, //in pixels
+            'quality' => 100, // image compression quality in percentage
+        ],
+        'article' => [
+            'mime_types' => 'png,jpg,jpeg,gif,webp',
+            'max_size' => 5120, //in KB
+            'width' => 1200, //in pixels
+            'height' => 2000, //in pixels
             'quality' => 100, // image compression quality in percentage
         ],
     ],
