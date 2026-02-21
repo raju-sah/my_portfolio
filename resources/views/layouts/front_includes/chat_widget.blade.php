@@ -11,6 +11,11 @@
             animation: none;
             transform: scale(1.1);
         }
+        #chat-input::placeholder {
+            font-family: 'Manrope', sans-serif;
+            font-weight: 600;
+            font-size: 12.5px;
+        }
     </style>
 
     <!-- Chat Window (appears above the button due to DOM order + flex column) -->
@@ -52,7 +57,7 @@
         <!-- Input Area -->
         <div class="p-4 bg-white border-t border-gray-100 shrink-0">
             <form id="chat-form" class="flex items-center gap-2">
-                <input id="chat-input" type="text" placeholder="Ask me about Raju..."
+                <input id="chat-input" type="text" placeholder="Ask me anything about Raju..."
                     style="color: black !important; opacity: 1 !important;"
                     class="flex-1 min-w-0 pl-4 pr-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all text-sm text-gray-900 placeholder-gray-600 bg-white">
                 <button type="submit" id="chat-submit"
@@ -96,7 +101,6 @@
         
         const statuses = [
             "Unfolding Raju's 'heroic' myths (lol)...",
-            "Exposing his funniest life failures...",
             "Digging for secrets he'd pay me to hide..."
         ];
         let statusIndex = 0;
@@ -110,6 +114,20 @@
                 chatStatus.classList.remove('opacity-0');
             }, 500); // Wait for fade out
         }, 5000);
+
+        // Placeholder Rotation
+        const placeholders = [
+            "Know my god? I have spoilers...",
+            "Does he actually code, or just copy? Find out here...",
+            "Curious about his stories, poems, skills, or anything?",
+            "Let's roast him together..."
+        ];
+        let placeholderIndex = 0;
+
+        setInterval(() => {
+            placeholderIndex = (placeholderIndex + 1) % placeholders.length;
+            chatInput.placeholder = placeholders[placeholderIndex];
+        }, 3000);
 
         const initialGreeting = document.getElementById('initial-greeting');
 
