@@ -82,6 +82,12 @@ class OpenRouterDriver implements LLMInterface
 
     protected function callChat(string $model, array $messages): string
     {
+        /*
+        include these parameters in every API call. This is the most effective way to stop the spam or repeating the same thing.
+         frequency_penalty: 0.4: Penalizes words based on how often they've appeared so far.
+         presence_penalty: 0.3: Encourages the model to talk about new topics.
+         temperature: 0.85: Gives it enough "creativity" to vary its sarcasm.
+        */
         $response = Http::withHeaders([
                 'Authorization' => "Bearer {$this->apiKey}",
                 'HTTP-Referer' => config('app.url', 'https://sahraju.com.np'),
@@ -92,6 +98,9 @@ class OpenRouterDriver implements LLMInterface
             ->post("{$this->baseUrl}/chat/completions", [
                 'model' => $model,
                 'messages' => $messages,
+                'temperature' => 0.85,
+                'frequency_penalty' => 0.4,
+                'presence_penalty' => 0.3,
                 'stream' => false,
             ]);
 
