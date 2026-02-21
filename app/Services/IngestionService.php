@@ -18,12 +18,18 @@ class IngestionService
     public function ingestResume(string $path)
     {
         Log::info("Ingesting Resume from: {$path}");
+        $this->ingestPdf($path, 'resume');
+    }
+
+    public function ingestPdf(string $path, string $sourceType = 'document')
+    {
+        Log::info("Ingesting PDF [{$sourceType}] from: {$path}");
         
         $parser = new Parser();
         $pdf = $parser->parseFile($path);
         $text = $pdf->getText();
         
-        $this->processContent($text, 'resume', ['path' => $path]);
+        $this->processContent($text, $sourceType, ['path' => $path]);
     }
 
     public function ingestWebsite(string $url)
