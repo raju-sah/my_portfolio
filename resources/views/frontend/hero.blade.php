@@ -34,7 +34,7 @@
                 @include('frontend.sandAnimation.sandAnimation')
 
                 <h1 class="text-3xl md:text-4xl font-black text-heading mb-3 md:mb-2 leading-tight">
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-heading to-body">A</span>
+                    <span id="article-span" class="text-transparent bg-clip-text bg-gradient-to-r from-heading to-body">A</span>
                     <span class="multiText text-accent"></span>
                 </h1>
 
@@ -559,7 +559,17 @@
                 fadeOutDelay: 500,
                 showCursor: true,
                 cursorChar: '_',
-                autoInsertCss: true
+                autoInsertCss: true,
+                preStringTyped: (arrayPos, self) => {
+                    const nextString = self.strings[arrayPos];
+                    const firstLetter = nextString.charAt(0).toLowerCase();
+                    const articleSpan = document.getElementById('article-span');
+                    if (['a', 'e', 'i', 'o', 'u'].includes(firstLetter)) {
+                        articleSpan.textContent = 'An';
+                    } else {
+                        articleSpan.textContent = 'A';
+                    }
+                }
             });
         });
     </script>
