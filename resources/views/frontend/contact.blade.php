@@ -83,12 +83,12 @@
                         </div>
 
                         <!-- Phone Input -->
-                        <div class="floating-input-group">
+                        <!-- <div class="floating-input-group">
                             <input type="text" id="phone" name="phone" value="{{ old('phone') }}" required 
                                    placeholder="+1 (555) DON'T-CALL-AT-3AM" 
                                    class="floating-input peer" autocomplete="tel">
                             <label for="phone" class="floating-label">Phone *</label>
-                        </div>
+                        </div> -->
 
                         <!-- Message Textarea -->
                         <div class="floating-input-group">
