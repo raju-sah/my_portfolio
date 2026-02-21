@@ -1425,6 +1425,20 @@ footer {
     opacity: 0.7;
 }
 
+.station-location {
+    font-size: 11px;
+    color: var(--text-body);
+    opacity: 0.6;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.station-location i {
+    color: var(--accent-color);
+    font-size: 9px;
+}
+
 .station-link-icon {
     width: 16px;
     height: 16px;

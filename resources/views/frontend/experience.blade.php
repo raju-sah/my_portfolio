@@ -106,9 +106,17 @@
                         <img src="{{ optional($experience)->image_path }}" alt="{{ optional($experience)->name }}" class="station-logo" />
                         <div>
                             <h5 class="station-company-name">{{ optional($experience)->name }}</h5>
-                            <span class="station-dates">
-                                {{ optional($experience)->date_from }} — {{ optional($experience)->curently_here ? 'Present' : optional($experience)->date_to }}
-                            </span>
+                            <div class="flex flex-col gap-1">
+                                <span class="station-dates">
+                                    {{ optional($experience)->date_from }} — {{ optional($experience)->curently_here ? 'Present' : optional($experience)->date_to }}
+                                </span>
+                                @if(optional($experience)->location)
+                                <span class="station-location">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                    {{ $experience->location }}
+                                </span>
+                                @endif
+                            </div>
                         </div>
                         <svg class="station-link-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
