@@ -20,7 +20,7 @@
             <div class="card-subtitle d-flex justify-content-start flex-wrap mb-3 text-muted" style="font-size: 0.85rem; gap: 15px;">
                 <span><i class="fa-regular fa-clock me-1 text-accent"></i> {{ optional($all_article)->min_read }} min read</span>
                 <span><i class="fa-regular fa-calendar-alt me-1 text-accent"></i> {{ optional($all_article)->created_at->format('d M Y') }}</span>
-                <span><a href="{{ route('article.detail', optional($all_article)->slug) }}" class="text-muted text-decoration-none"><i class="fa-regular fa-eye me-1 text-primary"></i> {{ $views['screenPageViews']?? '0' }} Views</a></span>
+                <span><a href="{{ route('article.detail', optional($all_article)->slug) }}" class="text-muted text-decoration-none"><i class="fa-regular fa-eye me-1 text-primary"></i> {{ $all_article->ga_views ?? '0' }} Views</a></span>
             </div>
             <div class="article-description text-body/70">{!! optional($all_article)->description !!}</div>
             <div class="mb-3 mt-4 d-flex justify-content-start flex-wrap mt-auto">

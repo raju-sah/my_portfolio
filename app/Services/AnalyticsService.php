@@ -89,5 +89,15 @@ class AnalyticsService
     {
         return $this->getAnalyticsData($period, ['screenPageViews'], ['pageTitle'])->where('pageTitle', $pageTitle)->first() ?? [];
     }
+
+    public function pageViewsByPath(Period $period, string $pagePath):array
+    {
+        return $this->getAnalyticsData($period, ['screenPageViews'], ['pagePath'])->where('pagePath', $pagePath)->first() ?? [];
+    }
+
+    public function allPageViewsByTitle(Period $period): Collection
+    {
+        return $this->getAnalyticsData($period, ['screenPageViews'], ['pageTitle']);
+    }
     
 }

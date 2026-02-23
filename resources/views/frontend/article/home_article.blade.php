@@ -41,10 +41,10 @@
                     <span class="w-1 h-1 bg-accent/30 rounded-full"></span>
                     <span class="flex items-center gap-1"><i class="fa-regular fa-clock text-accent/60"></i> {{ $article->min_read }} min read</span>
                     <a href="{{ route('article.detail', $article->slug) }}" class="ml-auto flex items-center gap-1 px-2 py-0.5 hover:text-accent transition-colors text-decoration-none">
-                        <i class="fa-regular fa-eye text-accent text-decoration-none"></i> {{ $article->views }}
+                        <i class="fa-regular fa-eye text-accent text-decoration-none"></i> {{ $article->ga_views ?? '0' }}
                     </a>
                 </div>
-                 <!-- Stars -->
+                <!-- Stars -->
                 <div class="flex items-center gap-1 text-yellow-500 text-xs mb-4">
                     @if ($article->reviews_avg_rating === 0)
                     <span class="text-body/40 italic">No reviews</span>
@@ -114,7 +114,7 @@
                     <span class="w-1 h-1 bg-accent/30 rounded-full"></span>
                     <span class="flex items-center gap-1"><i class="fa-regular fa-clock text-accent/60"></i> {{ $story->min_read }} min read</span>
                     <a href="{{ route('article.detail', $story->slug) }}" class="ml-auto flex items-center gap-1 px-2 py-0.5 hover:text-accent transition-colors text-decoration-none">
-                        <i class="fa-regular fa-eye text-accent text-decoration-none"></i> {{ $story->views }}
+                        <i class="fa-regular fa-eye text-accent text-decoration-none"></i> {{ $story->ga_views ?? '0' }}
                     </a>
                 </div>
 
@@ -125,8 +125,8 @@
                     @else
                     @for ($i = 0; $i < $story->reviews_avg_rating; $i++)
                         <i class="fa-solid fa-star"></i>
-                    @endfor
-                    @endif
+                        @endfor
+                        @endif
                 </div>
 
                 <!-- Description -->

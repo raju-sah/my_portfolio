@@ -20,16 +20,17 @@ class FrontArticleController extends Controller
         $this->period = Period::create(Carbon::parse('2024-05-25')->startOfDay(), Carbon::now());
     }
 
-    public function showArticle($slug, Article $article, AnalyticsService $analyticsService): View
+    public function showArticle($slug, AnalyticsService $analyticsService): View
     {
-        $views  = $analyticsService->pageViews($this->period, $article->name);
-
         $article = Article::query()
             ->select(['id', 'name', 'description', 'image', 'slug', 'views', 'min_read', 'about', 'created_at'])
             ->where('slug', $slug)
             ->where('status', 1)
             ->withAvgRating()
             ->firstOrFail();
+
+        $views  = $analyticsService->pageViews($this->period, $article->name);
+
         return  view('frontend.article.article_single_page', [
             'article' => $article,
             'views' => $views
@@ -38,8 +39,7 @@ class FrontArticleController extends Controller
 
     public function allArticleFilter(ArticleFilterRequest $request, AnalyticsService $analyticsService): View
     {
-        // For general "Experience" views (passing fake article for now as per previous logic)
-        $views = $analyticsService->pageViews($this->period, 'Articles');
+        $allPageViews = $analyticsService->allPageViewsByTitle($this->period);
 
         $from = $request->from_date ? Carbon::parse($request->from_date)->startOfDay() : null;
         $to = $request->to_date ? Carbon::parse($request->to_date)->endOfDay() : null;
@@ -85,11 +85,18 @@ class FrontArticleController extends Controller
             $all_stories = $storyQuery->take($perPage)->get();
         }
 
+        // Map GA views to models
+        foreach ($all_articles as $art) {
+            $art->ga_views = $allPageViews->where('pageTitle', $art->name)->first()['screenPageViews'] ?? 0;
+        }
+        foreach ($all_stories as $st) {
+            $st->ga_views = $allPageViews->where('pageTitle', $st->name)->first()['screenPageViews'] ?? 0;
+        }
+
         return view('frontend.article.all_articles', [
             'request'      => $request,
             'all_articles' => $all_articles,
             'all_stories'  => $all_stories,
-            'views'        => $views,
         ]);
     }
 }

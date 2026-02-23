@@ -35,42 +35,49 @@ class WebsiteController extends Controller
         $endDate = Carbon::now();
         $period = Period::create($startDate, $endDate);
 
+        $articles = Article::query()
+            ->select(['id', 'name', 'description', 'image', 'slug', 'views', 'min_read', 'about', 'created_at'])
+            ->where('status', 1)
+            ->articles()
+            ->withAvgRating()
+            ->orderBy('reviews_avg_rating', 'desc')
+            ->limit(5)
+            ->get();
+
+        $stories = Article::query()
+            ->select(['id', 'name', 'description', 'image', 'slug', 'views', 'min_read', 'about', 'created_at'])
+            ->where('status', 1)
+            ->stories()
+            ->withAvgRating()
+            ->orderBy('reviews_avg_rating', 'desc')
+            ->limit(4)
+            ->get();
+
+        $allPageViews = $analyticsService->allPageViewsByTitle($period);
+
+        foreach ($articles as $art) {
+            $art->ga_views = $allPageViews->where('pageTitle', $art->name)->first()['screenPageViews'] ?? 0;
+        }
+        foreach ($stories as $st) {
+            $st->ga_views = $allPageViews->where('pageTitle', $st->name)->first()['screenPageViews'] ?? 0;
+        }
+
         return view('layouts.front_includes.main', [
-            
             'usersAndViews' => $analyticsService->getAnalyticsData($period, ['screenPageViews', 'activeUsers'], [])->first(),
-            
-                'projects' => Project::query()->select('id', 'name', 'year', 'tech_used', 'web_url', 'github_url', 'description', 'image')->where('status', 1)->orderBy('display_order')->latest()->get(),
-
-                'skills' => Skill::query()
-                    ->select(['id', 'name', 'description', 'percentage', 'skill_domain'])
-                    ->where('status', 1)
-                    ->orderBy('display_order')
-                    ->get()
-                    ->groupBy(fn($skill) => optional($skill->skill_domain)->value),
-
-                'experiences' => Experience::query()
-                    ->select(['id', 'name', 'description', 'image', 'web_url', 'role', 'location', 'date_from', 'date_to', 'curently_here', 'tags'])
-                    ->where('status', 1)
-                    ->orderBy('display_order')
-                    ->get(),
-
-                'articles' => Article::query()
-                    ->select(['id', 'name', 'description', 'image', 'slug', 'views', 'min_read', 'about', 'created_at'])
-                    ->where('status', 1)
-                    ->articles()
-                    ->withAvgRating()
-                    ->orderBy('reviews_avg_rating', 'desc')
-                    ->limit(5)
-                    ->get(),
-
-                'stories' => Article::query()
-                    ->select(['id', 'name', 'description', 'image', 'slug', 'views', 'min_read', 'about', 'created_at'])
-                    ->where('status', 1)
-                    ->stories()
-                    ->withAvgRating()
-                    ->orderBy('reviews_avg_rating', 'desc')
-                    ->limit(4)
-                    ->get(),
+            'projects' => Project::query()->select('id', 'name', 'year', 'tech_used', 'web_url', 'github_url', 'description', 'image')->where('status', 1)->orderBy('display_order')->latest()->get(),
+            'skills' => Skill::query()
+                ->select(['id', 'name', 'description', 'percentage', 'skill_domain'])
+                ->where('status', 1)
+                ->orderBy('display_order')
+                ->get()
+                ->groupBy(fn($skill) => optional($skill->skill_domain)->value),
+            'experiences' => Experience::query()
+                ->select(['id', 'name', 'description', 'image', 'web_url', 'role', 'location', 'date_from', 'date_to', 'curently_here', 'tags'])
+                ->where('status', 1)
+                ->orderBy('display_order')
+                ->get(),
+            'articles' => $articles,
+            'stories' => $stories,
         ]);
     }
 
